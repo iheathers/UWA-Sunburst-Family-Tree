@@ -2,7 +2,7 @@
 
 An interactive web-based "Sunburst Chart" to efficiently manage a family tree, facilitating connections and communication among dispersed family members. The platform will empower administrators to dynamically add, modify, and update elements on the Sunburst Chart. Additionally, website visitors will have the capability to view the chart, interact with individual elements, and submit comments related to specific chart elements.
 
-# Developer notes
+# DEVELOPER NOTES - (This can be separated later on its own file)
 
 # Getting Started with Git
 
@@ -30,7 +30,7 @@ To clone a repository, open your terminal or command prompt and navigate to the 
 git clone <repository_url>
 ```
 
-Replace `<repository_url>` with the URL of the repository you want to clone. You can find the repository URL on the project's GitHub page.
+Replace `<repository_url>` with the URL of the repository you want to clone. You can find the repository URL on the project's GitHub or GitLab page.
 
 For example, to clone a repository with the URL `https://github.com/example-user/example-repo.git`, you would use:
 
@@ -52,12 +52,12 @@ To check out an existing branch, use the following command:
 git checkout <branch_name>
 ```
 
-Replace `<branch_name>` with the name of the branch you want to work on. If the branch exists in the repository, Git will switch to that branch, and you can start making changes to the project.
+Replace `<branch_name>` with the name of the branch you want to work on. The branch name convention for this project is `CITS5206-#<TICKET-NUMBER>`. If the branch exists in the repository, Git will switch to that branch, and you can start making changes to the project.
 
-For example, to switch to a branch named `feature/new-feature`, you would use:
+For example, to switch to a branch for a ticket with number 123, the branch name would be `CITS5206-#123`. You would use:
 
 ```bash
-git checkout feature/new-feature
+git checkout CITS5206-#123
 ```
 
 ## Creating a New Branch for a New Feature
@@ -72,7 +72,7 @@ To create a new branch, you can use the following command:
 git branch <branch_name>
 ```
 
-Replace `<branch_name>` with a descriptive name for your feature. For example, if you are adding a login functionality, you can create a branch called `feature/login`.
+Replace `<branch_name>` with a descriptive name for your feature. For example, if you are adding a login functionality for ticket 123, you can create a branch called `CITS5206-#123`.
 
 ### Git Checkout and Branch Creation in One Step
 
@@ -82,11 +82,58 @@ To create a new branch and switch to it in a single command, you can use:
 git checkout -b <branch_name>
 ```
 
-For instance, to create a new branch called `feature/login` and switch to it, you would use:
+For instance, to create a new branch for ticket 123 and switch to it, you would use:
 
 ```bash
-git checkout -b feature/login
+git checkout -b CITS5206-#123
 ```
+
+## Commit Message Convention
+
+[Writing Good Commit Messages: A Practical Guide](https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/)
+
+When making commits to the repository, it's essential to follow a standardized commit message convention. A good practice is to start each commit message with a verb, in the present tense, that describes the action performed by the commit.
+
+### Subject Line (First Line):
+
+- Limit the subject line to 50 characters or less.
+- Start the subject line with a capital letter.
+- Use the imperative mood (verbs) to describe what the commit does.
+- Avoid ending the subject line with a period.
+
+### Body (Optional):
+
+- Use the body to provide more detailed information about the commit.
+- Separate the subject line and body with a blank line.
+- Wrap the body text at 72 characters or less.
+- Explain why the change is necessary and what problem it solves.
+- Include any relevant information that might be useful to other developers.
+
+### Commit Message Structure:
+
+- Use a concise, descriptive subject line that summarizes the change.
+- Add a blank line after the subject line (if no body is present) or between the subject line and the body.
+- Use bullet points or hyphens for unordered lists in the body.
+- Use numbered lists for ordered steps or tasks.
+
+### Issue References:
+
+- If your project uses an issue tracking system (e.g., GitHub issues, JIRA), consider including the issue number in the commit message.
+- Use the format "Fixes #123" or "Closes #456" to automatically close the referenced issue when the commit is merged.
+
+Example of a well-formatted commit message:
+
+```
+Add user authentication feature
+
+- Implemented user login functionality
+- Added user registration with email verification
+- Integrated JWT for secure authentication
+
+Closes #123
+```
+
+By following these conventions, your commit messages become informative, well-structured, and easier to understand for you and your team. Additionally, it helps in maintaining a clean commit history that is crucial for code maintenance and collaboration.
 
 ## Using Trello Ticketing System
 
@@ -101,5 +148,7 @@ With the Trello Prime extension, you can easily associate your Git commits with 
 ## Conclusion
 
 With Git installed, a repository cloned, and a new branch created for your new feature, you're ready to start developing and contributing to the project. Remember to commit your changes regularly and push them to the remote repository. Utilize Trello and the Trello Prime extension to stay organized and collaborate effectively with your team.
+
+Remember to follow the commit message convention to keep the commit history clean and informative.
 
 Happy coding!

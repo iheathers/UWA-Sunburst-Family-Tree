@@ -4,6 +4,32 @@ An interactive web-based "Sunburst Chart" to efficiently manage a family tree, f
 
 # DEVELOPER NOTES - (This can be separated later on its own file)
 
+# Tech Stack Used
+
+## Frontend
+
+- **HTML**: Hypertext Markup Language is used for structuring the content of the web pages.
+- **CSS**: Cascading Style Sheets is used for styling the web pages and controlling their layout.
+- **JavaScript (React)**: React is a popular JavaScript library for building user interfaces and creating interactive components.
+
+## Backend
+
+- **Express.js**: Express.js is a fast and minimalist web application framework for Node.js. It simplifies the process of building server-side applications and APIs.
+
+## Database
+
+- **MongoDB**: MongoDB is a NoSQL database that uses a flexible, document-oriented data model. It is well-suited for handling large amounts of unstructured or semi-structured data.
+
+## Chart Library
+
+- **D3.js**: D3.js is a powerful JavaScript library for creating data visualizations on the web. It provides tools for binding data to DOM elements and applying data-driven transformations to the document.
+
+## Authentication
+
+- **JWT (JSON Web Tokens)**: JSON Web Tokens is a compact and self-contained way of securely transmitting information between parties as a JSON object. It is commonly used for implementing authentication and authorization in web applications.
+
+With this tech stack, the project can deliver a dynamic and responsive user interface using React on the frontend, handle data storage and retrieval using MongoDB on the backend, and create interactive data visualizations using D3.js. The authentication system is implemented using JWT to secure user access and protect sensitive information. Express.js serves as the middleware to handle HTTP requests and responses, ensuring smooth communication between the frontend and backend components.
+
 # Getting Started with Git
 
 ## Installing Git

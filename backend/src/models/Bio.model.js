@@ -1,3 +1,5 @@
+// TEMPLATE
+
 const mongoose = require('mongoose');
 
 const BioSchema = new mongoose.Schema(

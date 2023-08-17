@@ -13,6 +13,7 @@
 // })
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
+
 const uri =
   'mongodb+srv://test1:Nm8ndGA6y323fWX@uwa-sunburst-server.lhgpneg.mongodb.net/?retryWrites=true&w=majority';
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -23,9 +24,9 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });

@@ -1,41 +1,34 @@
+require("dotenv").config();
+
+const path = require("path");
 const express = require("express");
+const mongoose = require("mongoose");
+
 const app = express();
-const port = 4000;
 
-const hey = "";
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use((error, req, res, next) => {
+  console.log("Global error handling function", { error });
+
+  const statusCode = error.statusCode || 500;
+  const message = error.message;
+
+  res.status(statusCode).json({
+    statusCode,
+    message,
+  });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+console.log(process.env);
 
-// const { MongoClient, ServerApiVersion } = require("mongodb");
-
-// const uri =
-//   "mongodb+srv://test1:Nm8ndGA6y323fWX@uwa-sunburst-server.lhgpneg.mongodb.net/?retryWrites=true&w=majority";
-// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   },
-// });
-
-// async function run() {
-//   try {
-//     await client.connect();
-//     // Send a ping to confirm a successful connection
-//     await client.db("admin").command({ ping: 1 });
-//     console.log(
-//       "Pinged your deployment. You successfully connected to MongoDB!"
-//     );
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     await client.close();
-//   }
-// }
-// run().catch(console.dir);
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(
+    app.listen(process.env.PORT, () => {
+      console.log("App listening on port 8080");
+    })
+  )
+  .catch((err) => {
+    console.log({ err });
+  });

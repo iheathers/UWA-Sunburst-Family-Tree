@@ -7,13 +7,15 @@ The chosen frontend framework should facilitate efficient development, promote c
 
 **Issue:** Which frontend framework best meets our development goals while utilizing the team's strengths?
 
-- **Position 1:** React
-- **Position 2:** Angular
-- **Position 3:** Vue
+- **Proposal 1:** React
+- **Proposal 2:** Angular
+- **Proposal 3:** Vue
 
 **Argument:** We aim for a framework that streamlines development, encourages component reusability, and harnesses the expertise of our team members, ensuring a robust user interface.
 
 **Assumption:** The selected framework's ability to enhance development efficiency and support reusable components is essential for maintaining a sustainable codebase and fostering effective teamwork.
+
+**Decision:** Choose React for our frontend framework.
 
 **Pros and Cons:**
 
@@ -73,8 +75,8 @@ The chosen data visualization library should enable the creation of dynamic and 
 
 **Issue:** Which data visualization library best suits our dynamic visualization needs and fits our team's expertise?
 
-- **Position 1:** D3.js
-- **Position 2:** Chart.js
+- **Proposal 1:** D3.js
+- **Proposal 2:** Chart.js
 
 **Argument:** We need a data visualization library that allows us to create dynamic and interactive visuals while leveraging our team's capabilities and enhancing the user experience.
 
@@ -124,8 +126,8 @@ The chosen authentication method should ensure secure user access and protect se
 **Rationale:**
 
 **Issue:** Which authentication method best meets our security needs and aligns with our project's goals?
-**Position 1:** JWT (JSON Web Tokens)
-**Position 2:** OAuth
+**Proposal 1:** JWT (JSON Web Tokens)
+**Proposal 2:** OAuth
 
 **Argument:** We require an authentication method that ensures secure user access, protects sensitive data, and aligns with our project's architecture and goals.
 
@@ -178,9 +180,9 @@ The backend framework should enable efficient API development, support middlewar
 
 **Issue:** Which backend framework best fits our development needs and aligns with our team's expertise?
 
-- **Position 1:** Express.js (JavaScript)
-- **Position 2:** Flask (Python)
-- **Position 3:** Django (Python)
+- **Proposal 1:** Express.js (JavaScript)
+- **Proposal 2:** Flask (Python)
+- **Proposal 3:** Django (Python)
 
 **Argument:** We need a backend framework that streamlines API development, offers middleware support for extending functionality, and leverages our team's expertise in JavaScript/Python for seamless collaboration.
 
@@ -242,9 +244,9 @@ The database system should handle unstructured or semi-structured data effective
 **Rationale:**
 
 **Issue:** Which database system is best suited to handle our data requirements and align with our development pace?
-**Position 1:** MongoDB (NoSQL)
-**Position 2:** PostgreSQL (Relational)
-**Position 3:** MySQL (Relational)
+**Proposal 1:** MongoDB (NoSQL)
+**Proposal 2:** PostgreSQL (Relational)
+**Proposal 3:** MySQL (Relational)
 
 **Argument:** We require a database system that effectively handles unstructured or semi-structured data, supports rapid cloud-based development, and provides scalability to accommodate growing data needs.
 

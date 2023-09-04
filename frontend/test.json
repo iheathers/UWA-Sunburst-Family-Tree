@@ -16,18 +16,8 @@
               "children": [
                 {
                   "ID": "04385",
-                  "name": "Paul",
+                  "name": "Paule",
                   "children": [
-                    {
-                      "ID": "45940",
-                      "name": "Thomas",
-                      "children": []
-                    },
-                    {
-                      "ID": "94317",
-                      "name": "Jack",
-                      "children": []
-                    }
                   ]
                 },
                 {

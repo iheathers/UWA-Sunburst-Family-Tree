@@ -1,11 +1,20 @@
-.App {
-    font-family: sans-serif;
-    text-align: center;
-  }
-  
-  #ac-chart-container {
-    height: 600px;
-  }
-  .anychart-credits {
-    display: none;
-  }
+.hovered-info {
+  /* 添加悬停信息的样式，例如背景颜色和边框 */
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+/* 悬停信息中的文本样式 */
+.hovered-info p {
+  font-weight: bold;
+}
+
+/* 悬停信息中的JSON文本样式 */
+.hovered-info pre {
+  /* 添加滚动条样式，以防文本过长 */
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}

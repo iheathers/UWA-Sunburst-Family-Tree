@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import Modal from './components/Modal';
 import styles from '../styles/mainpage.module.css';
+import SunburstChart from './components/TestChart';
+import jsondata from "../test.json"
+import jsondata2 from "../flare.json"
 
 const HomePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +15,28 @@ const HomePage = () => {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+
+    const data2 = jsondata
+
+    const data = {
+        "name": "root",
+        "children": [
+          {
+            "name": "category1",
+            "children": [
+              { "name": "subCategory1"},
+              { "name": "subCategory2" }
+            ]
+          },
+          {
+            "name": "category2",
+            "children": [
+              { "name": "subCategory3"}
+            ]
+          }
+        ]
+      }
+      
 
     return (
         <>
@@ -26,10 +51,14 @@ const HomePage = () => {
 
             </div>
             {/* family Tree */}
-            
+
+            <div className={styles.tree}>
+                <SunburstChart data={data2} />
+                <div id="chart"></div>
+
+            </div>
+
             <div>
-
-
                 <button onClick={openModal}>Open Modal</button>
 
                 <Modal isOpen={isModalOpen} onClose={closeModal}>

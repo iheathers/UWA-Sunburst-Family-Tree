@@ -7,7 +7,7 @@ import {
 
 const familyMemberRouter = express.Router();
 
-familyMemberRouter.get("/", getFamilyMember);
+familyMemberRouter.get("/:id", getFamilyMember);
 
 familyMemberRouter.post("/", addFamilyMember);
 

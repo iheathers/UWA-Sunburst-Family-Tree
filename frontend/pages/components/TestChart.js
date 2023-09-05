@@ -10,7 +10,7 @@ const SunburstChart = ({ data }) => {
   useEffect(() => {
     if (!data) return;
 
-    const width = 800;
+    const width = 1600;
     const height = 800;
     const radius = Math.min(width, height) / 2;
 

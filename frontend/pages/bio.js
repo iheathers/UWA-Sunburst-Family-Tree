@@ -24,14 +24,15 @@ const HomePage = () => {
           {
             "name": "category1",
             "children": [
-              { "name": "subCategory1"},
-              { "name": "subCategory2" }
+              { "name": "subCategory1", "value": 10 },
+              { "name": "subCategory2", "value": 15 }
             ]
           },
           {
             "name": "category2",
             "children": [
-              { "name": "subCategory3"}
+              { "name": "subCategory3", "value": 10 },
+              { "name": "subCategory4", "value": 12 }
             ]
           }
         ]
@@ -53,7 +54,7 @@ const HomePage = () => {
             {/* family Tree */}
 
             <div className={styles.tree}>
-                <SunburstChart data={data2} />
+                <SunburstChart data={data} />
                 <div id="chart"></div>
 
             </div>

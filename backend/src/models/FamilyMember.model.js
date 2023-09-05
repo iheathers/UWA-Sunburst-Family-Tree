@@ -1,8 +1,34 @@
 import mongoose from "mongoose";
 
-const familyMemberSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-});
+const familyMemberSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FamilyMember",
+    },
+    children: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "FamilyMember",
+      },
+    ],
+  },
+  {
+    // Define schema options
+    versionKey: false, // Exclude the '__v' field
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        ret.id = ret._id; // Use 'id' instead of '_id' in the JSON output
+        delete ret._id; // Remove '_id' from the JSON output
+      },
+    },
+  }
+);
 
 const FamilyMember = mongoose.model("FamilyMember", familyMemberSchema);
 

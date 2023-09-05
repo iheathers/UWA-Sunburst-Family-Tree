@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 
+import familyTreeRouter from "./routes/FamilyTree.route.js";
 import familyMemberRouter from "./routes/FamilyMember.route.js";
 
 const app = express();
@@ -11,6 +12,8 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/family-member", familyMemberRouter);
+
+app.use("/api/family-tree", familyTreeRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)

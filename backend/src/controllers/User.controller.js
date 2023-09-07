@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 
 import User from "../models/User.model.js";
 
-const signUpUser = async (req, res, next) => {
+export const signUpUser = async (req, res, next) => {
     console.log("Signing Up");
 
     const validationErrors = validationResult(req);
@@ -46,7 +46,7 @@ const signUpUser = async (req, res, next) => {
     }
 };
 
-const loginUser = async (req, res, next) => {
+export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
     
     try {
@@ -76,20 +76,18 @@ const loginUser = async (req, res, next) => {
     }
 };
 
-const listUsers = async (req, res, next) => {
+export const listUsers = async (req, res, next) => {
     // check if any users
     // if no users, return error
     // return list
 }
 
-// user permissions
-const changeUserPermissions = async (req, res, next) => {
+export const changeUserPermissions = async (req, res, next) => {
 
 };
 
-// Delete user
-const deleteUser = async (req, res, next) => {
+export const deleteUser = async (req, res, next) => {
 
 };
 
-export default { signUpUser, loginUser };
+// Named imports vs default imports 

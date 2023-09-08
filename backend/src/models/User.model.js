@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema(
         },
         accessPermissions: { 
             type: String,
-            default: "chart",
-            enum: ["chart", "bio", "admin"],
+            default: "CHART",
+            enum: ["CHART", "BIO", "ADMIN"],
         },
     },
 );

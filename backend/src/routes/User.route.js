@@ -9,7 +9,7 @@ import {
 const userRouter = express.Router();
 
 userRouter.post(
-    "/user/signup",
+    "/signup",
     [
         body("email").isEmail(),
         body("password").not().isEmpty(),
@@ -17,6 +17,7 @@ userRouter.post(
     signUpUser
 );
 
-userRouter.post("/user/login", loginUser);
+userRouter.post("/login", loginUser);
+
 
 export default userRouter;

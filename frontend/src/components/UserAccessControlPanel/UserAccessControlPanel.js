@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 
-import styles from "UserAccessControlPanel.module.css";
+import styles from "./UserAccessControlPanel.module.css";
 
 function UserAccessControlPanel() {
   return (

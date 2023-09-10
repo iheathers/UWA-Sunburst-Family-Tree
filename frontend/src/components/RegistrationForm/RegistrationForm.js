@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import React, { useState } from "react";
 
-import styles from "../styles/registration.module.css";
+import styles from "./RegistrationForm.module.css";
 
 function RegistrationForm() {
   return (

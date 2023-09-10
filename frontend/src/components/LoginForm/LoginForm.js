@@ -12,7 +12,7 @@ const LoginForm = () => {
           <div className={styles.leftside}>
             <h1>Sunburst Family Tree</h1>
             <h3>
-              An interactive platform to view and manage your family's
+              An interactive platform to view and manage your family
               relationships.
             </h3>
           </div>

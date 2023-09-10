@@ -13,7 +13,7 @@ function RegistrationForm() {
           <div className={styles.leftside}>
             <h1 className={styles.h1label}>Sunburst Family Tree</h1>
             <h2 className={styles.h2label}>
-              An interactive platform to view and manage your family's
+              An interactive platform to view and manage your family
               relationships.
             </h2>
           </div>

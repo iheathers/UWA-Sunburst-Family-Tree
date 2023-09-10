@@ -8,7 +8,7 @@ export const signUpUser = async (req, res, next) => {
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
-        const validationErrObj = new Error("Validation Error"); // why not change to errObj?
+        const validationErrObj = new Error("Validation Error");
         validationErrObj.statuscode = 422;
 
         return next(validationErrObj);

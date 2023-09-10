@@ -1,8 +1,8 @@
-// MyComponent.js
+// TEMPLATE FOR COMPONENT
 
 import React from "react";
 
-const MyComponent = (props) => {
+const ComponentName = (props) => {
   // You can access props here
 
   // Define any component-specific state using the useState hook if needed
@@ -23,4 +23,4 @@ const MyComponent = (props) => {
   );
 };
 
-export default MyComponent;
+export default ComponentName;

@@ -5,8 +5,6 @@ import { validationResult } from "express-validator";
 import User from "../models/User.model.js";
 
 export const signUpUser = async (req, res, next) => {
-    console.log("Signing Up");
-
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
@@ -28,8 +26,9 @@ export const signUpUser = async (req, res, next) => {
                 message: "User exists",
             });
         }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser = new User({
             email: email,
@@ -77,17 +76,36 @@ export const loginUser = async (req, res, next) => {
 };
 
 export const listUsers = async (req, res, next) => {
-    // check if any users
-    // if no users, return error
-    // return list
+    /*
+    Fetch users from database
+        User.find()
+    If users found:
+        Return successful response
+    Else:
+        Return response indicating no users found
+    Catch errors
+    */
 }
 
 export const changeUserPermissions = async (req, res, next) => {
-
+    /*
+    Get userId and permission from request
+    Find user - findById()
+        If user not found, return response indicating cannot find user
+    Update user permission - save()
+    If users permissions changed successful:
+        Return successful response
+    Else:
+        Return response indicating permission change failed
+    Catch errors
+    */
 };
 
 export const deleteUser = async (req, res, next) => {
-
+    /*
+    Find user and delete - findByIdAndDelete()
+    If user not found, return response indicating cannot find user
+    Return successful response
+    Catch errors
+    */
 };
-
-// Named imports vs default imports 

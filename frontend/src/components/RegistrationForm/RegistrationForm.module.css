@@ -1,5 +1,5 @@
 .registration {
-  background-color: #eeeeee;
+  background-color: #EEEEEE;
   height: 100vh;
 }
 
@@ -15,11 +15,11 @@
   width: 100%;
   max-width: 1200px;
   height: 800px;
-  border: #eeeeee solid 1px;
+  border: #EEEEEE solid 1px;
 }
 
 .leftside {
-  background-color: #2f5d62;
+  background-color: #2F5D62;
   flex: 2;
   color: white;
   padding: 20px;
@@ -62,7 +62,7 @@
 }
 
 .registrationlabel {
-  color: #3c6255;
+  color: #3C6255;
   font-size: 40px;
   font-weight: 600;
   text-align: center;
@@ -72,24 +72,26 @@
 }
 
 .label {
-  color: #7f7e83;
+  color: #7F7E83;
   margin-bottom: 5px;
 }
+
 
 .registrationinput {
   width: 100%;
   border-radius: 10px;
-  border: 1px solid #f4f4f4;
-  background-color: #f4f4f4;
+  border: 1px solid #F4F4F4;
+  background-color: #F4F4F4;
   padding: 10px;
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: 600;
-  color: #7f7e83;
+  color: #7F7E83;
 }
 
+
 .btnregistration {
-  background-color: #eb455f;
+  background-color: #EB455F;
   border-color: #ffffff;
   color: #ffffff;
   font-size: 18px;
@@ -110,15 +112,15 @@
 .btnregistration:hover {
   background-color: #ffffff;
   border-color: rgb(242, 200, 199);
-  color: #eb455f;
+  color: #EB455F;
   transition: 0.5s;
 }
 
 .loginlink {
   display: inline-block;
   padding: 0px 0px;
-  background-color: #fff;
-  color: #eb455f;
+  background-color: #fff; 
+  color: #EB455F; 
   text-decoration: none;
   border-radius: 5px;
   font-weight: bold;
@@ -142,5 +144,5 @@
 .errortxt {
   font-size: 16px;
   margin-right: 10px;
-  color: #eb455f;
+  color: #EB455F; 
 }

@@ -20,13 +20,28 @@
     margin: 10px;
 }
 
+.ionbutton {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #EEEEEE;
+    border: #878370 solid 1px;
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.ionbutton:hover {
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+
 .exportbutton,
 .logoutbutton,
 .editbutton {
     padding: 6px 35px;
     border-radius: 6px;
     border: none;
-
 }
 
 .exportbutton {
@@ -152,19 +167,19 @@
     font-weight: bold;
     margin: 0;
     margin-right: 10px;
-    color: rgb(97,97,118);
+    color: rgb(97, 97, 118);
     padding: 0;
 }
 
 .date {
-    color: rgb(136,136,157);
+    color: rgb(136, 136, 157);
 }
 
 .commentbox {
     display: flex;
     flex-direction: column;
     max-width: 1000px;
-    background-color: rgb(244,244,250);
+    background-color: rgb(244, 244, 250);
     padding: 20px;
     border: #EEEEEE solid 1px;
 }
@@ -201,4 +216,61 @@
 .closeIcon {
     font-size: 40px;
     line-height: 1;
+}
+
+
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-height: 80vh; 
+    overflow-y: auto; 
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tab {
+    flex: 1;
+    padding: 15px 0;
+    border: none;
+    border-bottom: 1px solid transparent;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.tab:first-child {
+    border-top-left-radius: 10px;
+}
+
+.tab:last-child {
+    border-top-right-radius: 10px; 
+}
+
+.tab.active {
+    background-color: #5E8B7E;
+    color: #ffffff;
+}
+
+.comment {
+    display: flex;
+    justify-content: space-between;
+    border-top: #000 solid 1px;
+    padding: 10px;
+}
+
+.comment p {
+    margin: 10px 0;
+    font-size: 12px;
 }

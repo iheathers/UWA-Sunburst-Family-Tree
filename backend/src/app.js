@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 import familyTreeRouter from "./routes/FamilyTree.route.js";
 import familyMemberRouter from "./routes/FamilyMember.route.js";
+import userRouter from "./routes/User.route.js";
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use("/api/family-member", familyMemberRouter);
 
 app.use("/api/family-tree", familyTreeRouter);
+
+app.use("/api/user", userRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)

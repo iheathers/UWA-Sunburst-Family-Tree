@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "anychart-react": "^1.4.1",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",

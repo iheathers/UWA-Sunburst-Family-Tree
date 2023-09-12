@@ -1,8 +1,7 @@
 "use client";
 
 // External Libraries
-import React from 'react';
-import { useState } from 'react'; 
+import React, { Component, useState } from 'react';
 import Link from 'next/link';
 
 // Internal Modules (if applicable)

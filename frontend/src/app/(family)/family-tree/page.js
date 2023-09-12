@@ -6,7 +6,9 @@
 // import SunburstChartContextMenu from "@/components/SunburstChart/SunburstChartContextMenu";
 
 // import SunburstChartContextMenuHook from "@/components/SunburstChart/SunburstChartHook";
-import SunburstUnRegister from "@/components/SunburstChart/SunburstUnRegister";
+// import SunburstUnRegister from "@/components/SunburstChart/SunburstUnRegister";
+
+import SunburstChartContextDynamic from "@/components/SunburstChart/SunburstChartContextDynamic";
 
 const data = [
   {
@@ -58,7 +60,7 @@ const data = [
 
 const FamilyTreePage = () => {
   // return <SunburstChartTest1 data={data} />;
-  return <SunburstUnRegister data={data} />;
+  return <SunburstChartContextDynamic data={data} />;
 };
 
 export default FamilyTreePage;

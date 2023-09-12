@@ -1,59 +1,66 @@
 "use client"
 
-import React, { useState } from 'react';
+// External Libraries
+import React from 'react';
+import { useState } from 'react'; 
 import Link from 'next/link';
-import styles from "./RegistrationForm.module.css";
-import Head from 'next/head';
 
-function RegistrationForm() {
+// Internal Modules
+import styles from './RegistrationForm.module.css';
 
+const RegistrationForm = () => {
   return (
-
     <div className={styles.registration}>
-      <div className={styles.centercontainer}>
+      <div className={styles.centerContainer}>
         <div className={styles.card}>
-          <div className={styles.leftside}>
-            <h1 className={styles.h1label}>Sunburst Family Tree</h1>
-            <h2 className={styles.h2label}>An interactive platform to view and manage your family's relationships.</h2>
+          <div className={styles.leftSide}>
+            <h1 className={styles.h1Label}>Sunburst Family Tree</h1>
+            <h2 className={styles.h2Label}>
+              An interactive platform to view and manage your family&apos;s relationships.
+            </h2>
           </div>
-          <div className={styles.rightside}>
-
-            <h1 className={styles.registrationlabel}>REGISTRATION</h1>
+          <div className={styles.rightSide}>
+            <h1 className={styles.registrationLabel}>REGISTRATION</h1>
             <form>
               <div className={styles.inputContainer}>
-
-                <label className={styles.label}>Email</label><br />
-                <input type="text" id="Email" className={styles.registrationinput} />
+                <label className={styles.label}>Email</label>
+                <br />
+                <input type="text" id="email" className={styles.registrationInput} />
               </div>
               <div className={styles.inputContainer}>
-                <label className={styles.label}>Password</label><br />
-                <input type="password" id="Password" className={styles.registrationinput} />
+                <label className={styles.label}>Password</label>
+                <br />
+                <input type="password" id="password" className={styles.registrationInput} />
               </div>
               <div className={styles.inputContainer}>
-                <label className={styles.label}>ConfirmPassword</label><br />
-                <input type="password" id="ConfirmPassword" className={styles.registrationinput} />
+                <label className={styles.label}>ConfirmPassword</label>
+                <br />
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  className={styles.registrationInput}
+                />
               </div>
-
-              <div className={styles.logincontainer}>
-                <span className={styles.errortxt}>Passwords do not match</span>
+              <div className={styles.loginContainer}>
+                <span className={styles.errorText}>Passwords do not match</span>
               </div>
-
-              <div className={styles.parentcontainer}>
-                <button type="submit" className={styles.btnregistration}>register</button>
+              <div className={styles.parentContainer}>
+                <button type="submit" className={styles.btnRegistration}>
+                  Register
+                </button>
               </div>
-
-              <div className={styles.logincontainer}>
-                <span className={styles.logintext}>Already Have Account?</span>
-                <Link href="/login" className={styles.loginlink}>Login</Link>
+              <div className={styles.loginContainer}>
+                <span className={styles.loginText}>Already Have Account?</span>
+                <Link href="/login" className={styles.loginLink}>
+                  Login
+                </Link>
               </div>
-
             </form>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-
-export default RegistrationForm; 
+export default RegistrationForm;

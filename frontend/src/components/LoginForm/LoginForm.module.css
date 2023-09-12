@@ -3,7 +3,7 @@
   height: 100vh;
 }
 
-.centercontainer {
+.centerContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,10 +18,7 @@
   border: #EEEEEE solid 1px;
 }
 
-
-
-
-.leftside {
+.leftSide {
   background-color: #2F5D62;
   flex: 2;
   color: white;
@@ -33,7 +30,7 @@
   border-radius: 20px 0 0 20px;
 }
 
-.rightside {
+.rightSide {
   flex: 1;
   background-color: #ffffff;
   padding: 20px;
@@ -44,7 +41,7 @@
   border-radius: 0 20px 20px 0;
 }
 
-.h1label {
+.h1Label {
   color: #ffffff;
   font-size: 60px;
   font-weight: 600;
@@ -54,7 +51,7 @@
   padding: 0;
 }
 
-.h2label {
+.h2Label {
   color: #ffffff;
   font-size: 30px;
   font-weight: 600;
@@ -64,7 +61,7 @@
   padding: 0;
 }
 
-.loginlabel {
+.loginLabel {
   color: #3C6255;
   font-size: 40px;
   font-weight: 600;
@@ -79,7 +76,7 @@
   margin-bottom: 5px;
 }
 
-.logininput{
+.loginInput {
   width: 100%;
   border-radius: 10px;
   border: 1px solid #F4F4F4;
@@ -91,8 +88,7 @@
   color: #7F7E83;
 }
 
-
-.btnlogin {
+.btnLogin {
   background-color: #EB455F;
   border-color: #ffffff;
   color: #ffffff;
@@ -107,44 +103,43 @@
   border-radius: 10px;
   min-width: 100px;
   margin: 30px;
-
   width: calc(157px + 10px * var(--text-length, 0));
 }
 
-.btnlogin:hover {
+.btnLogin:hover {
   background-color: #ffffff;
   border-color: rgb(242, 200, 199);
   color: #EB455F;
   transition: 0.5s;
 }
 
-.registrationlink {
+.registrationLink {
   display: inline-block;
   padding: 0px 0px;
-  background-color: #fff; 
-  color: #EB455F; 
+  background-color: #fff;
+  color: #EB455F;
   text-decoration: none;
   border-radius: 5px;
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-.registrationlink:hover {
+.registrationLink:hover {
   background-color: #fff;
 }
 
-.registrationtext {
+.registrationText {
   font-size: 16px;
   margin-right: 10px;
 }
 
-.logincontainer {
+.loginContainer {
   margin-top: 0px;
   text-align: center;
 }
 
-.errortxt {
+.errorText {
   font-size: 16px;
   margin-right: 10px;
-  color: #EB455F; 
+  color: #EB455F;
 }

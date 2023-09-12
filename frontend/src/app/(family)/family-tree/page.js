@@ -1,8 +1,12 @@
 "use client";
 
 // import SunburstChartHookTest from "@/components/SunburstChart/SunburstChartHookTest";
-import SunburstChartTest1 from "@/components/SunburstChart/SunburstChartTest1";
+// import SunburstChartTest1 from "@/components/SunburstChart/SunburstChartTest1";
 // import SunburstConfigChart from "@/components/SunburstChart/SunburstChartConfig";
+// import SunburstChartContextMenu from "@/components/SunburstChart/SunburstChartContextMenu";
+
+// import SunburstChartContextMenuHook from "@/components/SunburstChart/SunburstChartHook";
+import SunburstUnRegister from "@/components/SunburstChart/SunburstUnRegister";
 
 const data = [
   {
@@ -53,7 +57,8 @@ const data = [
 ];
 
 const FamilyTreePage = () => {
-  return <SunburstChartTest1 data={data} />;
+  // return <SunburstChartTest1 data={data} />;
+  return <SunburstUnRegister data={data} />;
 };
 
 export default FamilyTreePage;

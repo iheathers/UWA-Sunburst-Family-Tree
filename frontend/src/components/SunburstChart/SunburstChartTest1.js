@@ -126,38 +126,38 @@ class SunburstChartTest1 extends Component {
     //   return items;
     // });
 
-    chart.contextMenu().itemsProvider(function (e) {
-      // Get the selected node's data
-      //   const selectedData = e.item.getData();
+    // chart.contextMenu().itemsProvider(function (e) {
+    //   // Get the selected node's data
+    //   //   const selectedData = e.item.getData();
 
-      console.log({ e });
+    //   console.log({ e });
 
-      const items = {
-        "menu-item-1": {
-          text: "Add chilD",
-          action: function (e) {
-            // console.log({ e });
-            console.log("Add child");
-            // Print the ID of the selected node
-            // alert("Selected Node ID: " + selectedData.id);
-            // alert("Selected Node ID: ");
-          },
-        },
-        "menu-item-2": {
-          text: "Remove Child",
-          action: function () {
-            chart.saveAsPng();
-          },
-        },
-        "menu-item-3": {
-          text: "Go to my page",
-          href: "http://docs.anychart.com",
-          target: "_blank",
-        },
-      };
+    //   const items = {
+    //     "menu-item-1": {
+    //       text: "Add chilD",
+    //       action: function (e) {
+    //         // console.log({ e });
+    //         console.log("Add child");
+    //         // Print the ID of the selected node
+    //         // alert("Selected Node ID: " + selectedData.id);
+    //         // alert("Selected Node ID: ");
+    //       },
+    //     },
+    //     "menu-item-2": {
+    //       text: "Remove Child",
+    //       action: function () {
+    //         chart.saveAsPng();
+    //       },
+    //     },
+    //     "menu-item-3": {
+    //       text: "Go to my page",
+    //       href: "http://docs.anychart.com",
+    //       target: "_blank",
+    //     },
+    //   };
 
-      return items;
-    });
+    //   return items;
+    // });
 
     chart.container("container");
     chart.draw();

@@ -3,7 +3,7 @@
   height: 100vh;
 }
 
-.centercontainer {
+.centerContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +18,7 @@
   border: #eeeeee solid 1px;
 }
 
-.leftside {
+.leftSide {
   background-color: #2f5d62;
   flex: 2;
   color: white;
@@ -30,7 +30,7 @@
   border-radius: 20px 0 0 20px;
 }
 
-.rightside {
+.rightSide {
   flex: 1;
   background-color: #ffffff;
   padding: 20px;
@@ -41,7 +41,7 @@
   border-radius: 0 20px 20px 0;
 }
 
-.h1label {
+.h1Label {
   color: #ffffff;
   font-size: 60px;
   font-weight: 600;
@@ -51,7 +51,7 @@
   padding: 0;
 }
 
-.h2label {
+.h2Label {
   color: #ffffff;
   font-size: 30px;
   font-weight: 600;
@@ -61,7 +61,7 @@
   padding: 0;
 }
 
-.registrationlabel {
+.registrationLabel {
   color: #3c6255;
   font-size: 40px;
   font-weight: 600;
@@ -76,7 +76,7 @@
   margin-bottom: 5px;
 }
 
-.registrationinput {
+.registrationInput {
   width: 100%;
   border-radius: 10px;
   border: 1px solid #f4f4f4;
@@ -88,7 +88,7 @@
   color: #7f7e83;
 }
 
-.btnregistration {
+.btnRegistration {
   background-color: #eb455f;
   border-color: #ffffff;
   color: #ffffff;
@@ -103,18 +103,17 @@
   border-radius: 10px;
   min-width: 100px;
   margin: 30px;
-
   width: calc(157px + 10px * var(--text-length, 0));
 }
 
-.btnregistration:hover {
+.btnRegistration:hover {
   background-color: #ffffff;
   border-color: rgb(242, 200, 199);
   color: #eb455f;
   transition: 0.5s;
 }
 
-.loginlink {
+.loginLink {
   display: inline-block;
   padding: 0px 0px;
   background-color: #fff;
@@ -125,21 +124,21 @@
   transition: background-color 0.3s ease;
 }
 
-.loginlink:hover {
+.loginLink:hover {
   background-color: #fff;
 }
 
-.logintext {
+.loginText {
   font-size: 16px;
   margin-right: 10px;
 }
 
-.logincontainer {
+.loginContainer {
   margin-top: 0px;
   text-align: center;
 }
 
-.errortxt {
+.errorText {
   font-size: 16px;
   margin-right: 10px;
   color: #eb455f;

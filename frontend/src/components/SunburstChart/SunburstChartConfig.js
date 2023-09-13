@@ -12,55 +12,57 @@ import "./SunburstChart.css";
 
 // import data from "./data";
 
-let data = [
-  {
-    name: "Company A",
-    children: [
-      {
-        name: "Technical",
-        children: [
-          { name: "Team Leaders" },
-          { name: "Architects" },
-          { name: "Developers" },
-          { name: "Testers" },
-        ],
-      },
-      {
-        name: "Sales",
-        children: [
-          {
-            name: "Analysts",
-            children: [
-              { name: "Team Leaders" },
-              { name: "Architects" },
-              { name: "Developers" },
-              { name: "Testers" },
-            ],
-          },
-          { name: "Executives" },
-        ],
-      },
-      { name: "HR" },
-      {
-        name: "Management",
-        children: [
-          { name: "Team Leaders" },
-          { name: "Architects" },
-          { name: "Developers" },
-          {
-            name: "Testers",
-            children: [
-              { name: "Team Leaders" },
-              { name: "Architects" },
-              { name: "Developers" },
-              { name: "Testers" },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+import data from "@/data/familyTree/deepNestedFamilyTree.json";
+
+// let data = [
+//   {
+//     name: "Company A",
+//     children: [
+//       {
+//         name: "Technical",
+//         children: [
+//           { name: "Team Leaders" },
+//           { name: "Architects" },
+//           { name: "Developers" },
+//           { name: "Testers" },
+//         ],
+//       },
+//       {
+//         name: "Sales",
+//         children: [
+//           {
+//             name: "Analysts",
+//             children: [
+//               { name: "Team Leaders" },
+//               { name: "Architects" },
+//               { name: "Developers" },
+//               { name: "Testers" },
+//             ],
+//           },
+//           { name: "Executives" },
+//         ],
+//       },
+//       { name: "HR" },
+//       {
+//         name: "Management",
+//         children: [
+//           { name: "Team Leaders" },
+//           { name: "Architects" },
+//           { name: "Developers" },
+//           {
+//             name: "Testers",
+//             children: [
+//               { name: "Team Leaders" },
+//               { name: "Architects" },
+//               { name: "Developers" },
+//               { name: "Testers" },
+//             ],
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
 
 const configObj = {
   data: data,
@@ -68,7 +70,7 @@ const configObj = {
   width: "100%",
   height: "100%",
   dataMode: "as-tree",
-  calculationMode: "ordinal-from-root",
+  calculationMode: "ordinal-from-leaves",
   contextMenu: {
     itemsProvider: function () {
       var items = {
@@ -154,7 +156,7 @@ class SunburstConfigChart extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="sunburstChartContainer">
         <AnyChart {...configObj} />
       </div>
     );

@@ -5,3 +5,8 @@
 .anychart-credits {
   display: none;
 }
+
+.sunburstChartContainer {
+  width: 100vw;
+  height: 100vh;
+}

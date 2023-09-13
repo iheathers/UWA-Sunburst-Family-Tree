@@ -75,50 +75,304 @@ import {
 // import SunburstChart
 // import SunburstChart from "./SunburstChart";
 
+// const data = [
+//   {
+//     name: "Company A",
+//     children: [
+//       {
+//         name: "Technical",
+//         children: [
+//           { name: "Team Leaders" },
+//           { name: "Architects" },
+//           { name: "Developers" },
+//           {
+//             name: "Testers",
+//             children: [{ name: "Automation" }, { name: "Manual" }],
+//           },
+//         ],
+//       },
+//       {
+//         name: "Sales",
+//         children: [
+//           { name: "Analysts" },
+//           {
+//             name: "Executives",
+//             children: [
+//               {
+//                 name: "Technical",
+//                 children: [
+//                   { name: "Team Leaders" },
+//                   { name: "Architects" },
+//                   { name: "Developers" },
+//                   { name: "Testers" },
+//                 ],
+//               },
+//               {
+//                 name: "Sales",
+//                 children: [{ name: "Analysts" }, { name: "Executives" }],
+//               },
+//               { name: "HR" },
+//               { name: "Management" },
+//             ],
+//           },
+//         ],
+//       },
+//       { name: "HR" },
+//       { name: "Management" },
+//     ],
+//   },
+// ];
+
+// const data = [
+//   {
+//     name: "Root",
+//     children: [
+//       {
+//         name: "Level 1",
+//         children: [
+//           {
+//             name: "Level 2",
+//             children: [
+//               {
+//                 name: "Level 3",
+//                 children: [
+//                   {
+//                     name: "Level 4",
+//                     children: [
+//                       {
+//                         name: "Level 5",
+//                         children: [
+//                           {
+//                             name: "Level 6",
+//                             children: [
+//                               {
+//                                 name: "Level 7",
+//                                 children: [
+//                                   {
+//                                     name: "Level 8",
+//                                     children: [
+//                                       {
+//                                         name: "Level 9",
+//                                         children: [
+//                                           {
+//                                             name: "Level 10",
+//                                             children: [
+//                                               {
+//                                                 name: "Level 11",
+//                                                 children: [
+//                                                   {
+//                                                     name: "Level 12",
+//                                                     children: [
+//                                                       {
+//                                                         name: "Level 13",
+//                                                         children: [
+//                                                           {
+//                                                             name: "Level 14",
+//                                                             children: [
+//                                                               {
+//                                                                 name: "Level 15",
+//                                                                 children: [
+//                                                                   // Level 15 nodes here
+//                                                                 ],
+//                                                               },
+//                                                             ],
+//                                                           },
+//                                                         ],
+//                                                       },
+//                                                     ],
+//                                                   },
+//                                                 ],
+//                                               },
+//                                             ],
+//                                           },
+//                                         ],
+//                                       },
+//                                     ],
+//                                   },
+//                                 ],
+//                               },
+//                             ],
+//                           },
+//                         ],
+//                       },
+//                     ],
+//                   },
+//                 ],
+//               },
+//             ],
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
+
 const data = [
   {
-    name: "Company A",
+    name: "Node 1",
     children: [
       {
-        name: "Technical",
+        name: "Node 2",
         children: [
-          { name: "Team Leaders" },
-          { name: "Architects" },
-          { name: "Developers" },
           {
-            name: "Testers",
-            children: [{ name: "Automation" }, { name: "Manual" }],
-          },
-        ],
-      },
-      {
-        name: "Sales",
-        children: [
-          { name: "Analysts" },
-          {
-            name: "Executives",
+            name: "Node 3",
             children: [
               {
-                name: "Technical",
+                name: "Node 4",
                 children: [
-                  { name: "Team Leaders" },
-                  { name: "Architects" },
-                  { name: "Developers" },
-                  { name: "Testers" },
+                  {
+                    name: "Node 5",
+                    children: [],
+                  },
+                  {
+                    name: "Node 6",
+                    children: [
+                      {
+                        name: "Node 7",
+                        children: [],
+                      },
+                      {
+                        name: "Node 8",
+                        children: [
+                          {
+                            name: "Node 10",
+                            children: [
+                              {
+                                name: "Node 11",
+                                children: [
+                                  {
+                                    name: "Node 12",
+                                    children: [
+                                      {
+                                        name: "Node 10",
+                                        children: [
+                                          {
+                                            name: "Node 11",
+                                            children: [
+                                              {
+                                                name: "Node 12",
+                                                children: [
+                                                  {
+                                                    name: "Node 10",
+                                                    children: [
+                                                      {
+                                                        name: "Node 11",
+                                                        children: [
+                                                          {
+                                                            name: "Node 12",
+                                                            children: [
+                                                              {
+                                                                name: "Node 10",
+                                                                children: [
+                                                                  {
+                                                                    name: "Node 11",
+                                                                    children: [
+                                                                      {
+                                                                        name: "Node 12",
+                                                                        children:
+                                                                          [
+                                                                            {
+                                                                              name: "Node 10",
+                                                                              children:
+                                                                                [
+                                                                                  {
+                                                                                    name: "Node 11",
+                                                                                    children:
+                                                                                      [
+                                                                                        {
+                                                                                          name: "Node 12",
+                                                                                          children:
+                                                                                            [
+                                                                                              {
+                                                                                                name: "Node 10",
+                                                                                                children:
+                                                                                                  [
+                                                                                                    {
+                                                                                                      name: "Node 11",
+                                                                                                      children:
+                                                                                                        [
+                                                                                                          {
+                                                                                                            name: "Node 12",
+                                                                                                            children:
+                                                                                                              [],
+                                                                                                          },
+                                                                                                        ],
+                                                                                                    },
+                                                                                                  ],
+                                                                                              },
+                                                                                            ],
+                                                                                        },
+                                                                                      ],
+                                                                                  },
+                                                                                ],
+                                                                            },
+                                                                          ],
+                                                                      },
+                                                                    ],
+                                                                  },
+                                                                ],
+                                                              },
+                                                            ],
+                                                          },
+                                                        ],
+                                                      },
+                                                    ],
+                                                  },
+                                                ],
+                                              },
+                                            ],
+                                          },
+                                        ],
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
                 ],
               },
+            ],
+          },
+          {
+            name: "Node 9",
+            children: [
               {
-                name: "Sales",
-                children: [{ name: "Analysts" }, { name: "Executives" }],
+                name: "Node 10",
+                children: [
+                  {
+                    name: "Node 11",
+                    children: [
+                      {
+                        name: "Node 12",
+                        children: [],
+                      },
+                    ],
+                  },
+                ],
               },
-              { name: "HR" },
-              { name: "Management" },
             ],
           },
         ],
       },
-      { name: "HR" },
-      { name: "Management" },
+      {
+        name: "Node 10",
+        children: [
+          {
+            name: "Node 11",
+            children: [
+              {
+                name: "Node 12",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];

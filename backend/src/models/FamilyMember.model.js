@@ -16,6 +16,21 @@ const familyMemberSchema = new mongoose.Schema(
         ref: "FamilyMember",
       },
     ],
+    birthDate: {
+        type: Date,
+    },
+    deathDate: {
+        type: Date,
+    },
+    location: {
+        type: String,
+    },
+    occupation: {
+        type: String,
+    },
+    about: {
+        type: String,
+    },
   },
   {
     // Define schema options

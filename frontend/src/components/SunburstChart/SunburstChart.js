@@ -99,14 +99,7 @@ const SunburstChart = ({ data }) => {
     const stage = anychart.graphics.create("container");
     const newChart = anychart.sunburst(chartData, "as-tree");
 
-    // newChart.labels().adjustFontSize(false);
-
-    // // chart.labels().adjustFontSize(false);
-    // newChart.level().labels().fontSize(10);
-
     newChart.interactivity().selectionMode("single-select");
-
-    newChart.tooltip().positionMode("point");
 
     newChart.listen("pointClick", (event) => {
       const pointName = event?.point?.get("name");

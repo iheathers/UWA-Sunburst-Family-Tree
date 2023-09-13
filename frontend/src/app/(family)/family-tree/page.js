@@ -3,7 +3,7 @@
 import React from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-import data from "@/data/familyTree/deepNestedFamilyTree.json";
+import data from "@/data/familyTree/farsiSimpleFamilyTree.json";
 
 import SunburstChart from "@/components/SunburstChart/SunburstChart";
 import ZoomController from "@/components/ZoomController/ZoomController";

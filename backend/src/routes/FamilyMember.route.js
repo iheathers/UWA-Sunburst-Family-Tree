@@ -1,4 +1,5 @@
 import express from "express";
+import { body } from "express-validator";
 
 import {
   addFamilyMember,
@@ -9,6 +10,12 @@ const familyMemberRouter = express.Router();
 
 familyMemberRouter.get("/:id", getFamilyMember);
 
-familyMemberRouter.post("/", addFamilyMember);
+familyMemberRouter.post(
+  "/",
+  [
+    body("birthDate").isDate().optional(),
+    body("deathDate").isDate().optional(),
+  ],
+  addFamilyMember);
 
 export default familyMemberRouter;

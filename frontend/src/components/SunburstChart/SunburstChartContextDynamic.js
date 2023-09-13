@@ -62,6 +62,8 @@ function SunburstChartContextDynamic({ data }) {
     newChart.interactivity().selectionMode("single-select");
     newChart.tooltip(false);
 
+    newChart.title("Nothing selected");
+
     newChart.listen("pointClick", (event) => {
       const pointName = event?.point?.get("name");
       if (pointName) {
@@ -74,11 +76,13 @@ function SunburstChartContextDynamic({ data }) {
         setSelectedNode(null); // Clear selected node
       }
     });
-
     newChart.container("container");
     newChart.draw();
-
     setChart(newChart);
+
+    // const zoomController = anychart.ui.zoom();
+    // zoomController.target(newChart);
+    // zoomController.render();
   };
 
   return <div id="container" style={{ width: "100vw", height: "100vh" }}></div>;

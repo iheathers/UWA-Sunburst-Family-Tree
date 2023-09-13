@@ -1,4 +1,5 @@
 import { isValidObjectId } from "mongoose";
+import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
 
 export const getFamilyMember = async (req, res, next) => {
@@ -28,13 +29,30 @@ export const getFamilyMember = async (req, res, next) => {
 };
 
 export const addFamilyMember = async (req, res, next) => {
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+      const errorsArray = validationErrors.array();
+      const errObj = {
+          message: "Validation Error",
+          error: errorsArray,
+      };
+
+      return res.status(422).json(errObj);
+  };
+
   try {
-    const { name, parentId } = req.body;
+    const { name, parentId, birthDate, deathDate, location, occupation, about } = req.body;
     const parent = parentId ? await FamilyMember.findById(parentId) : null;
 
     const newMember = new FamilyMember({
       name,
       parent,
+      birthDate, 
+      deathDate, 
+      location, 
+      occupation, 
+      about
     });
 
     await newMember.save();
@@ -49,13 +67,34 @@ export const addFamilyMember = async (req, res, next) => {
       name: newMember.name,
       parentId: parentId,
       children: newMember.children,
+      birthDate: birthDate,
+      deathDate: deathDate,
+      location: location,
+      occupation: occupation,
+      about: about,
     };
 
-    res.json(newMemberJsonRes);
+    res.status(201).json(newMemberJsonRes);
   } catch (error) {
     // next(error)
     res
       .status(500)
       .json({ error: "An error occurred while creating a family member." });
+  }
+};
+
+export const deleteFamilyMember = async (req, res, next) => {
+
+};
+
+export const editFamilyMemberDetails = async (req, res, next) => {
+  try {
+    // find family member
+    // if does not exist, error
+    // get request
+    // save in database
+
+  } catch (error) {
+    res.status(500).json({error: "An error occurred while editing a family member's details."})
   }
 };

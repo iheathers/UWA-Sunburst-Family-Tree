@@ -207,172 +207,220 @@ import {
 //   },
 // ];
 
+// const data = [
+//   {
+//     name: "Node 1",
+//     children: [
+//       {
+//         name: "Node 2",
+//         children: [
+//           {
+//             name: "Node 3",
+//             children: [
+//               {
+//                 name: "Node 4",
+//                 children: [
+//                   {
+//                     name: "Node 5",
+//                     children: [],
+//                   },
+//                   {
+//                     name: "Node 6",
+//                     children: [
+//                       {
+//                         name: "Node 7",
+//                         children: [],
+//                       },
+//                       {
+//                         name: "Node 8",
+//                         children: [
+//                           {
+//                             name: "Node 10",
+//                             children: [
+//                               {
+//                                 name: "Node 11",
+//                                 children: [
+//                                   {
+//                                     name: "Node 12",
+//                                     children: [
+//                                       {
+//                                         name: "Node 10",
+//                                         children: [
+//                                           {
+//                                             name: "Node 11",
+//                                             children: [
+//                                               {
+//                                                 name: "Node 12",
+//                                                 children: [
+//                                                   {
+//                                                     name: "Node 10",
+//                                                     children: [
+//                                                       {
+//                                                         name: "Node 11",
+//                                                         children: [
+//                                                           {
+//                                                             name: "Node 12",
+//                                                             children: [
+//                                                               {
+//                                                                 name: "Node 10",
+//                                                                 children: [
+//                                                                   {
+//                                                                     name: "Node 11",
+//                                                                     children: [
+//                                                                       {
+//                                                                         name: "Node 12",
+//                                                                         children:
+//                                                                           [
+//                                                                             {
+//                                                                               name: "Node 10",
+//                                                                               children:
+//                                                                                 [
+//                                                                                   {
+//                                                                                     name: "Node 11",
+//                                                                                     children:
+//                                                                                       [
+//                                                                                         {
+//                                                                                           name: "Node 12",
+//                                                                                           children:
+//                                                                                             [
+//                                                                                               {
+//                                                                                                 name: "Node 10",
+//                                                                                                 children:
+//                                                                                                   [
+//                                                                                                     {
+//                                                                                                       name: "Node 11",
+//                                                                                                       children:
+//                                                                                                         [
+//                                                                                                           {
+//                                                                                                             name: "Node 12",
+//                                                                                                             children:
+//                                                                                                               [],
+//                                                                                                           },
+//                                                                                                         ],
+//                                                                                                     },
+//                                                                                                   ],
+//                                                                                               },
+//                                                                                             ],
+//                                                                                         },
+//                                                                                       ],
+//                                                                                   },
+//                                                                                 ],
+//                                                                             },
+//                                                                           ],
+//                                                                       },
+//                                                                     ],
+//                                                                   },
+//                                                                 ],
+//                                                               },
+//                                                             ],
+//                                                           },
+//                                                         ],
+//                                                       },
+//                                                     ],
+//                                                   },
+//                                                 ],
+//                                               },
+//                                             ],
+//                                           },
+//                                         ],
+//                                       },
+//                                     ],
+//                                   },
+//                                 ],
+//                               },
+//                             ],
+//                           },
+//                         ],
+//                       },
+//                     ],
+//                   },
+//                 ],
+//               },
+//             ],
+//           },
+//           {
+//             name: "Node 9",
+//             children: [
+//               {
+//                 name: "Node 10",
+//                 children: [
+//                   {
+//                     name: "Node 11",
+//                     children: [
+//                       {
+//                         name: "Node 12",
+//                         children: [],
+//                       },
+//                     ],
+//                   },
+//                 ],
+//               },
+//             ],
+//           },
+//         ],
+//       },
+//       {
+//         name: "Node 10",
+//         children: [
+//           {
+//             name: "Node 11",
+//             children: [
+//               {
+//                 name: "Node 12",
+//                 children: [],
+//               },
+//             ],
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
+
 const data = [
   {
-    name: "Node 1",
+    name: "شرکت آ",
     children: [
       {
-        name: "Node 2",
+        name: "تکنیکال",
         children: [
+          { name: "رهبران تیم" },
+          { name: "معماران" },
+          { name: "توسعه‌دهندگان" },
           {
-            name: "Node 3",
-            children: [
-              {
-                name: "Node 4",
-                children: [
-                  {
-                    name: "Node 5",
-                    children: [],
-                  },
-                  {
-                    name: "Node 6",
-                    children: [
-                      {
-                        name: "Node 7",
-                        children: [],
-                      },
-                      {
-                        name: "Node 8",
-                        children: [
-                          {
-                            name: "Node 10",
-                            children: [
-                              {
-                                name: "Node 11",
-                                children: [
-                                  {
-                                    name: "Node 12",
-                                    children: [
-                                      {
-                                        name: "Node 10",
-                                        children: [
-                                          {
-                                            name: "Node 11",
-                                            children: [
-                                              {
-                                                name: "Node 12",
-                                                children: [
-                                                  {
-                                                    name: "Node 10",
-                                                    children: [
-                                                      {
-                                                        name: "Node 11",
-                                                        children: [
-                                                          {
-                                                            name: "Node 12",
-                                                            children: [
-                                                              {
-                                                                name: "Node 10",
-                                                                children: [
-                                                                  {
-                                                                    name: "Node 11",
-                                                                    children: [
-                                                                      {
-                                                                        name: "Node 12",
-                                                                        children:
-                                                                          [
-                                                                            {
-                                                                              name: "Node 10",
-                                                                              children:
-                                                                                [
-                                                                                  {
-                                                                                    name: "Node 11",
-                                                                                    children:
-                                                                                      [
-                                                                                        {
-                                                                                          name: "Node 12",
-                                                                                          children:
-                                                                                            [
-                                                                                              {
-                                                                                                name: "Node 10",
-                                                                                                children:
-                                                                                                  [
-                                                                                                    {
-                                                                                                      name: "Node 11",
-                                                                                                      children:
-                                                                                                        [
-                                                                                                          {
-                                                                                                            name: "Node 12",
-                                                                                                            children:
-                                                                                                              [],
-                                                                                                          },
-                                                                                                        ],
-                                                                                                    },
-                                                                                                  ],
-                                                                                              },
-                                                                                            ],
-                                                                                        },
-                                                                                      ],
-                                                                                  },
-                                                                                ],
-                                                                            },
-                                                                          ],
-                                                                      },
-                                                                    ],
-                                                                  },
-                                                                ],
-                                                              },
-                                                            ],
-                                                          },
-                                                        ],
-                                                      },
-                                                    ],
-                                                  },
-                                                ],
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            name: "Node 9",
-            children: [
-              {
-                name: "Node 10",
-                children: [
-                  {
-                    name: "Node 11",
-                    children: [
-                      {
-                        name: "Node 12",
-                        children: [],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
+            name: "تسترها",
+            children: [{ name: "اتوماسیونی" }, { name: "دستی" }],
           },
         ],
       },
       {
-        name: "Node 10",
+        name: "فروش",
         children: [
+          { name: "تحلیلگران" },
           {
-            name: "Node 11",
+            name: "مدیران اجرایی",
             children: [
               {
-                name: "Node 12",
-                children: [],
+                name: "تکنیکال",
+                children: [
+                  { name: "رهبران تیم" },
+                  { name: "معماران" },
+                  { name: "توسعه‌دهندگان" },
+                  { name: "تسترها" },
+                ],
               },
+              {
+                name: "فروش",
+                children: [{ name: "تحلیلگران" }, { name: "مدیران اجرایی" }],
+              },
+              { name: "منابع انسانی" },
+              { name: "مدیریت" },
             ],
           },
         ],
       },
+      { name: "منابع انسانی" },
+      { name: "مدیریت" },
     ],
   },
 ];

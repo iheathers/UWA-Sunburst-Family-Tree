@@ -29,23 +29,23 @@ function SunburstChartContextDynamic({ data }) {
     };
 
     if (chart) {
-      // chart.contextMenu().itemsProvider((e) => {
-      //   // Check if a valid node is selected
-      //   if (selectedNode) {
-      //     const items = {
-      //       "menu-item-1": {
-      //         text: "View Profile",
-      //         action: handleAction,
-      //       },
-      //       // Other menu items...
-      //     };
-      //     return items;
-      //   }
-      //   // else {
-      //   //   // Return an empty context menu if no valid node is selected
-      //   //   return {};
-      //   // }
-      // });
+      chart.contextMenu().itemsProvider((e) => {
+        // Check if a valid node is selected
+        if (selectedNode) {
+          const items = {
+            "menu-item-1": {
+              text: "View Profile",
+              action: handleAction,
+            },
+            // Other menu items...
+          };
+          return items;
+        }
+        // else {
+        //   // Return an empty context menu if no valid node is selected
+        //   return {};
+        // }
+      });
     }
 
     return () => {

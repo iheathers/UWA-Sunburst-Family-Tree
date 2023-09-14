@@ -18,6 +18,7 @@ const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
 const SunburstChart = ({ data }) => {
   const [name, setName] = useState("");
+  // const [children, setChildren] = useState([]); // Track children of selected node
   const [chart, setChart] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null); // Track selected node
 
@@ -36,6 +37,25 @@ const SunburstChart = ({ data }) => {
       }
     };
 
+    // TODO: CHECK IF CHILDREN IS EMPTY, THEN REMOVE NODE
+    // ONE APPROACH . TRY TO FIND ANOTHER EASY APPROACH AS WELL
+
+    const handleRemoveNode = () => {
+      const treeData = anychart.data.tree(data, "as-tree");
+
+      const dataItem = treeData.search("id", name);
+      console.log({ dataItem });
+
+      const children = dataItem.getChildren();
+
+      // console.log({ childs });
+      if (children.length === 0) {
+        return console.log("Remove Node");
+      }
+
+      console.log("Cannot Remove Node");
+    };
+
     if (chart) {
       chart.contextMenu().itemsFormatter(function (items) {
         delete items["full-screen-separator"];
@@ -51,7 +71,7 @@ const SunburstChart = ({ data }) => {
             index: index - 0.05,
           };
 
-          items["add-child"] = {
+          items["add-node"] = {
             text: "Add Child",
             action: () => {
               console.log("Add Child");
@@ -59,19 +79,17 @@ const SunburstChart = ({ data }) => {
             index: index - 0.04,
           };
 
-          items["edit-child"] = {
-            text: "Edit Child",
+          items["edit-node"] = {
+            text: "Edit Node",
             action: () => {
-              console.log("Edit Child");
+              console.log("Edit Member");
             },
             index: index - 0.03,
           };
 
-          items["remove-child"] = {
-            text: "Remove Child",
-            action: () => {
-              console.log("Remove Child");
-            },
+          items["remove-node"] = {
+            text: "Remove Node",
+            action: handleRemoveNode,
             index: index - 0.02,
           };
 
@@ -102,9 +120,22 @@ const SunburstChart = ({ data }) => {
     newChart.interactivity().selectionMode("single-select");
 
     newChart.listen("pointClick", (event) => {
-      const pointName = event?.point?.get("name");
+      // TODO: EXTRACT ID INSTEAD
+      const pointName = event?.point?.get("id");
+
+      console.log({ pointName });
+
+      // there is documention to search the treeData and find children if other methods does not work
+
+      // console.log(event?.point?.get);
+      // const pointChildren = event?.point?.get("children");
+
+      // console.log({ pointChildren });
+
+      // TODO: GET CHILDREN FOR SELECTED NODE TO CHECK WHETHER IT CAN BE REMOVED OR NOT
       if (pointName) {
         setName(pointName);
+        // setChildren(pointChildren);
         setSelectedNode(event.point); // Set selected node
       } else {
         setName("");

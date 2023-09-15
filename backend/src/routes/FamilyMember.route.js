@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import {
   addFamilyMember,
   getFamilyMember,
+  deleteFamilyMember,
 } from "../controllers/FamilyMember.controller.js";
 
 const familyMemberRouter = express.Router();
@@ -17,5 +18,7 @@ familyMemberRouter.post(
     body("deathDate").isDate().optional(),
   ],
   addFamilyMember);
+
+  familyMemberRouter.delete("/:id", deleteFamilyMember);
 
 export default familyMemberRouter;

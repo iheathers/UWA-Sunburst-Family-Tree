@@ -76,7 +76,6 @@ export const addFamilyMember = async (req, res, next) => {
 
     res.status(201).json(newMemberJsonRes);
   } catch (error) {
-    // next(error)
     res
       .status(500)
       .json({ error: "An error occurred while creating a family member." });
@@ -84,7 +83,17 @@ export const addFamilyMember = async (req, res, next) => {
 };
 
 export const deleteFamilyMember = async (req, res, next) => {
-
+  try {
+    if (!res.familyMember) {
+      return res.status(404).json({ error: "Family member not found." })
+    };
+    await res.familyMember.remove();
+    res.status
+  } catch (error) {
+    res
+      .status(500).
+      json({ error: "An error occurred while deleting a family member." });
+  }
 };
 
 export const editFamilyMemberDetails = async (req, res, next) => {
@@ -95,6 +104,8 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     // save in database
 
   } catch (error) {
-    res.status(500).json({error: "An error occurred while editing a family member's details."})
+    res
+      .status(500)
+      .json({ error: "An error occurred while editing a family member's details." });
   }
 };

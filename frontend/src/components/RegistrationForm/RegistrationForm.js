@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
 // External Libraries
-import React, { Component, useState } from 'react';
-import Link from 'next/link';
+import React, { Component, useState } from "react";
+import Link from "next/link";
 import axios from "axios";
 
 // Internal Modules
-import styles from './RegistrationForm.module.css';
+import styles from "./RegistrationForm.module.css";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -35,13 +35,23 @@ const RegistrationForm = () => {
       return;
     }
 
+    // TODO: EXTRACT URL IN .env.development file
+
+    // WHAT WAS WRONG? - YOU WERE USING "http://localhost:8080/api/signup", WHICH DOES NOT EXIST
+    // THE CORRECT URL IS "http://localhost:8080/api/user/signup"
+
+    // MAKE SURE YOU COMMUNICATE WITH THE BACKEND TEAM TO GET THE CORRECT URL
     try {
-      const response = await axios.post("http://localhost:8080/api/signup", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/user/signup",
+        {
+          email,
+          password,
+        }
+      );
+
+      // TODO: REMOVE CONSOLE LOG ONCE TESTING IS DONE
       console.log("Registration response:", response.data); // Log the response
-      
 
       if (response.data.success) {
         setSuccess(true);
@@ -63,7 +73,8 @@ const RegistrationForm = () => {
           <div className={styles.leftSide}>
             <h1 className={styles.h1Label}>Sunburst Family Tree</h1>
             <h2 className={styles.h2Label}>
-              An interactive platform to view and manage your family&apos;s relationships.
+              An interactive platform to view and manage your family&apos;s
+              relationships.
             </h2>
           </div>
           <div className={styles.rightSide}>
@@ -109,7 +120,9 @@ const RegistrationForm = () => {
                 />
               </div>
               {error && <p className={styles.errorText}>{error}</p>}
-              {success && <p className={styles.successText}>Registration successful!</p>}
+              {success && (
+                <p className={styles.successText}>Registration successful!</p>
+              )}
               <div className={styles.parentContainer}>
                 <button type="submit" className={styles.btnRegistration}>
                   Register

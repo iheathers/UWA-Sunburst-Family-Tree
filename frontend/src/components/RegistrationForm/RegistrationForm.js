@@ -3,11 +3,59 @@
 // External Libraries
 import React, { Component, useState } from 'react';
 import Link from 'next/link';
+import axios from "axios";
 
 // Internal Modules
 import styles from './RegistrationForm.module.css';
 
 const RegistrationForm = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { email, password, confirmPassword } = formData;
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/signup", {
+        email,
+        password,
+      });
+      console.log("Registration response:", response.data); // Log the response
+      
+
+      if (response.data.success) {
+        setSuccess(true);
+        setError("");
+      } else {
+        setSuccess(false);
+        setError(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+      setError("User exists.");
+    }
+  };
+
   return (
     <div className={styles.registration}>
       <div className={styles.centerContainer}>
@@ -20,29 +68,48 @@ const RegistrationForm = () => {
           </div>
           <div className={styles.rightSide}>
             <h1 className={styles.registrationLabel}>REGISTRATION</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className={styles.inputContainer}>
                 <label className={styles.label}>Email</label>
                 <br />
-                <input type="text" id="email" className={styles.registrationInput} />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className={styles.registrationInput}
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className={styles.inputContainer}>
                 <label className={styles.label}>Password</label>
                 <br />
-                <input type="password" id="password" className={styles.registrationInput} />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className={styles.registrationInput}
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className={styles.inputContainer}>
-                <label className={styles.label}>ConfirmPassword</label>
+                <label className={styles.label}>Confirm Password</label>
                 <br />
                 <input
                   type="password"
                   id="confirmPassword"
+                  name="confirmPassword"
                   className={styles.registrationInput}
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
                 />
               </div>
-              <div className={styles.loginContainer}>
-                <span className={styles.errorText}>Passwords do not match</span>
-              </div>
+              {error && <p className={styles.errorText}>{error}</p>}
+              {success && <p className={styles.successText}>Registration successful!</p>}
               <div className={styles.parentContainer}>
                 <button type="submit" className={styles.btnRegistration}>
                   Register

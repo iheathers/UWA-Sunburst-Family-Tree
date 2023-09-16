@@ -32,22 +32,39 @@ export const addFamilyMember = async (req, res, next) => {
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
-      const errorsArray = validationErrors.array();
-      const errObj = {
-          message: "Validation Error",
-          error: errorsArray,
-      };
-
-      return res.status(422).json(errObj);
-  };
+    const errorsArray = validationErrors.array();
+    return res.status(422).json({ message: "Validation Error", errors: errorsArray });
+  }
 
   try {
-    const { name, parentId, birthDate, deathDate, location, occupation, about } = req.body;
-    const parent = parentId ? await FamilyMember.findById(parentId) : null;
+    const { 
+      name, 
+      parentId, 
+      birthDate, 
+      deathDate, 
+      location, 
+      occupation, 
+      about,
+    } = req.body;
+    
+    let parent = null;
+
+    // Check if parentId is provided and not null
+    if (parentId !== null) {
+      parent = await FamilyMember.findById(parentId);
+
+      if (!parent) {
+        return res.status(404).json({ error: "Parent member not found." });
+      }
+    }
+
+    if (parentId === null && (await FamilyMember.findOne({ parent: null }))) {
+      return res.status(400).json({ error: "Only one root node is allowed." });
+    }
 
     const newMember = new FamilyMember({
       name,
-      parent,
+      parent: parentId !== null ? parent : null,
       birthDate, 
       deathDate, 
       location, 
@@ -57,24 +74,12 @@ export const addFamilyMember = async (req, res, next) => {
 
     await newMember.save();
 
+    // If parent is specified, update the parent's children array
     if (parent) {
       parent.children.push(newMember);
       await parent.save();
     }
-
-    const newMemberJsonRes = {
-      id: newMember.id,
-      name: newMember.name,
-      parentId: parentId,
-      children: newMember.children,
-      birthDate: birthDate,
-      deathDate: deathDate,
-      location: location,
-      occupation: occupation,
-      about: about,
-    };
-
-    res.status(201).json(newMemberJsonRes);
+    res.status(201).json(newMember);
   } catch (error) {
     res
       .status(500)
@@ -84,7 +89,7 @@ export const addFamilyMember = async (req, res, next) => {
 
 export const deleteFamilyMember = async (req, res, next) => {
   try {
-    if (!res.familyMember) {
+    if (!req.familyMember) {
       return res.status(404).json({ error: "Family member not found." })
     };
     await res.familyMember.remove();
@@ -98,10 +103,11 @@ export const deleteFamilyMember = async (req, res, next) => {
 
 export const editFamilyMemberDetails = async (req, res, next) => {
   try {
-    // find family member
-    // if does not exist, error
-    // get request
-    // save in database
+    // TODO: ---- 
+    //  Step 1. find family member
+    //  Step 2. if does not exist, error
+    //  Step 3. get request
+    //  Step 4. save in database
 
   } catch (error) {
     res

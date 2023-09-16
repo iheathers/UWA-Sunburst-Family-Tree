@@ -4,6 +4,9 @@ import { body } from "express-validator";
 import {
     signUpUser, 
     loginUser,
+    listUsers,
+    changeUserPermissions,
+    deleteUser,
 } from "../controllers/User.controller.js";
 
 const userRouter = express.Router();
@@ -19,5 +22,10 @@ userRouter.post(
 
 userRouter.post("/login", loginUser);
 
+userRouter.get("/", listUsers);
+
+userRouter.patch("/", changeUserPermissions);
+
+userRouter.delete("/:id", deleteUser);
 
 export default userRouter;

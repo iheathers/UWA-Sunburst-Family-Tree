@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import {
   addFamilyMember,
   getFamilyMember,
+  editFamilyMemberDetails,
   removeFromChart,
   deleteFamilyMember,
 } from "../controllers/FamilyMember.controller.js";
@@ -18,7 +19,10 @@ familyMemberRouter.post(
     body("birthDate").isDate().optional(),
     body("deathDate").isDate().optional(),
   ],
-  addFamilyMember);
+  addFamilyMember
+);
+
+familyMemberRouter.patch("/:id/edit", editFamilyMemberDetails);
 
 familyMemberRouter.patch("/:id", removeFromChart);
 

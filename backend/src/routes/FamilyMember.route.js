@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import {
   addFamilyMember,
   getFamilyMember,
+  removeFromChart,
   deleteFamilyMember,
 } from "../controllers/FamilyMember.controller.js";
 
@@ -19,6 +20,8 @@ familyMemberRouter.post(
   ],
   addFamilyMember);
 
-  familyMemberRouter.delete("/:id", deleteFamilyMember);
+familyMemberRouter.patch("/:id", removeFromChart);
+
+familyMemberRouter.delete("/:id", deleteFamilyMember);
 
 export default familyMemberRouter;

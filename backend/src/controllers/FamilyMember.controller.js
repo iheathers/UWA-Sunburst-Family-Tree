@@ -87,10 +87,58 @@ export const addFamilyMember = async (req, res, next) => {
   }
 };
 
+export const removeFromChart = async (req, res, next) => {
+  try {
+    const memberId = req.params.id;
+    
+    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
+    // Check if memberId has a valid ObjectId format
+    if (!isValidObjectId(memberId)) {
+      return res.status(400).json({ error: "Invalid family member ID format." });
+    }
+    
+    const familyMember = await FamilyMember.findById(memberId);
+
+    // Check if family member exists
+    if (!familyMember) {
+      return res.status(404).json({ error: "Family member not found." })
+    } 
+
+    const childrenIds = familyMember.children;
+
+    // If there are no children, remove from chart
+    if (childrenIds.length === 0) {
+      familyMember.displayOnChart = false;
+      await familyMember.save();
+      return res.status(200).json({ message: "Family member removed from chart."});
+    }
+    
+    // Get children displayed on chart
+    const childrenOnChart = await FamilyMember.find({
+      _id: { $in: childrenIds }, // should this be _id or id?
+      displayOnChart: true,
+    })
+
+    // Remove from chart if there are no children displayed
+    if (childrenOnChart.length === 0) {
+      familyMember.displayOnChart = false;
+      await familyMember.save();
+      return res.status(200).json({ message: "Family member removed from chart."});
+    }
+
+    // Do not remove from chart if there are children displayed
+    return res.status(422).json({ message: "Family member not removed as children are still on chart."})
+    
+  } catch (error) {
+    res.status(500).json({ error: "An error occured while changing w"})
+  }
+};
+
 export const deleteFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
     
+    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res.status(400).json({ error: "Invalid family member ID format." });
@@ -102,6 +150,11 @@ export const deleteFamilyMember = async (req, res, next) => {
     if (!familyMember) {
       return res.status(404).json({ error: "Family member not found." })
     } 
+
+  // Check if the family member has no children
+  if (!familyMember.children.length === 0) {
+    return res.status(400).json({ error: "Cannot delete a family member with children."});
+  }
 
     await familyMember.deleteOne();
     res.status(204).json({ message: "Family member deleted." })

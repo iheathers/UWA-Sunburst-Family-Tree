@@ -31,6 +31,10 @@ const familyMemberSchema = new mongoose.Schema(
     about: {
         type: String,
     },
+    displayOnChart: {
+        type: Boolean,
+        default: true,
+    },
   },
   {
     // Define schema options

@@ -89,15 +89,27 @@ export const addFamilyMember = async (req, res, next) => {
 
 export const deleteFamilyMember = async (req, res, next) => {
   try {
-    if (!req.familyMember) {
+    const memberId = req.params.id;
+    
+    // Check if memberId has a valid ObjectId format
+    if (!isValidObjectId(memberId)) {
+      return res.status(400).json({ error: "Invalid family member ID format." });
+    }
+    
+    const familyMember = await FamilyMember.findById(memberId);
+    
+    // Check if family member exists
+    if (!familyMember) {
       return res.status(404).json({ error: "Family member not found." })
-    };
-    await res.familyMember.remove();
-    res.status
+    } 
+
+    await familyMember.deleteOne();
+    res.status(204).json({ message: "Family member deleted." })
   } catch (error) {
     res
       .status(500).
       json({ error: "An error occurred while deleting a family member." });
+    console.log(error);
   }
 };
 

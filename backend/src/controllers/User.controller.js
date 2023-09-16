@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { isValidObjectId } from "mongoose";
 
-
 import User from "../models/User.model.js";
 
 export const signUpUser = async (req, res, next) => {
@@ -30,7 +29,7 @@ export const signUpUser = async (req, res, next) => {
 
     if (existingUser) {
       return res.status(422).json({
-        message: "User exists",
+        error: "User exists",
       });
     }
 
@@ -116,8 +115,8 @@ export const changeUserPermissions = async (req, res, next) => {
     for (const userToUpdate of usersToUpdate) {
       const userId = userToUpdate._id;
 
-       // Check if the userId has a valid ObjectId format
-       if (!isValidObjectId(userId)) {
+      // Check if the userId has a valid ObjectId format
+      if (!isValidObjectId(userId)) {
         return res.status(400).json({ error: "Invalid user ID format." });
       }
 
@@ -153,10 +152,12 @@ export const changeUserPermissions = async (req, res, next) => {
 export const deleteUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
+
     // Check if the userId has a valid ObjectId format
     if (!isValidObjectId(userId)) {
-        return res.status(400).json({ error: "Invalid user ID format." });
+      return res.status(400).json({ error: "Invalid user ID format." });
     }
+
     const user = await User.findById(userId);
 
     // Check if user exists

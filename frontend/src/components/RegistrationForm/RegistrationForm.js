@@ -35,32 +35,30 @@ const RegistrationForm = () => {
       return;
     }
 
-    // TODO: EXTRACT URL IN .env.development file
+    // EXTRACT URL IN .env.development file
+    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT
 
-    // WHAT WAS WRONG? - YOU WERE USING "http://localhost:8080/api/signup", WHICH DOES NOT EXIST
-    // THE CORRECT URL IS "http://localhost:8080/api/user/signup"
-
-    // MAKE SURE YOU COMMUNICATE WITH THE BACKEND TEAM TO GET THE CORRECT URL
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/user/signup",
+        apiUrl, // Using the API URL obtained from the .env.development file
         {
           email,
           password,
         }
       );
-
-      // TODO: REMOVE CONSOLE LOG ONCE TESTING IS DONE
-      console.log("Registration response:", response.data); // Log the response
-
+    
+   // Check if the registration was successful
       if (response.data.success) {
+        // If successful, set the success state to true and clear the error state
         setSuccess(true);
         setError("");
+        // If not successful, set the success state to false and display the error message from the response
       } else {
         setSuccess(false);
         setError(response.data.message);
       }
     } catch (error) {
+      // Handle any errors that occur during the registration process
       console.error("Error signing up:", error);
       setError("User exists.");
     }

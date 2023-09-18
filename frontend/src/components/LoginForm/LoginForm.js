@@ -16,7 +16,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:8080/login", {
+    const res = await fetch("https://uwa-sunburst-chart-api.onrender.com/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,12 +57,12 @@ const LoginForm = () => {
               <div className={styles.inputContainer}>
                 <label className={styles.label}>Email</label>
                 <br />
-                <input type="text" id="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.loginInput} />
+                <input type="text" id="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.loginInput} required/>
               </div>
               <div className={styles.inputContainer}>
                 <label className={styles.label}>Password</label>
                 <br />
-                <input type="password" id="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.loginInput} />
+                <input type="password" id="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.loginInput} required />
               </div>
 
               <div className={styles.loginContainer}>

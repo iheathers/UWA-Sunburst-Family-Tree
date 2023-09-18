@@ -33,7 +33,9 @@ export const addFamilyMember = async (req, res, next) => {
 
   if (!validationErrors.isEmpty()) {
     const errorsArray = validationErrors.array();
-    return res.status(422).json({ message: "Validation Error", errors: errorsArray });
+    return res
+      .status(422)
+      .json({ message: "Validation Error", errors: errorsArray });
   }
 
   try {
@@ -65,7 +67,7 @@ export const addFamilyMember = async (req, res, next) => {
 
     const newMember = new FamilyMember({
       name,
-      parent: parentId ? parent : null,
+      parent: parentId ? parentId : null,
       birthDate,
       deathDate,
       location,
@@ -83,81 +85,11 @@ export const addFamilyMember = async (req, res, next) => {
 
     res.status(201).json(newMember);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred while creating a family member." });
+    res
+      .status(500)
+      .json({ error: "An error occurred while creating a family member." });
   }
 };
-
-
-// export const addFamilyMember = async (req, res, next) => {
-//   const validationErrors = validationResult(req);
-
-//   if (!validationErrors.isEmpty()) {
-//     const errorsArray = validationErrors.array();
-//     return res
-//       .status(422)
-//       .json({ error: "Validation Error", errors: errorsArray });
-//   }
-
-//   try {
-//     const {
-//       name,
-//       parentId,
-//       birthDate,
-//       deathDate,
-//       location,
-//       occupation,
-//       about,
-//     } = req.body;
-
-//     let {parentId} = req.body;
-
-// let parentObj  = null;
-  
-
-//     if (!parentId){
-//       parentId = null;
-//     }
-    
-//     // Check if parentId is provided and not null
-//     if (parentId !== null) {
-//       parentObj = await FamilyMember.findById(parentId);
-
-//       if (!parentObj) {
-//         return res.status(404).json({ error: "Parent member not found." });
-//       }
-//     }
-
-//     if (parentId === null && (await FamilyMember.findOne({ parentId: null }))) {
-//       return res.status(400).json({ error: "Only one root node is allowed." });
-//     }
-
-//     const newMember = new FamilyMember({
-//       name,
-//       parentId,
-//       birthDate,
-//       deathDate,
-//       location,
-//       occupation,
-//       about,
-//     });
-
-//     await newMember.save();
-
-//     // If parent is specified, update the parent's children array
-//     if (parentObj) {
-//       parentObj.children.push(newMember);
-//       await parentObj.save();
-//     }
-    
-//     res.status(201).json(newMember);
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({ error: "An error occurred while creating a family member." });
-//       console.log(error)
-//   }
-// };
 
 export const editFamilyMemberDetails = async (req, res, next) => {
   try {
@@ -182,6 +114,9 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       req.body;
 
     // TO DO: Validate input data
+    // -- Step 1. Name must be provided
+    // -- Step 2. Dates are the correct format
+    // -- Step 3. All fields don't contain any malicious code
 
     familyMember.name = name;
     familyMember.birthDate = birthDate;
@@ -193,11 +128,9 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     await familyMember.save();
     res.status(200).json({ message: "Family member's details updated." });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: "An error occurred while editing a family member's details.",
-      });
+    res.status(500).json({
+      error: "An error occurred while editing a family member's details.",
+    });
   }
 };
 
@@ -247,11 +180,9 @@ export const removeFromChart = async (req, res, next) => {
     }
 
     // Do not remove from chart if there are children displayed
-    return res
-      .status(422)
-      .json({
-        error: "Family member not removed as children are still on chart.",
-      });
+    return res.status(422).json({
+      error: "Family member not removed as children are still on chart.",
+    });
   } catch (error) {
     res.status(500).json({ error: "An error occured while changing w" });
   }
@@ -289,6 +220,5 @@ export const deleteFamilyMember = async (req, res, next) => {
     res
       .status(500)
       .json({ error: "An error occurred while deleting a family member." });
-    console.log(error);
   }
 };

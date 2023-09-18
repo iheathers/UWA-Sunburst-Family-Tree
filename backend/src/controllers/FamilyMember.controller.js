@@ -49,8 +49,13 @@ export const addFamilyMember = async (req, res, next) => {
       about,
     } = req.body;
 
-    let parent = null;
+    // Check if the parentId has a valid ObjectId format
+    if (!isValidObjectId(parentId)) {
+      return res.status(400).json({ error: "Invalid parent ID format." });
+    }
 
+    let parent = null;
+    
     // Check if parentId is provided and not null
     if (parentId !== null) {
       parent = await FamilyMember.findById(parentId);
@@ -66,7 +71,7 @@ export const addFamilyMember = async (req, res, next) => {
 
     const newMember = new FamilyMember({
       name,
-      parent: parentId !== null ? parent : null,
+      parent,
       birthDate,
       deathDate,
       location,
@@ -81,11 +86,13 @@ export const addFamilyMember = async (req, res, next) => {
       parent.children.push(newMember);
       await parent.save();
     }
+    
     res.status(201).json(newMember);
   } catch (error) {
     res
       .status(500)
       .json({ error: "An error occurred while creating a family member." });
+      console.log(error)
   }
 };
 

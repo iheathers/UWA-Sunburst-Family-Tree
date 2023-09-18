@@ -48,20 +48,41 @@ const RegistrationForm = () => {
         }
       );
     
-   // Check if the registration was successful
+      // Check if the registration was successful
       if (response.data.success) {
-        // If successful, set the success state to true and clear the error state
+        // If successful, set the success state to true, clear the error state, and reset the form
         setSuccess(true);
-        setError("");
-        // If not successful, set the success state to false and display the error message from the response
+        setError(""); // Clear any previous errors
+        setFormData({
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      } else if (response.data.error === "User exists") {
+        // If the response indicates "User exists," set the error message accordingly
+        setError("User exists");
+        setSuccess(false); // Set success to false
       } else {
+        // If not successful, set the success state to false and display the error message from the response
+        setError(response.data.error); // Use the error message from the response for other cases
         setSuccess(false);
-        setError(response.data.message);
       }
     } catch (error) {
       // Handle any errors that occur during the registration process
-      console.error("Error signing up:", error);
-      setError("User exists.");
+      if (error.response) {
+        // The request was made, but the server responded with a status code other than 2xx
+        if (error.response.data.error === "User exists") {
+          setError("User exists"); // Handle the specific case where user already exists
+        } else {
+          setError(`Server Error: ${error.response.status}`);
+        }
+      } else if (error.request) {
+        // The request was made, but no response was received
+        setError("Network Error. Please check your internet connection.");
+      } else {
+        // Something happened in setting up the request that triggered an error
+        setError("An error occurred while processing your request.");
+      }
     }
   };
 

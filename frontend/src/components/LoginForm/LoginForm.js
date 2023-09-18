@@ -3,6 +3,8 @@
 // External Libraries
 import React, { Component, useState } from 'react';
 import Link from 'next/link';
+import axios from "axios";
+import { useRouter } from 'next/navigation'
 
 // Internal Modules (if applicable)
 import styles from './LoginForm.module.css';
@@ -12,34 +14,60 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("https://uwa-sunburst-chart-api.onrender.com/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const { email, password } = formData;
 
-    if (res.status === 200) {
-      console.log("Login successful!");
-      // const { token } = await res.json();
+    // EXTRACT URL IN .env.development file
+    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL
+    const loginRoute = process.env.NEXT_PUBLIC_LOGIN_ROUTE
 
-      // Set token to cookie
-      // Cookies.set("token", token, { expires: 60 });
-      Router.push("/user-access-control-panel");
-    } else {
-      console.log("Login failed.");
-      const error = "Incorrect email or password";
-      setError(error);
+    try {
+      const response = await axios.post(
+        `${apiUrl}${loginRoute}`, // Using the API URL obtained from the .env.development file
+        {
+          email,
+          password,
+        }
+      );
+
+      // console.log(response.data.success);
+
+      // // Check if the registration was successful
+      if (response.status === 200) {
+        // If successful, set the success state to true and clear the error state
+        setError("");
+        console.log("Login successful!");
+        router.push("/family-tree");
+
+      } else {
+        console.log("Login failed.");
+        const errormessage = "Incorrect email or password";
+        setError(errormessage);
+      }
+
+      
+    } catch (error) {
+      // Handle any errors that occur during the registration process
+      console.error("Error login:", error);
+
     }
-
-
   };
-
 
   return (
     <div className={styles.login}>
@@ -57,12 +85,14 @@ const LoginForm = () => {
               <div className={styles.inputContainer}>
                 <label className={styles.label}>Email</label>
                 <br />
-                <input type="text" id="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.loginInput} required/>
+
+                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className={styles.loginInput} required />
               </div>
               <div className={styles.inputContainer}>
                 <label className={styles.label}>Password</label>
                 <br />
-                <input type="password" id="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.loginInput} required />
+                <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className={styles.loginInput} required />
+
               </div>
 
               <div className={styles.loginContainer}>

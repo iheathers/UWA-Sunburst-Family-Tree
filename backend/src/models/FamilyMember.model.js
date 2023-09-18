@@ -36,17 +36,17 @@ const familyMemberSchema = new mongoose.Schema(
         default: true,
     },
   },
-  {
-    // Define schema options
-    versionKey: false, // Exclude the '__v' field
-    toJSON: {
-      virtuals: true,
-      transform: (doc, ret) => {
-        ret.id = ret._id; // Use 'id' instead of '_id' in the JSON output
-        delete ret._id; // Remove '_id' from the JSON output
-      },
-    },
-  }
+  // {
+  //   // Define schema options
+  //   versionKey: false, // Exclude the '__v' field
+  //   toJSON: {
+  //     virtuals: true,
+  //     transform: (doc, ret) => {
+  //       ret.id = ret._id; // Use 'id' instead of '_id' in the JSON output
+  //       delete ret._id; // Remove '_id' from the JSON output
+  //     },
+  //   },
+  // }
 );
 
 const FamilyMember = mongoose.model("FamilyMember", familyMemberSchema);

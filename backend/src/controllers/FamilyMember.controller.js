@@ -33,9 +33,7 @@ export const addFamilyMember = async (req, res, next) => {
 
   if (!validationErrors.isEmpty()) {
     const errorsArray = validationErrors.array();
-    return res
-      .status(422)
-      .json({ error: "Validation Error", errors: errorsArray });
+    return res.status(422).json({ message: "Validation Error", errors: errorsArray });
   }
 
   try {
@@ -49,29 +47,25 @@ export const addFamilyMember = async (req, res, next) => {
       about,
     } = req.body;
 
-    // Check if the parentId has a valid ObjectId format
-    if (!isValidObjectId(parentId)) {
-      return res.status(400).json({ error: "Invalid parent ID format." });
-    }
-
     let parent = null;
-    
+
     // Check if parentId is provided and not null
-    if (parentId !== null) {
+    if (parentId) {
       parent = await FamilyMember.findById(parentId);
 
       if (!parent) {
-        return res.status(404).json({ error: "Parent member not found." });
+        return res.status(400).json({ error: "Parent member not found." });
       }
     }
 
-    if (parentId === null && (await FamilyMember.findOne({ parent: null }))) {
+    // If parentId is null and there is already a root node, return an error
+    if (!parentId && (await FamilyMember.findOne({ parent: null }))) {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
     const newMember = new FamilyMember({
       name,
-      parent,
+      parent: parentId ? parent : null,
       birthDate,
       deathDate,
       location,
@@ -81,20 +75,89 @@ export const addFamilyMember = async (req, res, next) => {
 
     await newMember.save();
 
-    // If parent is specified, update the parent's children array
+    // If a parent is specified, update the parent's children array
     if (parent) {
       parent.children.push(newMember);
       await parent.save();
     }
-    
+
     res.status(201).json(newMember);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "An error occurred while creating a family member." });
-      console.log(error)
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while creating a family member." });
   }
 };
+
+
+// export const addFamilyMember = async (req, res, next) => {
+//   const validationErrors = validationResult(req);
+
+//   if (!validationErrors.isEmpty()) {
+//     const errorsArray = validationErrors.array();
+//     return res
+//       .status(422)
+//       .json({ error: "Validation Error", errors: errorsArray });
+//   }
+
+//   try {
+//     const {
+//       name,
+//       parentId,
+//       birthDate,
+//       deathDate,
+//       location,
+//       occupation,
+//       about,
+//     } = req.body;
+
+//     let {parentId} = req.body;
+
+// let parentObj  = null;
+  
+
+//     if (!parentId){
+//       parentId = null;
+//     }
+    
+//     // Check if parentId is provided and not null
+//     if (parentId !== null) {
+//       parentObj = await FamilyMember.findById(parentId);
+
+//       if (!parentObj) {
+//         return res.status(404).json({ error: "Parent member not found." });
+//       }
+//     }
+
+//     if (parentId === null && (await FamilyMember.findOne({ parentId: null }))) {
+//       return res.status(400).json({ error: "Only one root node is allowed." });
+//     }
+
+//     const newMember = new FamilyMember({
+//       name,
+//       parentId,
+//       birthDate,
+//       deathDate,
+//       location,
+//       occupation,
+//       about,
+//     });
+
+//     await newMember.save();
+
+//     // If parent is specified, update the parent's children array
+//     if (parentObj) {
+//       parentObj.children.push(newMember);
+//       await parentObj.save();
+//     }
+    
+//     res.status(201).json(newMember);
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ error: "An error occurred while creating a family member." });
+//       console.log(error)
+//   }
+// };
 
 export const editFamilyMemberDetails = async (req, res, next) => {
   try {

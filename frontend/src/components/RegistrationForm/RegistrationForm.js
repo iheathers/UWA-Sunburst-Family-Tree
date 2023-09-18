@@ -36,11 +36,12 @@ const RegistrationForm = () => {
     }
 
     // EXTRACT URL IN .env.development file
-    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT
+    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL
+    const signUpRoute = process.env.NEXT_PUBLIC_SIGNUP_ROUTE
 
     try {
       const response = await axios.post(
-        apiUrl, // Using the API URL obtained from the .env.development file
+        `${apiUrl}${signUpRoute}`, // Using the API URL obtained from the .env.development file
         {
           email,
           password,

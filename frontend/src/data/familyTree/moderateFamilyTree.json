@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Company A",
+    "children": [
+      {
+        "name": "Technical",
+        "children": [
+          { "name": "Team Leaders" },
+          { "name": "Architects" },
+          { "name": "Developers" },
+          {
+            "name": "Testers",
+            "children": [{ "name": "Automation" }, { "name": "Manual" }]
+          }
+        ]
+      },
+      {
+        "name": "Sales",
+        "children": [
+          { "name": "Analysts" },
+          {
+            "name": "Executives",
+            "children": [
+              {
+                "name": "Technical",
+                "children": [
+                  { "name": "Team Leaders" },
+                  { "name": "Architects" },
+                  { "name": "Developers" },
+                  { "name": "Testers" }
+                ]
+              },
+              {
+                "name": "Sales",
+                "children": [{ "name": "Analysts" }, { "name": "Executives" }]
+              },
+              { "name": "HR" },
+              { "name": "Management" }
+            ]
+          }
+        ]
+      },
+      { "name": "HR" },
+      { "name": "Management" }
+    ]
+  }
+]

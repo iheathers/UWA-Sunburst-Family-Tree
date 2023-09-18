@@ -22,7 +22,7 @@ app.use("/api/family-tree", familyTreeRouter);
 app.use("/api/user", userRouter);
 
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URI)
   .then(
     app.listen(process.env.PORT, () => {
       console.log("App listening on port 8080");

@@ -74,7 +74,7 @@ export const loginUser = async (req, res, next) => {
       });
     }
 
-    // JWT to be implemented
+    // TO DO: JWT to be implemented
 
     res.status(200).json({
       userId: user._id.toString(),

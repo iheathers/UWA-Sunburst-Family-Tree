@@ -49,7 +49,7 @@ const RegistrationForm = () => {
       );
     
       // Check if the registration was successful
-      if (response.data.success) {
+      if (response.status === 201) {
         // If successful, set the success state to true, clear the error state, and reset the form
         setSuccess(true);
         setError(""); // Clear any previous errors
@@ -141,7 +141,7 @@ const RegistrationForm = () => {
               </div>
               {error && <p className={styles.errorText}>{error}</p>}
               {success && (
-                <p className={styles.successText}>Registration successful!</p>
+                <p className={styles.successText}>User created</p>
               )}
               <div className={styles.parentContainer}>
                 <button type="submit" className={styles.btnRegistration}>

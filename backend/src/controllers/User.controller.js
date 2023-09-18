@@ -6,20 +6,13 @@ import { isValidObjectId } from "mongoose";
 import User from "../models/User.model.js";
 
 export const signUpUser = async (req, res, next) => {
-<<<<<<< HEAD
-=======
   // Validate user input of dates
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
     const errorsArray = validationErrors.array();
     const errObj = {
-<<<<<<< HEAD
       error: "Validation Error",
-=======
-      message: "Validation Error",
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
       error: errorsArray,
     };
 
@@ -29,10 +22,7 @@ export const signUpUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-<<<<<<< HEAD
-=======
     // Check if the user already exists
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
     const existingUser = await User.findOne({
       email: email,
     });
@@ -43,16 +33,10 @@ export const signUpUser = async (req, res, next) => {
       });
     }
 
-<<<<<<< HEAD
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-=======
     const saltRounds = 10; // would this be better stored in the .env file?
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Create new user with hashed password
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
     const newUser = new User({
       email: email,
       password: hashedPassword,
@@ -64,11 +48,7 @@ export const signUpUser = async (req, res, next) => {
       message: "User Created",
     });
   } catch (error) {
-<<<<<<< HEAD
-    next(error);
-=======
     res.status(500).json({ error: "An error occured while creating a user." });
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
   }
 };
 
@@ -78,89 +58,34 @@ export const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: email });
 
-<<<<<<< HEAD
+    // If user is not found
     if (!user) {
       return res.status(401).json({
         error: "Incorrect email or password",
       });
     }
 
-=======
-    // If user is not found
-    if (!user) {
-      return res.status(401).json({
-        error: "User does not exist",
-      });
-    }
-
     // Compare the provided password with the stored hashed password
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
     const matches = await bcrypt.compare(password, user.password);
 
     if (!matches) {
       return res.status(401).json({
-<<<<<<< HEAD
         error: "Incorrect email or password",
       });
     }
 
     // JWT to be implemented
-=======
-        error: "Invalid credentials",
-      });
-    }
-
-    // TODO: Implement JWT authentication
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
 
     res.status(200).json({
       userId: user._id.toString(),
       accessPermissions: user.accessPermissions,
     });
   } catch (error) {
-<<<<<<< HEAD
-    next(error);
-=======
     res.status(500).json({ error: "An error occured while logging in." });
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
   }
 };
 
 export const listUsers = async (req, res, next) => {
-<<<<<<< HEAD
-  /*
-    Fetch users from database
-        User.find()
-    If users found:
-        Return successful response (200)
-    Else:
-        Return response indicating no users found
-    Catch errors
-    */
-};
-
-export const changeUserPermissions = async (req, res, next) => {
-  /*
-    Get userId and permission from request
-    Find user - findById()
-        If user not found, return response indicating cannot find user (404)
-    Update user permission - save()
-    If users permissions changed successful:
-        Return successful response (200)
-    Else:
-        Return response indicating permission change failed
-    Catch errors
-    */
-};
-
-export const deleteUser = async (req, res, next) => {
-  /*
-    Find user and delete - findByIdAndDelete()
-    If user not found, return response indicating cannot find user (404)
-    Return successful response (204)
-    Catch errors 
-    */
-=======
   try {
     // Fetch all users from the database, excluding the password field
     const users = await User.find({}, { password: 0 });
@@ -248,5 +173,4 @@ export const deleteUser = async (req, res, next) => {
     res.status(500).json({ error: "An error occurred while deleting a user." });
     console.log(error);
   }
->>>>>>> f0d4923efea39801c8a0563396af14ddc0b376bd
 };

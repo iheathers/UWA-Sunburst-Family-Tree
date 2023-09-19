@@ -13,7 +13,6 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const SUCCESS_STATUS_CODE = 200;
-  const errormessage = "Incorrect email or password";
 
   const [formData, setFormData] = useState({
     email: "",
@@ -51,14 +50,14 @@ const LoginForm = () => {
         setError("");
         // Redirect to the family tree page
         router.push("/family-tree");
-      } else {
-        // If unsuccessful, set the error state to the error message
-        setError(errormessage);
       }
     } catch (error) {
-      // Handle any errors that occur during the registration process
-      console.error("Error login:", error);
-      setError(errormessage);
+      // If the login was unsuccessful, set the error state to the error message
+      if (error.code === "ERR_BAD_REQUEST") {
+        setError(error.response.data.error);
+      } else {
+        setError("An error occured while logging in.");
+      }
     }
   };
 

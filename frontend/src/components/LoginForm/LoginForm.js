@@ -44,7 +44,7 @@ const LoginForm = () => {
         }
       );
 
-      // // Check if the registration was successful
+      // // Check if the login was successful
       if (response.status === SUCCESS_STATUS_CODE) {
         // If successful, set the success state to true and clear the error state
         setError("");

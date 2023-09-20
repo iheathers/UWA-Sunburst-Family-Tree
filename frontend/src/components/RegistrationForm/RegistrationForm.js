@@ -50,11 +50,10 @@ const RegistrationForm = () => {
         }
       );
       
-      console.log(response.data.success) 
       // Check if the registration was successful
-      if (response.data.success) {
+      const HTTP_STATUS_RESOURCE_CREATED = 201;
+      if (response.status === HTTP_STATUS_RESOURCE_CREATED) {
         router.push("/login"); // Redirect to the login page
-
 
       } else if (response.data.error) {
         // If the response indicates "User exists," set the error message accordingly

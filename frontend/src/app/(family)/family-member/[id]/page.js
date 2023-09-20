@@ -1,3 +1,5 @@
+import BioGraphy from "@/components/BioGraphy/BioGraphy";
+
 const FamilyMemberPage = ({ params }) => {
   const { id } = params;
 
@@ -9,4 +11,6 @@ const FamilyMemberPage = ({ params }) => {
   );
 };
 
-export default FamilyMemberPage;
+// export default FamilyMemberPage;
+
+export default BioGraphy;

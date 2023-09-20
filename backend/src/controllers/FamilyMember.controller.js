@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import FamilyMember from "../models/FamilyMember.model.js";
-
+// get
 export const getFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
@@ -26,7 +26,7 @@ export const getFamilyMember = async (req, res, next) => {
       .json({ error: "An error occurred while fetching the family member." });
   }
 };
-
+// add
 export const addFamilyMember = async (req, res, next) => {
   try {
     const { name, parentId } = req.body;
@@ -57,5 +57,66 @@ export const addFamilyMember = async (req, res, next) => {
     res
       .status(500)
       .json({ error: "An error occurred while creating a family member." });
+  }
+};
+
+// Update
+export const updateFamilyMember = async (req, res, next) => {
+  try {
+    const memberId = req.params.id;
+
+    // Check if the memberId has a valid ObjectId format
+    if (!isValidObjectId(memberId)) {
+      return res.status(400).json({ error: "Invalid member ID format." });
+    }
+
+    // Find the family member by ID
+    const familyMember = await FamilyMember.findById(memberId);
+
+    if (!familyMember) {
+      return res.status(404).json({ error: "Family member not found." });
+    }
+
+    // Update the family member's properties
+    familyMember.name = req.body.name; // Update other properties as needed
+    // Save the updated family member
+    await familyMember.save();
+
+    // Return the updated family member as JSON
+    res.json(familyMember);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the family member." });
+  }
+};
+
+
+// Delete
+export const deleteFamilyMember = async (req, res, next) => {
+  try {
+    const memberId = req.params.id;
+
+    // Check if the memberId has a valid ObjectId format
+    if (!isValidObjectId(memberId)) {
+      return res.status(400).json({ error: "Invalid member ID format." });
+    }
+
+    // Find the family member by ID
+    const familyMember = await FamilyMember.findById(memberId);
+
+    if (!familyMember) {
+      return res.status(404).json({ error: "Family member not found." });
+    }
+
+    // Remove the family member
+    await familyMember.remove();
+
+    // You can customize the response as needed
+    res.json({ message: "Family member deleted successfully." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the family member." });
   }
 };

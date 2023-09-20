@@ -4,11 +4,13 @@
 import React, { Component, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // Internal Modules
 import styles from "./RegistrationForm.module.css";
 
 const RegistrationForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -47,18 +49,14 @@ const RegistrationForm = () => {
           password,
         }
       );
-    
+      
+      console.log(response.data.success) 
       // Check if the registration was successful
-      if (response.status === 201) {
-        // If successful, set the success state to true, clear the error state, and reset the form
-        setSuccess(true);
-        setError(""); // Clear any previous errors
-        setFormData({
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-      } else if (response.data.error === "User exists") {
+      if (response.data.success) {
+        router.push("/login"); // Redirect to the login page
+
+
+      } else if (response.data.error) {
         // If the response indicates "User exists," set the error message accordingly
         setError("User exists");
         setSuccess(false); // Set success to false
@@ -69,20 +67,17 @@ const RegistrationForm = () => {
       }
     } catch (error) {
       // Handle any errors that occur during the registration process
-      if (error.response) {
-        // The request was made, but the server responded with a status code other than 2xx
-        if (error.response.data.error === "User exists") {
-          setError("User exists"); // Handle the specific case where user already exists
+      if (!error.response) {
+        if (error.request) {
+          setError("Network Error. Please check your internet connection.");
         } else {
-          setError(`Server Error: ${error.response.status}`);
+          setError("An error occurred while processing your request.");
         }
-      } else if (error.request) {
-        // The request was made, but no response was received
-        setError("Network Error. Please check your internet connection.");
-      } else {
-        // Something happened in setting up the request that triggered an error
-        setError("An error occurred while processing your request.");
-      }
+      } else if (error.response.data.error === "User exists") {
+        setError("User exists"); // Handle the specific case where user already exists
+      } else if (error.response) {
+        setError(`Server Error: ${error.response.status}`);
+      }      
     }
   };
 
@@ -140,9 +135,6 @@ const RegistrationForm = () => {
                 />
               </div>
               {error && <p className={styles.errorText}>{error}</p>}
-              {success && (
-                <p className={styles.successText}>User created</p>
-              )}
               <div className={styles.parentContainer}>
                 <button type="submit" className={styles.btnRegistration}>
                   Register

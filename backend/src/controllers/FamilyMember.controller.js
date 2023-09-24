@@ -56,7 +56,7 @@ export const addFamilyMember = async (req, res, next) => {
       parent = await FamilyMember.findById(parentId);
 
       if (!parent) {
-        return res.status(400).json({ error: "Parent member not found." });
+        return res.status(404).json({ error: "Parent member not found." });
       }
     }
 

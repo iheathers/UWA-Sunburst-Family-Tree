@@ -1,9 +1,12 @@
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { isValidObjectId } from "mongoose";
 
 import User from "../models/User.model.js";
+
+dotenv.config();
 
 export const signUpUser = async (req, res, next) => {
   // Validate user input of dates
@@ -74,9 +77,17 @@ export const loginUser = async (req, res, next) => {
       });
     }
 
-    // TO DO: JWT to be implemented
+    // Generate JWT token on authentication
+    const tokenPayload = {
+      userId: user._id,
+    };
+    const jwtToken = await jwt.sign(tokenPayload, process.env.SECRET_TOKEN, {
+      expiresIn: "1h",
+    });
 
     res.status(200).json({
+      token: jwtToken,
+      // replace the below with just a success message?
       userId: user._id.toString(),
       accessPermissions: user.accessPermissions,
     });

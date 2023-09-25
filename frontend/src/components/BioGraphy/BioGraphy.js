@@ -8,6 +8,10 @@ import { formatDateToAustralian } from "./dateUtils"; // 导入日期格式化�
 // Internal Modules
 import styles from "./BioGraphy.module.css";
 
+// EXTRACT URL IN .env.development file
+const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
+const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
+
 const BioGraphy = ({ id }) => {
   const [artistData, setArtistData] = useState({
     name: "",
@@ -21,10 +25,6 @@ const BioGraphy = ({ id }) => {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
-  // EXTRACT URL IN .env.development file
-  const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
-  const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
   useEffect(() => {
     const fetchData = async () => {

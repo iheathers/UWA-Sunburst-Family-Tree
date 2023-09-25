@@ -1,4 +1,4 @@
-import BioGraphy from "../../bio/page";
+import BioGraphy from "@/components/BioGraphy/BioGraphy";
 
 const FamilyMemberPage = ({ params }) => {
   const { id } = params;

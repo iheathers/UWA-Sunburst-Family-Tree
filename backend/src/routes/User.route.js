@@ -9,7 +9,7 @@ import {
   deleteUser,
 } from "../controllers/User.controller.js";
 
-import { authenticateToken } from "../utils/AuthenticateJWT.1util.js";
+import { authenticateToken } from "../utils/AuthenticateJWT.util.js";
 
 const userRouter = express.Router();
 

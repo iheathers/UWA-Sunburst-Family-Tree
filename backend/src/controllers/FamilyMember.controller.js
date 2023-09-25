@@ -1,6 +1,13 @@
 import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
+import {
+  OK,
+  BAD_REQUEST,
+  NOT_FOUND,
+  UNPROCESSABLE_ENTITY,
+  INTERNAL_SERVER_ERROR,
+} from "../utils/HttpStatus.util.js";
 
 export const getFamilyMember = async (req, res, next) => {
   try {
@@ -8,22 +15,24 @@ export const getFamilyMember = async (req, res, next) => {
 
     // Check if the memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
-      return res.status(400).json({ error: "Invalid member ID format." });
+      return res
+        .status(BAD_REQUEST)
+        .json({ error: "Invalid member ID format." });
     }
 
     const familyMember = await FamilyMember.findById(memberId);
 
     if (!familyMember) {
-      // If the family member with the given ID is not found, return a 404 response with a custom error message
-      return res.status(404).json({ error: "Family member not found." });
+      // If the family member with the given ID is not found, return a NOT_FOUND response with a custom error message
+      return res.status(NOT_FOUND).json({ error: "Family member not found." });
     }
 
     // If the family member is found, return it as JSON
     res.json(familyMember);
   } catch (error) {
-    // Handle other errors and respond with a 500 status code and an error message
+    // Handle other errors and respond with a INTERNAL_SERVER_ERROR status code and an error message
     res
-      .status(500)
+      .status(INTERNAL_SERVER_ERROR)
       .json({ error: "An error occurred while fetching the family member." });
   }
 };
@@ -34,7 +43,7 @@ export const addFamilyMember = async (req, res, next) => {
   if (!validationErrors.isEmpty()) {
     const errorsArray = validationErrors.array();
     return res
-      .status(422)
+      .status(UNPROCESSABLE_ENTITY)
       .json({ message: "Validation Error", errors: errorsArray });
   }
 
@@ -56,13 +65,17 @@ export const addFamilyMember = async (req, res, next) => {
       parent = await FamilyMember.findById(parentId);
 
       if (!parent) {
-        return res.status(404).json({ error: "Parent member not found." });
+        return res
+          .status(NOT_FOUND)
+          .json({ error: "Parent member not found." });
       }
     }
 
     // If parentId is null and there is already a root node, return an error
     if (!parentId && (await FamilyMember.findOne({ parent: null }))) {
-      return res.status(400).json({ error: "Only one root node is allowed." });
+      return res
+        .status(BAD_REQUEST)
+        .json({ error: "Only one root node is allowed." });
     }
 
     const newMember = new FamilyMember({
@@ -86,7 +99,7 @@ export const addFamilyMember = async (req, res, next) => {
     res.status(201).json(newMember);
   } catch (error) {
     res
-      .status(500)
+      .status(INTERNAL_SERVER_ERROR)
       .json({ error: "An error occurred while creating a family member." });
   }
 };
@@ -99,7 +112,7 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
-        .status(400)
+        .status(BAD_REQUEST)
         .json({ error: "Invalid family member ID format." });
     }
 
@@ -107,7 +120,7 @@ export const editFamilyMemberDetails = async (req, res, next) => {
 
     // Check if family member exists
     if (!familyMember) {
-      return res.status(404).json({ error: "Family member not found." });
+      return res.status(NOT_FOUND).json({ error: "Family member not found." });
     }
 
     const { name, birthDate, deathDate, location, occupation, about } =
@@ -126,9 +139,9 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     familyMember.about = about;
 
     await familyMember.save();
-    res.status(200).json({ message: "Family member's details updated." });
+    res.status(OK).json({ message: "Family member's details updated." });
   } catch (error) {
-    res.status(500).json({
+    res.status(INTERNAL_SERVER_ERROR).json({
       error: "An error occurred while editing a family member's details.",
     });
   }
@@ -142,7 +155,7 @@ export const removeFromChart = async (req, res, next) => {
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
-        .status(400)
+        .status(BAD_REQUEST)
         .json({ error: "Invalid family member ID format." });
     }
 
@@ -150,7 +163,7 @@ export const removeFromChart = async (req, res, next) => {
 
     // Check if family member exists
     if (!familyMember) {
-      return res.status(404).json({ error: "Family member not found." });
+      return res.status(NOT_FOUND).json({ error: "Family member not found." });
     }
 
     const childrenIds = familyMember.children;
@@ -160,7 +173,7 @@ export const removeFromChart = async (req, res, next) => {
       familyMember.displayOnChart = false;
       await familyMember.save();
       return res
-        .status(200)
+        .status(OK)
         .json({ message: "Family member removed from chart." });
     }
 
@@ -175,16 +188,20 @@ export const removeFromChart = async (req, res, next) => {
       familyMember.displayOnChart = false;
       await familyMember.save();
       return res
-        .status(200)
+        .status(OK)
         .json({ message: "Family member removed from chart." });
     }
 
     // Do not remove from chart if there are children displayed
-    return res.status(422).json({
+    return res.status(UNPROCESSABLE_ENTITY).json({
       error: "Family member not removed as children are still on chart.",
     });
   } catch (error) {
-    res.status(500).json({ error: "An error occured while changing w" });
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({
+        error: "An error occured while removing family member from chart",
+      });
   }
 };
 
@@ -196,7 +213,7 @@ export const deleteFamilyMember = async (req, res, next) => {
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
-        .status(400)
+        .status(BAD_REQUEST)
         .json({ error: "Invalid family member ID format." });
     }
 
@@ -204,13 +221,13 @@ export const deleteFamilyMember = async (req, res, next) => {
 
     // Check if family member exists
     if (!familyMember) {
-      return res.status(404).json({ error: "Family member not found." });
+      return res.status(NOT_FOUND).json({ error: "Family member not found." });
     }
 
     // Check if the family member has no children
     if (!familyMember.children.length === 0) {
       return res
-        .status(400)
+        .status(BAD_REQUEST)
         .json({ error: "Cannot delete a family member with children." });
     }
 
@@ -218,7 +235,7 @@ export const deleteFamilyMember = async (req, res, next) => {
     res.status(204).json({ message: "Family member deleted." });
   } catch (error) {
     res
-      .status(500)
+      .status(INTERNAL_SERVER_ERROR)
       .json({ error: "An error occurred while deleting a family member." });
   }
 };

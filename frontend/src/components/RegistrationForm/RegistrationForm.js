@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 // Internal Modules
 import styles from "./RegistrationForm.module.css";
+import * as httpStatus from "./HttpStatus.util";
 
 const RegistrationForm = () => {
   const router = useRouter();
@@ -51,8 +52,7 @@ const RegistrationForm = () => {
       );
       
       // Check if the registration was successful
-      const HTTP_STATUS_RESOURCE_CREATED = 201;
-      if (response.status === HTTP_STATUS_RESOURCE_CREATED) {
+      if (response.status === httpStatus.CREATED) {
         router.push("/login"); // Redirect to the login page
 
       } else if (response.data.error) {
@@ -67,17 +67,12 @@ const RegistrationForm = () => {
     } catch (error) {
       // Handle any errors that occur during the registration process
       if (!error.response) {
-        if (error.request) {
-          setError("Network Error. Please check your internet connection.");
-        } else {
-          setError("An error occurred while processing your request.");
-        }
-      } else if (error.response.data.error === "User exists") {
-        setError("User exists"); // Handle the specific case where user already exists
-      } else if (error.response) {
-        setError(`Server Error: ${error.response.status}`);
-      }      
-    }
+        setError(error.request ? "Network Error. Please check your internet connection." : "An error occurred while processing your request.");
+      } else {
+        const errorMessage = error.response.data.error;
+        setError(errorMessage === "User exists" ? "User exists" : `Server Error: ${error.response.status}`);
+      }
+    }    
   };
 
   return (

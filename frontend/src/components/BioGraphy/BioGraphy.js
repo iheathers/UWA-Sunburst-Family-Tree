@@ -3,7 +3,8 @@
 // External Libraries
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { formatDateToAustralian } from "./dateUtils"; // 导入日期格式化函数
+import { formatDateToAustralian } from "./dateUtils"; // <-- Import the formatDateToAustralian function
+import Link from "next/link";
 
 // Internal Modules
 import styles from "./BioGraphy.module.css";
@@ -29,9 +30,7 @@ const BioGraphy = ({ id }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${apiUrl}${familyMemberRoute}/${id}`
-        );
+        const response = await axios.get(`${apiUrl}${familyMemberRoute}/${id}`);
         const data = response.data;
 
         if (!data.error) {
@@ -61,31 +60,45 @@ const BioGraphy = ({ id }) => {
       ) : (
         <>
           {error && <p className={styles.errorText}>{error}</p>}
-          <div className={styles.content}>
-            <div className={styles.textpart}>
-              <h1>{artistData.name}</h1>
-              <div className={styles.info}>
-                <p className={styles.label}>Birth:</p>
-                <p>{formatDateToAustralian(artistData.birthDate)}</p>
-                <p className={styles.label}>Death:</p>
-                <p>{formatDateToAustralian(artistData.deathDate)}</p>
-                <p className={styles.label}>Location:</p>
-                <p>{artistData.location}</p>
-                <p className={styles.label}>Occupation:</p>
-                <p>{artistData.occupation}</p>
-              </div>
-            </div>
-            <div className={styles.buttons}>
-              <button className={styles.editbutton}>Edit</button>
+          <div className={styles.singleline}>
+            <h1 className={styles.title}>{artistData.name}</h1>
+
+            <div className={styles.titlebuttons}>
+              <Link href="/family-tree">
+                <button className={styles.returnbutton}>Go Back</button>
+              </Link>
             </div>
           </div>
-          <div className={styles.downside}>
-            <div className={styles.downsidecard}>
-              <h3>ABOUT EMILY</h3>
-              <p>{artistData.about}</p>
-            </div>
-            {/* ... Additional sections */}
+
+          <div className={styles.card}>
+            <table className={styles.info}>
+              <tr>
+                <td className={styles.label}>Birth:</td>
+                <td className={styles.value}>
+                  {formatDateToAustralian(artistData.birthDate)}
+                </td>
+              </tr>
+              <tr>
+                <td className={styles.label}>Death:</td>
+                <td className={styles.value}>
+                  {formatDateToAustralian(artistData.deathDate)}
+                </td>
+              </tr>
+              <tr>
+                <td className={styles.label}>Location:</td>
+                <td className={styles.value}>{artistData.location}</td>
+              </tr>
+              <tr>
+                <td className={styles.label}>Occupation:</td>
+                <td className={styles.value}>{artistData.occupation}</td>
+              </tr>
+            </table>
           </div>
+          <div className={styles.card}>
+            <h3>ABOUT {artistData.name}</h3>
+            <p>{artistData.about}</p>
+          </div>
+          {/* ... Additional sections */}
         </>
       )}
     </div>

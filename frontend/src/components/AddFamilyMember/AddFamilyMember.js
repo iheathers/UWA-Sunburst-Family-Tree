@@ -7,6 +7,10 @@ import { useState } from "react";
 
 import styles from "./AddFamilyMember.module.css";
 
+const CREATED_STATUS_CODE = 201;
+const Unprocessable_Content_STATUS_CODE = 422;
+const Bad_Request_STATUS_CODE = 400;
+
 const AddFamilyMember = () => {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -66,19 +70,16 @@ const AddFamilyMember = () => {
         requestData
       );
 
-      if (response.status === 201) {
-        alert("Family member added successfully!");
+      if (response.status === CREATED_STATUS_CODE) {
         // Redirect to the family tree page
-        // router.push("/family-tree");
-      } else {
-        alert("Error");
+        router.push("/family-tree");
       }
     } catch (error) {
       // Handle any errors that occur during the registration process
       console.error("Error add:", error);
-      if (error.response.status === 422) {
+      if (error.response.status === Unprocessable_Content_STATUS_CODE) {
         setError(error.response.data.message);
-      } else if (error.response.status === 400) {
+      } else if (error.response.status === Bad_Request_STATUS_CODE) {
         setError(error.response.data.error);
       } else {
         setError(error.response.data.error);

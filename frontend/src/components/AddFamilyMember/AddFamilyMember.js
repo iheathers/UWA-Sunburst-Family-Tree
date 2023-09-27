@@ -44,40 +44,50 @@ const AddFamilyMember = () => {
     const familymemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
     try {
+      const requestData = {
+        name,
+        parentId,
+        location,
+        occupation,
+        about,
+      };
+
+      // Check if birthDate is not empty before adding it to the requestData
+      if (birthDate) {
+        requestData.birthDate = birthDate;
+      }
+
+      // Check if deathDate is not empty before adding it to the requestData
+      if (deathDate) {
+        requestData.deathDate = deathDate;
+      }
       const response = await axios.post(
         `${apiUrl}${familymemberRoute}`, // Using the API URL obtained from the .env.development file
-        {
-          name,
-          parentId,
-          birthDate,
-          deathDate,
-          location,
-          occupation,
-          about,
-        }
+        requestData
       );
 
       if (response.status === 201) {
+        alert("Family member added successfully!");
         // Redirect to the family tree page
-        router.push("/family-tree");
+        // router.push("/family-tree");
       } else {
         alert("Error");
       }
     } catch (error) {
       // Handle any errors that occur during the registration process
       console.error("Error add:", error);
-      setError(error.response.data.error);
+      if (error.response.status === 422) {
+        setError(error.response.data.message);
+      } else if (error.response.status === 400) {
+        setError(error.response.data.error);
+      } else {
+        setError(error.response.data.error);
+      }
     }
   };
 
   return (
     <>
-      <input
-        type="hidden"
-        name="parentId"
-        id="parentId"
-        value="650bfc488bb8876071f7682b"
-      />
       <div className={styles.singleline}>
         <div className={styles.title}>
           <h1>Add a Family Member</h1>
@@ -91,6 +101,17 @@ const AddFamilyMember = () => {
       <div className={styles.container}>
         <form onSubmit={handleSubmit}>
           <div className={styles.formpart}>
+            {/* later the parent id should be get from family-tree */}
+            <label htmlFor="parentId" className={styles.label}>
+              ParentId
+            </label>
+            <input
+              type="text"
+              className={styles.addinput}
+              name="parentId"
+              id="parentId"
+              onChange={handleChange}
+            />
             <label htmlFor="name" className={styles.label}>
               Name
             </label>
@@ -102,7 +123,6 @@ const AddFamilyMember = () => {
               onChange={handleChange}
               required
             />
-
             <label className={styles.label}>Birth</label>
             <input
               type="text"
@@ -110,7 +130,7 @@ const AddFamilyMember = () => {
               id="birthDate"
               name="birthDate"
               onChange={handleChange}
-              placeholder="yyyy-mm-mm"
+              placeholder="yyyy-mm-dd"
             />
             <label className={styles.label}>Death</label>
             <input
@@ -119,7 +139,7 @@ const AddFamilyMember = () => {
               id="deathDate"
               name="deathDate"
               onChange={handleChange}
-              placeholder="yyyy-mm-mm"
+              placeholder="yyyy-mm-dd"
             />
             <label className={styles.label}>Location</label>
             <input

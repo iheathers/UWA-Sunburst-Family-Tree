@@ -49,8 +49,6 @@ const EditFamilyMember = ({ id }) => {
 
           setFormData({
             name: data.name,
-            // birthDate: data.birthDate,
-            // deathDate: data.deathDate,
             birthDate: removeTimeFromDate(data.birthDate),
             deathDate: removeTimeFromDate(data.deathDate),
             location: data.location,

@@ -68,8 +68,8 @@ export const addFamilyMember = async (req, res, next) => {
 
     // If no image URL provided, then provide placeholder image
     if (!imageUrl || imageUrl === "") {
-      // TODO: add placeholder image URL
-      imageUrl = "https://placeholder-image";
+      imageUrl =
+        "https://res.cloudinary.com/dytlcj4xv/image/upload/v1696165420/blank-profile-picture-973460_1280-1024x1024_p3rbze.png";
     }
 
     const newMember = new FamilyMember({

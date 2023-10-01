@@ -47,6 +47,7 @@ export const addFamilyMember = async (req, res, next) => {
       location,
       occupation,
       about,
+      imageUrl,
     } = req.body;
 
     let parent = null;
@@ -65,6 +66,12 @@ export const addFamilyMember = async (req, res, next) => {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
+    // If no image URL provided, then provide placeholder image
+    if (!imageUrl || imageUrl === "") {
+      // TODO: add placeholder image URL
+      imageUrl = "https://placeholder-image";
+    }
+
     const newMember = new FamilyMember({
       name,
       parent: parentId ? parentId : null,
@@ -73,6 +80,7 @@ export const addFamilyMember = async (req, res, next) => {
       location,
       occupation,
       about,
+      imageUrl,
     });
 
     await newMember.save();
@@ -110,8 +118,15 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       return res.status(404).json({ error: "Family member not found." });
     }
 
-    const { name, birthDate, deathDate, location, occupation, about } =
-      req.body;
+    const {
+      name,
+      birthDate,
+      deathDate,
+      location,
+      occupation,
+      about,
+      imageUrl,
+    } = req.body;
 
     // TO DO: Validate input data
     // -- Step 1. Name must be provided
@@ -124,6 +139,7 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     familyMember.location = location;
     familyMember.occupation = occupation;
     familyMember.about = about;
+    familyMember.imageUrl = imageUrl;
 
     await familyMember.save();
     res.status(200).json({ message: "Family member's details updated." });

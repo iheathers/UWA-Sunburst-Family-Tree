@@ -34,6 +34,9 @@ const familyMemberSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  imageUrl: {
+    type: String,
+  },
 });
 
 const FamilyMember = mongoose.model("FamilyMember", familyMemberSchema);

@@ -2,6 +2,8 @@ import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
 
+const BAD_REQUEST = 400; // Remove once branch CITS5206-#135 is merged
+
 export const getFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
@@ -65,6 +67,18 @@ export const addFamilyMember = async (req, res, next) => {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
+    // Check if the name field is empty or null
+    if (!name || name.trim() === "") {
+      return res.status(BAD_REQUEST).json({ error: "Name is required." });
+    }
+
+    // Check if birthDate is greater than deathDate
+    if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ error: "Birth date cannot be greater than death date." });
+    }
+
     const newMember = new FamilyMember({
       name,
       parent: parentId ? parentId : null,
@@ -113,10 +127,17 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     const { name, birthDate, deathDate, location, occupation, about } =
       req.body;
 
-    // TO DO: Validate input data
-    // -- Step 1. Name must be provided
-    // -- Step 2. Dates are the correct format
-    // -- Step 3. All fields don't contain any malicious code
+    // Check if the name field is empty or null
+    if (!name || name.trim() === "") {
+      return res.status(BAD_REQUEST).json({ error: "Name is required." });
+    }
+
+    // Check if birthDate is greater than deathDate
+    if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ error: "Birth date cannot be greater than death date." });
+    }
 
     familyMember.name = name;
     familyMember.birthDate = birthDate;

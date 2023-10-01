@@ -95,18 +95,16 @@ export const addComment = async (req, res, next) => {
       }
   
       // Find the comment by ID
-      const comment = await Comment.findById(commentId);
-  
-      if (!comment) {
-        return res.status(404).json({ error: "Comment not found." });
-      }
-  
-      // Remove the comment
-      await comment.remove();
-  
-      // You can customize the response as needed
-      res.json({ message: "Comment deleted successfully." });
+      const deletedComment = await Comment.findByIdAndRemove(commentId);
+
+    if (!deletedComment) {
+      return res.status(404).json({ error: "Suggest not found." });
+    }
+
+    // Customize the response as needed
+    res.json({ message: "Suggest deleted successfully." });
     } catch (error) {
+      console.error("Database error:", error)
       res
         .status(500)
         .json({ error: "An error occurred while deleting the comment." });

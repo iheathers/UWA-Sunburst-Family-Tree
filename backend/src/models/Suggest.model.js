@@ -8,7 +8,7 @@ const suggestSchema = new mongoose.Schema(
     },
     author: {
       id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "User",
         required: true,
       },

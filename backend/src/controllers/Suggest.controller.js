@@ -50,10 +50,9 @@ export const addSuggest = async (req, res, next) => {
 
     res.json(newSuggestJsonRes);
   } catch (error) {
+    console.error("Database error:", error)
     // Handle errors and respond with a 500 status code and an error message
-    res
-      .status(500)
-      .json({ error: "An error occurred while creating a suggest." });
+    res.status(500).json({ error: "An error occurred while saving the suggestion." });
   }
 };
 
@@ -107,12 +106,16 @@ export const deleteSuggest = async (req, res, next) => {
         return res.status(404).json({ error: "Suggest not found." });
       }
   
-      // Remove the suggest
-      await suggest.remove();
-  
-      // Customize the response as needed
-      res.json({ message: "Suggest deleted successfully." });
+    const deletedSuggest = await Suggest.findByIdAndRemove(suggestId);
+
+    if (!deletedSuggest) {
+      return res.status(404).json({ error: "Suggest not found." });
+    }
+
+    // Customize the response as needed
+    res.json({ message: "Suggest deleted successfully." });
     } catch (error) {
+      console.error("Database error:", error)
       res
         .status(500)
         .json({ error: "An error occurred while deleting the suggest." });

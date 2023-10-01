@@ -33,8 +33,8 @@ app.use("/api/suggest", suggestRouter)
 mongoose
   .connect(process.env.MONGODB_URI || 'mongodb+srv://2217718:10295927@cluster0.wh49uil.mongodb.net/?retryWrites=true&w=majority')
   .then(
-    app.listen(process.env.PORT || 8080, () => {
-      console.log(`App listening on port ${process.env.PORT}`);
+    app.listen(process.env.PORT || 8081, () => {
+      console.log(`App listening on port`);
 
     })
   )

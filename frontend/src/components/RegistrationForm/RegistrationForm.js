@@ -19,7 +19,6 @@ const RegistrationForm = () => {
   });
 
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -58,11 +57,9 @@ const RegistrationForm = () => {
       } else if (response.data.error) {
         // If the response indicates "User exists," set the error message accordingly
         setError("User exists");
-        setSuccess(false); // Set success to false
       } else {
         // If not successful, set the success state to false and display the error message from the response
         setError(response.data.error); // Use the error message from the response for other cases
-        setSuccess(false);
       }
     } catch (error) {
       // Handle any errors that occur during the registration process

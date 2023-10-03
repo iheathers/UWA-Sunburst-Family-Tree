@@ -25,11 +25,10 @@ userRouter.post(
       .withMessage("Password cannot be empty")
       .isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters")
-      // Should we enforce the following requirements too?
-      // .matches("[0-9]")
-      // .withMessage("Password must contain a number")
-      // .matches("[A-Z]")
-      // .withMessage("Password must contain an uppercase letter")
+      .matches("[0-9]")
+      .withMessage("Password must contain a number")
+      .matches("[A-Z]")
+      .withMessage("Password must contain an uppercase letter")
       .escape(),
   ],
   signUpUser

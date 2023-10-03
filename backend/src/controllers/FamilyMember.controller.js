@@ -1,8 +1,7 @@
 import { isValidObjectId } from "mongoose";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
-
-const BAD_REQUEST = 400; // Remove once branch CITS5206-#135 is merged
+import { validateDateRange } from "../utils/FamilyMember.util.js";
 
 export const getFamilyMember = async (req, res, next) => {
   try {
@@ -68,10 +67,9 @@ export const addFamilyMember = async (req, res, next) => {
     }
 
     // Check if birthDate is greater than deathDate
-    if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
-      return res
-        .status(BAD_REQUEST)
-        .json({ error: "Birth date cannot be greater than death date." });
+    const dateRangeError = validateDateRange(birthDate, deathDate, res);
+    if (dateRangeError) {
+      return dateRangeError;
     }
 
     const newMember = new FamilyMember({
@@ -123,10 +121,9 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       req.body;
 
     // Check if birthDate is greater than deathDate
-    if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
-      return res
-        .status(BAD_REQUEST)
-        .json({ error: "Birth date cannot be greater than death date." });
+    const dateRangeError = validateDateRange(birthDate, deathDate, res);
+    if (dateRangeError) {
+      return dateRangeError;
     }
 
     familyMember.name = name;

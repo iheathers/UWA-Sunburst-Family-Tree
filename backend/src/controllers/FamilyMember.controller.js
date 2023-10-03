@@ -1,5 +1,5 @@
 import { isValidObjectId } from "mongoose";
-import { validationResult } from "express-validator";
+import { body, validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
 
 const BAD_REQUEST = 400; // Remove once branch CITS5206-#135 is merged
@@ -67,11 +67,6 @@ export const addFamilyMember = async (req, res, next) => {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
-    // Check if the name field is empty or null
-    if (!name || name.trim() === "") {
-      return res.status(BAD_REQUEST).json({ error: "Name is required." });
-    }
-
     // Check if birthDate is greater than deathDate
     if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {
       return res
@@ -126,11 +121,6 @@ export const editFamilyMemberDetails = async (req, res, next) => {
 
     const { name, birthDate, deathDate, location, occupation, about } =
       req.body;
-
-    // Check if the name field is empty or null
-    if (!name || name.trim() === "") {
-      return res.status(BAD_REQUEST).json({ error: "Name is required." });
-    }
 
     // Check if birthDate is greater than deathDate
     if (birthDate && deathDate && new Date(birthDate) > new Date(deathDate)) {

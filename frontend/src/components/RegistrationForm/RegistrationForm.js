@@ -38,8 +38,8 @@ const RegistrationForm = () => {
     }
 
     // EXTRACT URL IN .env.development file
-    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL
-    const signUpRoute = process.env.NEXT_PUBLIC_SIGNUP_ROUTE
+    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
+    const signUpRoute = process.env.NEXT_PUBLIC_SIGNUP_ROUTE;
 
     try {
       const response = await axios.post(

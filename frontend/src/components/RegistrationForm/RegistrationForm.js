@@ -37,6 +37,18 @@ const RegistrationForm = () => {
       return;
     }
 
+    // Check if password is at least 8 characters
+    if (password.length < 8) {
+        setError("Password must be at least 8 characters");
+        return;
+    }
+
+    // Check if password contains at least one number and one uppercase letter
+    if (!/([A-Z])/.test(password) || !/([0-9])/.test(password)) {
+      setError("Password must contain at least one number and one uppercase letter");
+      return;
+    }
+
     // EXTRACT URL IN .env.development file
     const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
     const signUpRoute = process.env.NEXT_PUBLIC_SIGNUP_ROUTE;
@@ -53,23 +65,29 @@ const RegistrationForm = () => {
       // Check if the registration was successful
       if (response.status === httpStatus.CREATED) {
         router.push("/login"); // Redirect to the login page
+        return;
+      } 
 
-      } else if (response.data.error) {
+      if (response.data.error) {
         // If the response indicates "User exists," set the error message accordingly
         setError("User exists");
-      } else {
-        // If not successful, set the success state to false and display the error message from the response
-        setError(response.data.error); // Use the error message from the response for other cases
-      }
+        return;
+      } 
+
+      // If not successful, set the success state to false and display the error message from the response
+      setError(response.data.error); // Use the error message from the response for other cases
+      return;
     } catch (error) {
       // Handle any errors that occur during the registration process
       if (!error.response) {
         setError(error.request ? "Network Error. Please check your internet connection." : "An error occurred while processing your request.");
-      } else {
-        const errorMessage = error.response.data.error;
-        setError(errorMessage === "User exists" ? "User exists" : `Server Error: ${error.response.status}`);
-      }
-    }    
+        return;
+      } 
+    
+      const errorMessage = error.response.data.error;
+      setError(errorMessage === "User exists" ? "User exists" : `Server Error: ${error.response.status}`);
+      return;
+    }   
   };
 
   return (

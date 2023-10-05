@@ -143,3 +143,24 @@
   margin-right: 10px;
   color: #eb455f;
 }
+
+.passwordError {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #eb455f;
+  font-weight: normal; /* 确保使用正常的字体权重 */
+  letter-spacing: normal; /* 重置任何字母间距 */
+  word-spacing: normal; /* 重置单词间距 */
+  font-stretch: normal; /* 确保字体没有被拉伸 */
+}
+
+.passwordError pre {
+  display: inline;
+  white-space: pre-line; 
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: normal; /* 设置正常字体权重 */
+  letter-spacing: normal; /* 确保字母间距为正常 */
+}

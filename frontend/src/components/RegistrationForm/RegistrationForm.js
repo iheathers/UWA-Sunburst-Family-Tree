@@ -19,6 +19,7 @@ const RegistrationForm = () => {
   });
 
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");   
 
   const handleChange = (e) => {
     setFormData({
@@ -37,17 +38,11 @@ const RegistrationForm = () => {
       return;
     }
 
-    // Check if password is at least 8 characters
-    if (password.length < 8) {
-        setError("Password must be at least 8 characters");
-        return;
-    }
-
-    // Check if password contains at least one number and one uppercase letter
-    if (!/([A-Z])/.test(password) || !/([0-9])/.test(password)) {
-      setError("Password must contain at least one number and one uppercase letter");
+    // Check password constraints
+    if (password.length < 8 || !/([A-Z])/.test(password) || !/([0-9])/.test(password)) {
+      setPasswordError("Your Password must:\nBe at least 8 characters long,\nInclude at least 1 number,\nInclude at least 1 uppercase letter");
       return;
-    }
+  }
 
     // EXTRACT URL IN .env.development file
     const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
@@ -90,77 +85,82 @@ const RegistrationForm = () => {
     }   
   };
 
-  return (
-    <div className={styles.registration}>
-      <div className={styles.centerContainer}>
-        <div className={styles.card}>
-          <div className={styles.leftSide}>
-            <h1 className={styles.h1Label}>Sunburst Family Tree</h1>
-            <h2 className={styles.h2Label}>
-              An interactive platform to view and manage your family&apos;s
-              relationships.
-            </h2>
-          </div>
-          <div className={styles.rightSide}>
-            <h1 className={styles.registrationLabel}>REGISTRATION</h1>
-            <form onSubmit={handleSubmit}>
-              <div className={styles.inputContainer}>
-                <label className={styles.label}>Email</label>
-                <br />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className={styles.registrationInput}
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label className={styles.label}>Password</label>
-                <br />
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className={styles.registrationInput}
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <label className={styles.label}>Confirm Password</label>
-                <br />
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  className={styles.registrationInput}
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              {error && <p className={styles.errorText}>{error}</p>}
-              <div className={styles.parentContainer}>
-                <button type="submit" className={styles.btnRegistration}>
-                  Register
-                </button>
-              </div>
-              <div className={styles.loginContainer}>
-                <span className={styles.loginText}>Already Have Account?</span>
-                <Link href="/login" className={styles.loginLink}>
-                  Login
-                </Link>
-              </div>
-            </form>
+    return (
+      <div className={styles.registration}>
+        <div className={styles.centerContainer}>
+          <div className={styles.card}>
+            <div className={styles.leftSide}>
+              <h1 className={styles.h1Label}>Sunburst Family Tree</h1>
+              <h2 className={styles.h2Label}>
+                An interactive platform to view and manage your family&apos;s relationships.
+              </h2>
+            </div>
+            <div className={styles.rightSide}>
+              <h1 className={styles.registrationLabel}>REGISTRATION</h1>
+              <form onSubmit={handleSubmit}>
+                <div className={styles.inputContainer}>
+                  <label className={styles.label}>Email</label>
+                  <br />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className={styles.registrationInput}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className={styles.inputContainer}>
+                  <label className={styles.label}>Password</label>
+                  <br />
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    className={styles.registrationInput}
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  
+                </div>
+                <div className={styles.inputContainer}>
+                  <label className={styles.label}>Confirm Password</label>
+                  <br />
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    className={styles.registrationInput}
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                {passwordError && (
+                    <div className={styles.passwordError}>
+                      <pre>{passwordError}</pre>
+                    </div>
+                  )}
+                {error && <p className={styles.errorText}>{error}</p>}
+                <div className={styles.parentContainer}>
+                  <button type="submit" className={styles.btnRegistration}>
+                    Register
+                  </button>
+                </div>
+                <div className={styles.loginContainer}>
+                  <span className={styles.loginText}>Already Have Account?</span>
+                  <Link href="/login" className={styles.loginLink}>
+                    Login
+                  </Link>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default RegistrationForm;

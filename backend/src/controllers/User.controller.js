@@ -1,9 +1,23 @@
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { isValidObjectId } from "mongoose";
 
 import User from "../models/User.model.js";
+
+import {
+  OK,
+  CREATED,
+  NO_CONTENT,
+  BAD_REQUEST,
+  NOT_FOUND,
+  UNPROCESSABLE_ENTITY,
+  INTERNAL_SERVER_ERROR,
+  UNAUTHORISED,
+} from "../utils/HttpStatus.util.js";
+
+dotenv.config();
 
 export const signUpUser = async (req, res, next) => {
   // Validate user input of dates
@@ -16,7 +30,7 @@ export const signUpUser = async (req, res, next) => {
       error: errorsArray,
     };
 
-    return res.status(422).json(errObj);
+    return res.status(UNPROCESSABLE_ENTITY).json(errObj);
   }
 
   const { email, password } = req.body;
@@ -28,7 +42,7 @@ export const signUpUser = async (req, res, next) => {
     });
 
     if (existingUser) {
-      return res.status(422).json({
+      return res.status(UNPROCESSABLE_ENTITY).json({
         error: "User exists",
       });
     }
@@ -44,11 +58,13 @@ export const signUpUser = async (req, res, next) => {
 
     await newUser.save();
 
-    res.status(201).json({
+    res.status(CREATED).json({
       message: "User Created",
     });
   } catch (error) {
-    res.status(500).json({ error: "An error occured while creating a user." });
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ error: "An error occured while creating a user." });
   }
 };
 
@@ -60,7 +76,7 @@ export const loginUser = async (req, res, next) => {
 
     // If user is not found
     if (!user) {
-      return res.status(401).json({
+      return res.status(UNAUTHORISED).json({
         error: "Incorrect email or password",
       });
     }
@@ -69,19 +85,29 @@ export const loginUser = async (req, res, next) => {
     const matches = await bcrypt.compare(password, user.password);
 
     if (!matches) {
-      return res.status(401).json({
+      return res.status(UNAUTHORISED).json({
         error: "Incorrect email or password",
       });
     }
 
-    // TO DO: JWT to be implemented
+    // Generate JWT token on authentication
+    const tokenPayload = {
+      userId: user._id,
+    };
+    const jwtToken = await jwt.sign(tokenPayload, process.env.SECRET_TOKEN, {
+      expiresIn: "1h",
+    });
 
-    res.status(200).json({
+    res.status(OK).json({
+      token: jwtToken,
+      // TODO: replace the below with just a success message?
       userId: user._id.toString(),
       accessPermissions: user.accessPermissions,
     });
   } catch (error) {
-    res.status(500).json({ error: "An error occured while logging in." });
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ error: "An error occured while logging in." });
   }
 };
 
@@ -92,14 +118,14 @@ export const listUsers = async (req, res, next) => {
 
     if (users.length === 0) {
       // No users found
-      res.status(404).json({ error: "No users found." });
+      res.status(NOT_FOUND).json({ error: "No users found." });
     } else {
       // Respond with the list of users
-      res.status(200).json(users);
+      res.status(OK).json(users);
     }
   } catch (error) {
     res
-      .status(500)
+      .status(INTERNAL_SERVER_ERROR)
       .json({ error: "An error occurred while fetching all users." });
   }
 };
@@ -107,6 +133,7 @@ export const listUsers = async (req, res, next) => {
 export const changeUserPermissions = async (req, res, next) => {
   try {
     const usersToUpdate = req.body;
+    const errors = [];
 
     // Fetch valid permissions values from the User schema
     const validPermissions = User.schema.path("accessPermissions").enumValues;
@@ -117,23 +144,24 @@ export const changeUserPermissions = async (req, res, next) => {
 
       // Check if the userId has a valid ObjectId format
       if (!isValidObjectId(userId)) {
-        return res.status(400).json({ error: "Invalid user ID format." });
+        errors.push(`Invalid user ID format: ${userId}`);
+        continue;
       }
 
       const newPermissions = userToUpdate.accessPermissions;
 
       // Check if permissions value provided is valid
       if (!validPermissions.includes(newPermissions)) {
-        return res.status(400).json({
-          error: `Invalid accessPermissions value: ${newPermissions}`,
-        });
+        errors.push(`Invalid accessPermissions value: ${newPermissions}`);
+        continue;
       }
 
       const user = await User.findById(userId);
 
       // Check if user exists
       if (!user) {
-        res.status(404).json({ error: `Cannot find user with ID ${userId}` });
+        errors.push(`Cannot find user with ID: ${userId}`);
+        continue;
       } else {
         user.accessPermissions = newPermissions;
       }
@@ -141,10 +169,15 @@ export const changeUserPermissions = async (req, res, next) => {
       await user.save();
     }
 
-    res.status(200).json({ message: "User permissions updated." });
+    // Return any errors encountered
+    if (errors.length > 0) {
+      return res.status(BAD_REQUEST).json({ error: errors });
+    }
+
+    res.status(OK).json({ message: "User permissions updated." });
   } catch (error) {
     res
-      .status(500)
+      .status(INTERNAL_SERVER_ERROR)
       .json({ error: "An error occurred while changing user permissions." });
   }
 };
@@ -155,7 +188,7 @@ export const deleteUser = async (req, res, next) => {
 
     // Check if the userId has a valid ObjectId format
     if (!isValidObjectId(userId)) {
-      return res.status(400).json({ error: "Invalid user ID format." });
+      return res.status(BAD_REQUEST).json({ error: "Invalid user ID format." });
     }
 
     const user = await User.findById(userId);
@@ -163,14 +196,15 @@ export const deleteUser = async (req, res, next) => {
     // Check if user exists
     if (!user) {
       return res
-        .status(404)
+        .status(NOT_FOUND)
         .json({ error: `Cannot find user with ID ${userId}` });
     }
 
     await user.deleteOne();
-    res.status(204).json({ message: "User deleted." });
+    res.status(NO_CONTENT).json({ message: "User deleted." });
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while deleting a user." });
-    console.log(error);
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ error: "An error occurred while deleting a user." });
   }
 };

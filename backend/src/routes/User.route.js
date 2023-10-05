@@ -9,6 +9,8 @@ import {
   deleteUser,
 } from "../controllers/User.controller.js";
 
+import { authenticateToken } from "../utils/AuthenticateJWT.util.js";
+
 const userRouter = express.Router();
 
 userRouter.post(
@@ -19,10 +21,10 @@ userRouter.post(
 
 userRouter.post("/login", loginUser);
 
-userRouter.get("/", listUsers);
+userRouter.get("/", authenticateToken, listUsers);
 
-userRouter.patch("/", changeUserPermissions);
+userRouter.patch("/", authenticateToken, changeUserPermissions);
 
-userRouter.delete("/:id", deleteUser);
+userRouter.delete("/:id", authenticateToken, deleteUser);
 
 export default userRouter;

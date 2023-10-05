@@ -9,12 +9,15 @@ import {
   deleteFamilyMember,
 } from "../controllers/FamilyMember.controller.js";
 
+import { authenticateToken } from "../utils/AuthenticateJWT.util.js";
+
 const familyMemberRouter = express.Router();
 
-familyMemberRouter.get("/:id", getFamilyMember);
+familyMemberRouter.get("/:id", authenticateToken, getFamilyMember);
 
 familyMemberRouter.post(
   "/",
+  authenticateToken,
   [
     body("birthDate").isDate().optional(),
     body("deathDate").isDate().optional(),
@@ -22,10 +25,14 @@ familyMemberRouter.post(
   addFamilyMember
 );
 
-familyMemberRouter.patch("/:id/edit", editFamilyMemberDetails);
+familyMemberRouter.patch(
+  "/:id/edit",
+  authenticateToken,
+  editFamilyMemberDetails
+);
 
-familyMemberRouter.patch("/:id", removeFromChart);
+familyMemberRouter.patch("/:id", authenticateToken, removeFromChart);
 
-familyMemberRouter.delete("/:id", deleteFamilyMember);
+familyMemberRouter.delete("/:id", authenticateToken, deleteFamilyMember);
 
 export default familyMemberRouter;

@@ -121,7 +121,7 @@ const SunburstChart = ({ data }) => {
 
     newChart.listen("pointClick", (event) => {
       // TODO: EXTRACT ID INSTEAD
-      const pointName = event?.point?.get("id");
+      const pointName = event?.point?.get("_id");
 
       console.log({ pointName });
 

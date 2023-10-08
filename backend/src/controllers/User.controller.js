@@ -12,7 +12,7 @@ export const signUpUser = async (req, res, next) => {
   if (!validationErrors.isEmpty()) {
     const errorsArray = validationErrors.array();
     const errObj = {
-      message: "Validation Error",
+      error: "Validation Error",
       error: errorsArray,
     };
 
@@ -61,7 +61,7 @@ export const loginUser = async (req, res, next) => {
     // If user is not found
     if (!user) {
       return res.status(401).json({
-        error: "User does not exist",
+        error: "Incorrect email or password",
       });
     }
 
@@ -70,11 +70,11 @@ export const loginUser = async (req, res, next) => {
 
     if (!matches) {
       return res.status(401).json({
-        error: "Invalid credentials",
+        error: "Incorrect email or password",
       });
     }
 
-    // TODO: Implement JWT authentication
+    // TO DO: JWT to be implemented
 
     res.status(200).json({
       userId: user._id.toString(),

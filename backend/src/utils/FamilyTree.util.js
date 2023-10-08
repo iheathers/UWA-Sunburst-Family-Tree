@@ -16,7 +16,7 @@ export const buildFamilyTree = (allMembers) => {
 export const buildFamilyNode = (member, allMembers) => {
   // Initialize a new node with basic properties (_id, name, children)
   const node = {
-    _id: member._id,
+    id: member._id,
     name: member.name,
     children: [],
   };

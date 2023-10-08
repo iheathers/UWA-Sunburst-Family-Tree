@@ -1,0 +1,82 @@
+.singleline {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    flex: 1;
+    text-align: center;
+    color: #2F5D62;
+}
+
+.titlebuttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+
+.returnbutton,
+.addbutton {
+    padding: 6px 35px;
+    border-radius: 6px;
+    border: none;
+}
+
+.returnbutton {
+    background-color: #EB455F;
+    color: #ffffff;
+}
+
+.returnbutton:hover {
+    color: #D11D3C;
+    background-color: #ffffff;
+    border: #D11D3C solid 1px;
+}
+
+.editbutton {
+    background-color: #2F5D62;
+    color: #ffffff;
+}
+
+.editbutton:hover {
+    color: #2F5D62;
+    background-color: #ffffff;
+    border: #2F5D62 solid 1px;
+}
+
+.container {
+    display: grid;
+    place-items: center;
+
+}
+
+.formpart {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 10px;
+}
+
+
+.label {
+    color: #7F7E83;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+
+.editinput {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+    border: 1px solid #F4F4F4;
+    background-color: #F4F4F4;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #7F7E83;
+    margin-bottom: 8px;
+}

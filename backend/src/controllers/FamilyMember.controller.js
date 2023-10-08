@@ -124,18 +124,33 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     // -- Step 2. Dates are the correct format
     // -- Step 3. All fields don't contain any malicious code
 
+    // If an image is provided, update the imageUrl with its path
     if (req.file) {
       familyMember.imageUrl = req.file.path;
+      // If there is no image stored, set the imageUrl to the default profile picture
     } else if (!familyMember.imageUrl) {
       familyMember.imageUrl = defaultProfilePicture;
     }
 
-    familyMember.name = name;
-    familyMember.birthDate = birthDate;
-    familyMember.deathDate = deathDate;
-    familyMember.location = location;
-    familyMember.occupation = occupation;
-    familyMember.about = about;
+    // Update the fields that are provided in the request body
+    if (name) {
+      familyMember.name = name;
+    }
+    if (birthDate) {
+      familyMember.birthDate = birthDate;
+    }
+    if (deathDate) {
+      familyMember.deathDate = deathDate;
+    }
+    if (location) {
+      familyMember.location = location;
+    }
+    if (occupation) {
+      familyMember.occupation = occupation;
+    }
+    if (about) {
+      familyMember.about = about;
+    }
 
     await familyMember.save();
     res.status(200).json({ message: "Family member's details updated." });

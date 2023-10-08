@@ -1,6 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
+import { defaultProfilePicture } from "../utils/UploadImage.util.js";
 
 export const getFamilyMember = async (req, res, next) => {
   try {
@@ -50,7 +51,6 @@ export const addFamilyMember = async (req, res, next) => {
     } = req.body;
 
     let parent = null;
-    let imageUrl = req.body.imageUrl;
 
     // Check if parentId is provided and not null
     if (parentId) {
@@ -66,11 +66,8 @@ export const addFamilyMember = async (req, res, next) => {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
-    // If no image URL provided, then provide placeholder image
-    if (!imageUrl || imageUrl.trim() === "") {
-      imageUrl =
-        "https://res.cloudinary.com/dytlcj4xv/image/upload/v1696165420/blank-profile-picture-973460_1280-1024x1024_p3rbze.png";
-    }
+    // If no image is uploaded, then set the profile picture as a default image
+    const imageUrl = req.file ? req.file.path : defaultProfilePicture;
 
     const newMember = new FamilyMember({
       name,
@@ -119,20 +116,19 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       return res.status(404).json({ error: "Family member not found." });
     }
 
-    const {
-      name,
-      birthDate,
-      deathDate,
-      location,
-      occupation,
-      about,
-      imageUrl,
-    } = req.body;
+    const { name, birthDate, deathDate, location, occupation, about } =
+      req.body;
 
     // TO DO: Validate input data
     // -- Step 1. Name must be provided
     // -- Step 2. Dates are the correct format
     // -- Step 3. All fields don't contain any malicious code
+
+    if (req.file) {
+      familyMember.imageUrl = req.file.path;
+    } else if (!familyMember.imageUrl) {
+      familyMember.imageUrl = defaultProfilePicture;
+    }
 
     familyMember.name = name;
     familyMember.birthDate = birthDate;
@@ -140,7 +136,6 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     familyMember.location = location;
     familyMember.occupation = occupation;
     familyMember.about = about;
-    familyMember.imageUrl = imageUrl;
 
     await familyMember.save();
     res.status(200).json({ message: "Family member's details updated." });

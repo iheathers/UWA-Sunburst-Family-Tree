@@ -49,14 +49,17 @@ const LoginForm = () => {
       if (response.status === SUCCESS_STATUS_CODE) {
         // If successful, set the success state to true and clear the error state
         setError("");
+        
+        // Store the JWT token in the local storage
+        const { token } = response.data;
+        localStorage.setItem("jwtToken", token);
+
         // Redirect to the family tree page
         router.push("/family-tree");
       } else {
-        // If unsuccessful, set the error state to the error message
         setError(errormessage);
       }
     } catch (error) {
-      // Handle any errors that occur during the registration process
       console.error("Error login:", error);
       setError(errormessage);
     }

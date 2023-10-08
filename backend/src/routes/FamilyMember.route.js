@@ -1,4 +1,5 @@
 import express from "express";
+
 import { body } from "express-validator";
 
 import {
@@ -11,6 +12,7 @@ import {
 
 const familyMemberRouter = express.Router();
 
+// GET a family member by ID
 familyMemberRouter.get("/:id", getFamilyMember);
 
 familyMemberRouter.post(

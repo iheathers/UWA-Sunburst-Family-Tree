@@ -1,4 +1,5 @@
 import FamilyMember from "../models/FamilyMember.model.js";
+import Suggest from "../models/Suggest.model.js";
 import { buildFamilyTree } from "../utils/FamilyTree.util.js";
 
 export const getFamilyTree = async (req, res, next) => {

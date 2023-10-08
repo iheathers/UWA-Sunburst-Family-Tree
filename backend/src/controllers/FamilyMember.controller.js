@@ -1,7 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
-
+// get
 export const getFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
@@ -27,7 +27,7 @@ export const getFamilyMember = async (req, res, next) => {
       .json({ error: "An error occurred while fetching the family member." });
   }
 };
-
+// add
 export const addFamilyMember = async (req, res, next) => {
   const validationErrors = validationResult(req);
 
@@ -90,6 +90,7 @@ export const addFamilyMember = async (req, res, next) => {
       .json({ error: "An error occurred while creating a family member." });
   }
 };
+
 
 export const editFamilyMemberDetails = async (req, res, next) => {
   try {
@@ -191,6 +192,9 @@ export const removeFromChart = async (req, res, next) => {
 export const deleteFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
+
+
+
 
     // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format

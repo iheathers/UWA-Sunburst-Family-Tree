@@ -1,3 +1,4 @@
+// Utility function to upload images to the backend server
 import fs from "fs/promises";
 import multer from "multer";
 import path from "path";

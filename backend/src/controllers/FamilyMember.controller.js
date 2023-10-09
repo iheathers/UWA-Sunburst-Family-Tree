@@ -204,10 +204,8 @@ export const removeFromChart = async (req, res, next) => {
       return res.status(404).json({ error: "Family member not found." });
     }
 
-    const childrenIds = familyMember.children;
-
-    // If there are no children, remove the family member from the chart
-    if (childrenIds.length === 0) {
+    // If there are no children, remove from chart
+    if (familyMember?.children?.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
       return res
@@ -216,12 +214,13 @@ export const removeFromChart = async (req, res, next) => {
     }
 
     // Get children displayed on chart
+    // FIXME: NOT SURE WHY THIS IS REQUIRED IN THE FIRST PLACE
     const childrenOnChart = await FamilyMember.find({
       _id: { $in: childrenIds }, // should this be _id or id?
       displayOnChart: true,
     });
 
-    // Remove from chart if there are no children displayed
+    // Remove from chart if there are no children displayed: FIXME: DUPLICATE CODE?
     if (childrenOnChart.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
@@ -235,7 +234,7 @@ export const removeFromChart = async (req, res, next) => {
       error: "Family member not removed as children are still on chart.",
     });
   } catch (error) {
-    res.status(500).json({ error: "An error occured while changing w" });
+    res.status(500).json({ error: "An error occurred while removing child" });
   }
 };
 

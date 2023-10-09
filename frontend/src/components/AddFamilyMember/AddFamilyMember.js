@@ -46,7 +46,7 @@ const AddFamilyMember = ({ params }) => {
     try {
       const requestData = {
         name,
-        parentId: id,
+        parentId: id === "root" ? null : id,
         location,
         occupation,
         about,

@@ -59,7 +59,7 @@ const FamilyTreePage = () => {
                 width: "100vw",
               }}
             >
-              <button onClick={addRootNode}>
+              <button>
                 <Link
                   href={{
                     pathname: "/family-member/root/add",

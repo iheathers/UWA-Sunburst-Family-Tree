@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import anychart from "anychart";
 
 import { useRouter } from "next/navigation";
@@ -12,12 +13,15 @@ import "anychart/dist/fonts/css/anychart-font.min.css";
 
 import "./SunburstChart.css";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
+
 const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
 // FIXME: REFACTOR IF POSSIBLE TO USE CONFIG OBJECT
 
 const SunburstChart = ({ data }) => {
   const [selectedId, setSelectedId] = useState("");
+  // const [isDeleted, setIsDeleted] = useState(false);
   // const [children, setChildren] = useState([]); // Track children of selected node
   const [chart, setChart] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null); // Track selected node
@@ -30,13 +34,13 @@ const SunburstChart = ({ data }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    const handleViewProfile = () => {
-      if (selectedId) {
-        router.push(`${familyMemberRoute}/${selectedId}`);
-      }
-    };
+  const handleViewProfile = () => {
+    if (selectedId) {
+      router.push(`${familyMemberRoute}/${selectedId}`);
+    }
+  };
 
+  useEffect(() => {
     // TODO: CHECK IF CHILDREN IS EMPTY, THEN REMOVE NODE
     // ONE APPROACH . TRY TO FIND ANOTHER EASY APPROACH AS WELL
 
@@ -105,7 +109,7 @@ const SunburstChart = ({ data }) => {
       // TODO: EXTRACT ID INSTEAD
       const selectedId = event?.point?.get("id");
 
-      console.log({ selectedId });
+      console.log(anychart.data);
 
       // there is documention to search the treeData and find children if other methods does not work
 
@@ -137,7 +141,7 @@ const SunburstChart = ({ data }) => {
     router.push(`/family-member/${selectedId}/add`);
   };
 
-  const handleRemoveNode = () => {
+  const handleRemoveNode = async () => {
     const treeData = anychart.data.tree(data, "as-tree");
 
     const dataItem = treeData.search("id", selectedId);
@@ -145,8 +149,47 @@ const SunburstChart = ({ data }) => {
 
     const children = dataItem.getChildren();
 
+    console.log({ children });
+
     // console.log({ childs });
     if (children.length === 0) {
+      try {
+        const response = await axios.delete(
+          `${apiUrl}${familyMemberRoute}/${selectedId}`
+        );
+
+        if (!response.data.error) {
+          // Update the artistData state with the fetched data
+          // setData(response.data);
+          console.log("Node Removed");
+
+          // const treeData = anychart.data.tree(data, 'as-tree');
+
+          // var item = treeData.search('id', '8');
+          console.log("Before", treeData);
+          // // Removes child of tree.
+          // treeData.removeChild(dataItem);
+
+          console.log("After", treeData);
+
+          // var chart = anychart.ganttProject();
+          chart.data(treeData);
+          // chart.title('Removes child of tree');
+          // chart.container("container");
+          // chart.draw();
+
+          const parent = dataItem.getParent();
+          parent.removeChild(dataItem);
+          chart.draw();
+          // console.log({ parent });
+          // setIsDeleted(true);
+          // dataItem.remove(selectedNode);
+          // chart.draw();
+        }
+      } catch (error) {
+        // Handle errors if the data fetching fails
+        console.error("Error fetching data:", error);
+      }
       return console.log("Remove Node");
     }
 

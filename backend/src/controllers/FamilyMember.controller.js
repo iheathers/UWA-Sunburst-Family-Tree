@@ -67,10 +67,10 @@ export const addFamilyMember = async (req, res, next) => {
     }
 
     // Check if birthDate is greater than deathDate
-    const dateRangeError = validateDateRange(birthDate, deathDate, res);
-    if (dateRangeError) {
-      return dateRangeError;
-    }
+    // const dateRangeError = validateDateRange(birthDate, deathDate, res);
+    // if (dateRangeError) {
+    //   return dateRangeError;
+    // }
 
     const newMember = new FamilyMember({
       name,
@@ -121,10 +121,10 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       req.body;
 
     // Check if birthDate is greater than deathDate
-    const dateRangeError = validateDateRange(birthDate, deathDate, res);
-    if (dateRangeError) {
-      return dateRangeError;
-    }
+    // const dateRangeError = validateDateRange(birthDate, deathDate, res);
+    // if (dateRangeError) {
+    //   return dateRangeError;
+    // }
 
     familyMember.name = name;
     familyMember.birthDate = birthDate;
@@ -161,10 +161,10 @@ export const removeFromChart = async (req, res, next) => {
       return res.status(404).json({ error: "Family member not found." });
     }
 
-    const childrenIds = familyMember.children;
+    // const childrenIds = familyMember.children;
 
     // If there are no children, remove from chart
-    if (childrenIds.length === 0) {
+    if (familyMember?.children?.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
       return res
@@ -173,26 +173,27 @@ export const removeFromChart = async (req, res, next) => {
     }
 
     // Get children displayed on chart
-    const childrenOnChart = await FamilyMember.find({
-      _id: { $in: childrenIds }, // should this be _id or id?
-      displayOnChart: true,
-    });
+    // FIXME: NOT SURE WHY THIS IS REQUIRED IN THE FIRST PLACE
+    // const childrenOnChart = await FamilyMember.find({
+    //   _id: { $in: childrenIds }, // should this be _id or id?
+    //   displayOnChart: true,
+    // });
 
     // Remove from chart if there are no children displayed
-    if (childrenOnChart.length === 0) {
-      familyMember.displayOnChart = false;
-      await familyMember.save();
-      return res
-        .status(200)
-        .json({ message: "Family member removed from chart." });
-    }
+    // if (childrenOnChart.length === 0) {
+    //   familyMember.displayOnChart = false;
+    //   await familyMember.save();
+    //   return res
+    //     .status(200)
+    //     .json({ message: "Family member removed from chart." });
+    // }
 
     // Do not remove from chart if there are children displayed
     return res.status(422).json({
       error: "Family member not removed as children are still on chart.",
     });
   } catch (error) {
-    res.status(500).json({ error: "An error occured while changing w" });
+    res.status(500).json({ error: "An error occurred while removing child" });
   }
 };
 

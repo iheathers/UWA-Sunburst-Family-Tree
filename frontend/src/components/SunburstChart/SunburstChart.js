@@ -109,8 +109,6 @@ const SunburstChart = ({ data }) => {
       // TODO: EXTRACT ID INSTEAD
       const selectedId = event?.point?.get("id");
 
-      console.log(anychart.data);
-
       // there is documention to search the treeData and find children if other methods does not work
 
       // console.log(event?.point?.get);
@@ -159,28 +157,16 @@ const SunburstChart = ({ data }) => {
         );
 
         if (!response.data.error) {
-          // Update the artistData state with the fetched data
-          // setData(response.data);
-          console.log("Node Removed");
-
-          // const treeData = anychart.data.tree(data, 'as-tree');
-
-          // var item = treeData.search('id', '8');
-          console.log("Before", treeData);
-          // // Removes child of tree.
-          // treeData.removeChild(dataItem);
-
-          console.log("After", treeData);
-
           // var chart = anychart.ganttProject();
-          chart.data(treeData);
-          // chart.title('Removes child of tree');
-          // chart.container("container");
+          // chart.data(treeData);
+
+          // const parent = dataItem.getParent();
+          // parent.removeChild(dataItem);
           // chart.draw();
 
-          const parent = dataItem.getParent();
-          parent.removeChild(dataItem);
-          chart.draw();
+          // FIXME: RERENDER THE PAGE INSTEAD OF RELOADING
+          window.location.reload();
+
           // console.log({ parent });
           // setIsDeleted(true);
           // dataItem.remove(selectedNode);

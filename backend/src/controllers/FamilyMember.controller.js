@@ -2,6 +2,7 @@ import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
 import { defaultProfilePicture } from "../utils/UploadImage.util.js";
+import { validateDateRange } from "../utils/FamilyMember.util.js";
 
 export const getFamilyMember = async (req, res, next) => {
   try {
@@ -68,6 +69,11 @@ export const addFamilyMember = async (req, res, next) => {
 
     // If no image is uploaded, then set the profile picture as a default image
     const imageUrl = req.file ? req.file.path : defaultProfilePicture;
+    // Check if birthDate is greater than deathDate
+    const dateRangeError = validateDateRange(birthDate, deathDate, res);
+    if (dateRangeError) {
+      return dateRangeError;
+    }
 
     const newMember = new FamilyMember({
       name,
@@ -119,10 +125,11 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     const { name, birthDate, deathDate, location, occupation, about } =
       req.body;
 
-    // TO DO: Validate input data
-    // -- Step 1. Name must be provided
-    // -- Step 2. Dates are the correct format
-    // -- Step 3. All fields don't contain any malicious code
+    // Check if birthDate is greater than deathDate
+    const dateRangeError = validateDateRange(birthDate, deathDate, res);
+    if (dateRangeError) {
+      return dateRangeError;
+    }
 
     // If an image is provided, update the imageUrl with its path
     if (req.file) {

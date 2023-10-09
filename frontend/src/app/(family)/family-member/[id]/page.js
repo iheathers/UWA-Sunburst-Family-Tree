@@ -5,8 +5,6 @@ const FamilyMemberPage = ({ params }) => {
 
   return (
     <div>
-      <h1>Family Member</h1>
-      <p>{id}</p>
       <BioGraphy id={id} />
     </div>
   );

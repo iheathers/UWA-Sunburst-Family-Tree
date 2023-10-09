@@ -20,9 +20,8 @@ const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 // FIXME: REFACTOR IF POSSIBLE TO USE CONFIG OBJECT
 
 const SunburstChart = ({ data }) => {
+  const treeData = anychart.data.tree(data, "as-tree");
   const [selectedId, setSelectedId] = useState("");
-  // const [isDeleted, setIsDeleted] = useState(false);
-  // const [children, setChildren] = useState([]); // Track children of selected node
   const [chart, setChart] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null); // Track selected node
 
@@ -40,12 +39,21 @@ const SunburstChart = ({ data }) => {
     }
   };
 
+  const handleEditNode = () => {
+    if (selectedId) {
+      router.push(`${familyMemberRoute}/${selectedId}/edit`);
+    }
+  };
+
   useEffect(() => {
     // TODO: CHECK IF CHILDREN IS EMPTY, THEN REMOVE NODE
     // ONE APPROACH . TRY TO FIND ANOTHER EASY APPROACH AS WELL
 
-    if (chart) {
+    if (chart && selectedId) {
       chart.contextMenu().itemsFormatter(function (items) {
+        const dataItem = treeData.search("id", selectedId);
+        const children = dataItem?.getChildren();
+
         delete items["full-screen-separator"];
         delete items["share-with"];
         delete items["about"];
@@ -67,17 +75,18 @@ const SunburstChart = ({ data }) => {
 
           items["edit-node"] = {
             text: "Edit Node",
-            action: () => {
-              console.log("Edit Member");
-            },
+            action: handleEditNode,
             index: index - 0.03,
           };
 
-          items["remove-node"] = {
-            text: "Remove Node",
-            action: handleRemoveNode,
-            index: index - 0.02,
-          };
+          //  if selected node has children, do not allow to remove
+          if (children.length === 0) {
+            items["remove-node"] = {
+              text: "Remove Node",
+              action: handleRemoveNode,
+              index: index - 0.02,
+            };
+          }
 
           items["node-action-seperator"] = {
             index: index - 0.01,
@@ -95,6 +104,25 @@ const SunburstChart = ({ data }) => {
     };
   }, [selectedId, router, chart, selectedNode]); // Include selectedNode as a dependency
 
+  // const filterData = (data, idToRemove) => {
+  //   const filteredData = [];
+
+  //   for (const node of data) {
+  //     if (node.id !== idToRemove) {
+  //       const newNode = { ...node }; // Create a shallow copy of the node
+
+  //       if (node.children && node.children.length > 0) {
+  //         // Recursively filter children
+  //         newNode.children = filterData(node.children, idToRemove);
+  //       }
+
+  //       filteredData.push(newNode);
+  //     }
+  //   }
+
+  //   return filteredData;
+  // };
+
   const drawChart = (chartData) => {
     if (chart) {
       chart.dispose();
@@ -108,13 +136,6 @@ const SunburstChart = ({ data }) => {
     newChart.listen("pointClick", (event) => {
       // TODO: EXTRACT ID INSTEAD
       const selectedId = event?.point?.get("id");
-
-      // there is documention to search the treeData and find children if other methods does not work
-
-      // console.log(event?.point?.get);
-      // const pointChildren = event?.point?.get("children");
-
-      // console.log({ pointChildren });
 
       // TODO: GET CHILDREN FOR SELECTED NODE TO CHECK WHETHER IT CAN BE REMOVED OR NOT
       if (selectedId) {
@@ -140,16 +161,11 @@ const SunburstChart = ({ data }) => {
   };
 
   const handleRemoveNode = async () => {
-    const treeData = anychart.data.tree(data, "as-tree");
-
     const dataItem = treeData.search("id", selectedId);
     console.log({ dataItem });
 
     const children = dataItem.getChildren();
 
-    console.log({ children });
-
-    // console.log({ childs });
     if (children.length === 0) {
       try {
         const response = await axios.delete(
@@ -157,20 +173,14 @@ const SunburstChart = ({ data }) => {
         );
 
         if (!response.data.error) {
-          // var chart = anychart.ganttProject();
-          // chart.data(treeData);
-
           // const parent = dataItem.getParent();
           // parent.removeChild(dataItem);
+          // const filteredData = filterData(data, selectedId);
+          // const filteredTreeData = anychart.data.tree(filteredData, "as-tree");
+          // chart.data(filteredTreeData);
           // chart.draw();
-
           // FIXME: RERENDER THE PAGE INSTEAD OF RELOADING
           window.location.reload();
-
-          // console.log({ parent });
-          // setIsDeleted(true);
-          // dataItem.remove(selectedNode);
-          // chart.draw();
         }
       } catch (error) {
         // Handle errors if the data fetching fails

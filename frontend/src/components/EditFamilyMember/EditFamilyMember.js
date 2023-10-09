@@ -16,14 +16,6 @@ const EditFamilyMember = ({ id }) => {
   const router = useRouter();
 
   // get the data of the family member
-  const [artistData, setArtistData] = useState({
-    name: "",
-    birthDate: "",
-    deathDate: "",
-    location: "",
-    occupation: "",
-    about: "",
-  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,6 +26,7 @@ const EditFamilyMember = ({ id }) => {
     about: "",
   });
 
+  // TODO: THE FOLLOWING STATE IS NOT BEING USED. REMOVE IT IF NOT NEEDED
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,7 +38,7 @@ const EditFamilyMember = ({ id }) => {
 
         if (!data.error) {
           // Update the artistData state with the fetched data
-          setArtistData(data);
+          setFormData(data);
 
           setFormData({
             name: data.name,

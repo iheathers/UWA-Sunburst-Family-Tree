@@ -20,7 +20,7 @@ const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 // FIXME: REFACTOR IF POSSIBLE TO USE CONFIG OBJECT
 
 const SunburstChart = ({ data }) => {
-  const treeData = anychart.data.tree(data, "as-tree");
+  const treeData = anychart.data?.tree(data, "as-tree");
   const [selectedId, setSelectedId] = useState("");
   const [chart, setChart] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null); // Track selected node

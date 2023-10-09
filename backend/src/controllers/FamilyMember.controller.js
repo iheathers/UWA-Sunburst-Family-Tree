@@ -1,6 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
+import { defaultProfilePicture } from "../utils/UploadImage.util.js";
 import { validateDateRange } from "../utils/FamilyMember.util.js";
 
 export const getFamilyMember = async (req, res, next) => {
@@ -66,6 +67,9 @@ export const addFamilyMember = async (req, res, next) => {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
+    // If no image is uploaded, then set the profile picture as a default image
+    const imageUrl = req.file ? req.file.path : defaultProfilePicture;
+
     // Check if birthDate is greater than deathDate
     const dateRangeError = validateDateRange(birthDate, deathDate, res);
     if (dateRangeError) {
@@ -80,6 +84,7 @@ export const addFamilyMember = async (req, res, next) => {
       location,
       occupation,
       about,
+      imageUrl,
     });
 
     await newMember.save();
@@ -126,12 +131,33 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       return dateRangeError;
     }
 
-    familyMember.name = name;
-    familyMember.birthDate = birthDate;
-    familyMember.deathDate = deathDate;
-    familyMember.location = location;
-    familyMember.occupation = occupation;
-    familyMember.about = about;
+    // If an image is provided, update the imageUrl with its path
+    if (req.file) {
+      familyMember.imageUrl = req.file.path;
+      // If there is no image stored, set the imageUrl to the default profile picture
+    } else if (!familyMember.imageUrl) {
+      familyMember.imageUrl = defaultProfilePicture;
+    }
+
+    // Update the fields that are provided in the request body
+    if (name) {
+      familyMember.name = name;
+    }
+    if (birthDate) {
+      familyMember.birthDate = birthDate;
+    }
+    if (deathDate) {
+      familyMember.deathDate = deathDate;
+    }
+    if (location) {
+      familyMember.location = location;
+    }
+    if (occupation) {
+      familyMember.occupation = occupation;
+    }
+    if (about) {
+      familyMember.about = about;
+    }
 
     await familyMember.save();
     res.status(200).json({ message: "Family member's details updated." });

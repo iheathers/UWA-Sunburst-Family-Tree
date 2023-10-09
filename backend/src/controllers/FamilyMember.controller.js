@@ -69,6 +69,7 @@ export const addFamilyMember = async (req, res, next) => {
 
     // If no image is uploaded, then set the profile picture as a default image
     const imageUrl = req.file ? req.file.path : defaultProfilePicture;
+
     // Check if birthDate is greater than deathDate
     const dateRangeError = validateDateRange(birthDate, deathDate, res);
     if (dateRangeError) {
@@ -99,7 +100,6 @@ export const addFamilyMember = async (req, res, next) => {
     res
       .status(500)
       .json({ error: "An error occurred while creating a family member." });
-    console.log(error);
   }
 };
 

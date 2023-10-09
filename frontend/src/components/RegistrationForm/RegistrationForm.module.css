@@ -143,3 +143,24 @@
   margin-right: 10px;
   color: #eb455f;
 }
+
+.passwordError {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #eb455f;
+  font-weight: normal; 
+  letter-spacing: normal; 
+  word-spacing: normal; 
+  font-stretch: normal;
+}
+
+.passwordError pre {
+  display: inline;
+  white-space: pre-line; 
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: normal; 
+  letter-spacing: normal; 
+}

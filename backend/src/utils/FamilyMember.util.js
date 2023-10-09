@@ -1,3 +1,4 @@
+// Utility function to check whether the birthDate and deathDate provided are logical
 const BAD_REQUEST = 400; // Remove once branch CITS5206-#135 is merged
 // import { BAD_REQUEST } from "../utils/HttpStatus.util.js"; // Add once branch CITS5206-#135 is merged
 

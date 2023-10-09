@@ -9,14 +9,17 @@ import {
   deleteFamilyMember,
 } from "../controllers/FamilyMember.controller.js";
 
+import { uploadFile } from "../utils/UploadImage.util.js";
+
 const familyMemberRouter = express.Router();
 
 familyMemberRouter.get("/:id", getFamilyMember);
 
 familyMemberRouter.post(
   "/",
+  uploadFile,
   [
-    body("name").trim().notEmpty().withMessage("Name is required"),
+    body("name").trim().not().isEmpty().withMessage("Name is required"),
     body("birthDate").isDate().withMessage("Invalid date format").optional(),
     body("deathDate").isDate().withMessage("Invalid date format").optional(),
   ],
@@ -25,7 +28,17 @@ familyMemberRouter.post(
 
 familyMemberRouter.patch(
   "/:id/edit",
-  body("name").trim().notEmpty().withMessage("Name is required"),
+  uploadFile,
+  [
+    body("name")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Name is required")
+      .optional(),
+    body("birthDate").isDate().withMessage("Invalid date format").optional(),
+    body("deathDate").isDate().withMessage("Invalid date format").optional(),
+  ],
   editFamilyMemberDetails
 );
 

@@ -31,6 +31,10 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Reset error and passwordError messages at the beginning
+    setError("");
+    setPasswordError("");
+    
     const { email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {

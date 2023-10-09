@@ -204,10 +204,8 @@ export const removeFromChart = async (req, res, next) => {
       return res.status(404).json({ error: "Family member not found." });
     }
 
-    // const childrenIds = familyMember.children;
-
-    // If there are no children, remove the family member from the chart
-    if (childrenIds.length === 0) {
+    // If there are no children, remove from chart
+    if (familyMember?.children?.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
       return res
@@ -217,19 +215,19 @@ export const removeFromChart = async (req, res, next) => {
 
     // Get children displayed on chart
     // FIXME: NOT SURE WHY THIS IS REQUIRED IN THE FIRST PLACE
-    // const childrenOnChart = await FamilyMember.find({
-    //   _id: { $in: childrenIds }, // should this be _id or id?
-    //   displayOnChart: true,
-    // });
+    const childrenOnChart = await FamilyMember.find({
+      _id: { $in: childrenIds }, // should this be _id or id?
+      displayOnChart: true,
+    });
 
-    // Remove from chart if there are no children displayed
-    // if (childrenOnChart.length === 0) {
-    //   familyMember.displayOnChart = false;
-    //   await familyMember.save();
-    //   return res
-    //     .status(200)
-    //     .json({ message: "Family member removed from chart." });
-    // }
+    // Remove from chart if there are no children displayed: FIXME: DUPLICATE CODE?
+    if (childrenOnChart.length === 0) {
+      familyMember.displayOnChart = false;
+      await familyMember.save();
+      return res
+        .status(200)
+        .json({ message: "Family member removed from chart." });
+    }
 
     // Do not remove from chart if there are children displayed
     return res.status(422).json({

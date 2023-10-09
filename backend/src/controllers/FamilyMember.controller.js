@@ -4,6 +4,7 @@ import FamilyMember from "../models/FamilyMember.model.js";
 import { defaultProfilePicture } from "../utils/UploadImage.util.js";
 import { validateDateRange } from "../utils/FamilyMember.util.js";
 
+// Get a family member by their ID
 export const getFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
@@ -30,7 +31,9 @@ export const getFamilyMember = async (req, res, next) => {
   }
 };
 
+// Add a new family member
 export const addFamilyMember = async (req, res, next) => {
+  // Return any input validation errors
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
@@ -105,7 +108,9 @@ export const addFamilyMember = async (req, res, next) => {
   }
 };
 
+// Edit details of a family member
 export const editFamilyMemberDetails = async (req, res, next) => {
+  // Return any input validation errors
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
@@ -151,7 +156,7 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       familyMember.imageUrl = defaultProfilePicture;
     }
 
-    // Update the fields that are provided in the request body
+    // Only update the fields that are provided in the request body
     if (name) {
       familyMember.name = name;
     }
@@ -180,11 +185,11 @@ export const editFamilyMemberDetails = async (req, res, next) => {
   }
 };
 
+// Remove a family member from the sunburst chart
 export const removeFromChart = async (req, res, next) => {
   try {
     const memberId = req.params.id;
 
-    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
@@ -201,7 +206,7 @@ export const removeFromChart = async (req, res, next) => {
 
     const childrenIds = familyMember.children;
 
-    // If there are no children, remove from chart
+    // If there are no children, remove the family member from the chart
     if (childrenIds.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
@@ -234,11 +239,11 @@ export const removeFromChart = async (req, res, next) => {
   }
 };
 
+// Delete a family member from the database
 export const deleteFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
 
-    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
@@ -254,7 +259,7 @@ export const deleteFamilyMember = async (req, res, next) => {
     }
 
     // Check if the family member has no children
-    if (!familyMember.children.length === 0) {
+    if (familyMember.children.length > 0) {
       return res
         .status(400)
         .json({ error: "Cannot delete a family member with children." });

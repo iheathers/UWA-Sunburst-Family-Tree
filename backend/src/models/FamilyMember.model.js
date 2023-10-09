@@ -35,11 +35,10 @@ const familyMemberSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    imageUrl: {
+      type: String,
+    },
   },
-  imageUrl: {
-    type: String,
-  },
-});
   {
     // Define schema options
     versionKey: false, // Exclude the '__v' field

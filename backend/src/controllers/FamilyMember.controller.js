@@ -71,9 +71,11 @@ export const addFamilyMember = async (req, res, next) => {
     const imageUrl = req.file ? req.file.path : defaultProfilePicture;
 
     // Check if birthDate is greater than deathDate
-    const dateRangeError = validateDateRange(birthDate, deathDate, res);
-    if (dateRangeError) {
-      return dateRangeError;
+    if (birthDate && deathDate) {
+      const dateRangeError = validateDateRange(birthDate, deathDate, res);
+      if (dateRangeError) {
+        return dateRangeError;
+      }
     }
 
     const newMember = new FamilyMember({
@@ -104,10 +106,18 @@ export const addFamilyMember = async (req, res, next) => {
 };
 
 export const editFamilyMemberDetails = async (req, res, next) => {
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    const errorsArray = validationErrors.array();
+    return res
+      .status(422)
+      .json({ message: "Validation Error", errors: errorsArray });
+  }
+
   try {
     const memberId = req.params.id;
 
-    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
@@ -126,9 +136,11 @@ export const editFamilyMemberDetails = async (req, res, next) => {
       req.body;
 
     // Check if birthDate is greater than deathDate
-    const dateRangeError = validateDateRange(birthDate, deathDate, res);
-    if (dateRangeError) {
-      return dateRangeError;
+    if (birthDate && deathDate) {
+      const dateRangeError = validateDateRange(birthDate, deathDate, res);
+      if (dateRangeError) {
+        return dateRangeError;
+      }
     }
 
     // If an image is provided, update the imageUrl with its path

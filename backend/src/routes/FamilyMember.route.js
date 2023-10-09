@@ -17,19 +17,28 @@ familyMemberRouter.get("/:id", getFamilyMember);
 
 familyMemberRouter.post(
   "/",
+  uploadFile,
   [
-    body("name").trim().notEmpty().withMessage("Name is required"),
+    body("name").trim().not().isEmpty().withMessage("Name is required"),
     body("birthDate").isDate().withMessage("Invalid date format").optional(),
     body("deathDate").isDate().withMessage("Invalid date format").optional(),
   ],
-  uploadFile,
   addFamilyMember
 );
 
 familyMemberRouter.patch(
   "/:id/edit",
   uploadFile,
-  body("name").trim().notEmpty().withMessage("Name is required"),
+  [
+    body("name")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Name is required")
+      .optional(),
+    body("birthDate").isDate().withMessage("Invalid date format").optional(),
+    body("deathDate").isDate().withMessage("Invalid date format").optional(),
+  ],
   editFamilyMemberDetails
 );
 

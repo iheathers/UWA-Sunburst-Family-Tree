@@ -1,10 +1,11 @@
 "use client";
 
 // External Libraries
-import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { formatDateToAustralian } from "./dateUtils"; // <-- Import the formatDateToAustralian function
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
+
+import { formatDateToAustralian } from "./dateUtils"; // <-- Import the formatDateToAustralian function
 
 // Internal Modules
 import styles from "./BioGraphy.module.css";
@@ -72,26 +73,28 @@ const BioGraphy = ({ id }) => {
 
           <div className={styles.card}>
             <table className={styles.info}>
-              <tr>
-                <td className={styles.label}>Birth:</td>
-                <td className={styles.value}>
-                  {formatDateToAustralian(artistData.birthDate)}
-                </td>
-              </tr>
-              <tr>
-                <td className={styles.label}>Death:</td>
-                <td className={styles.value}>
-                  {formatDateToAustralian(artistData.deathDate)}
-                </td>
-              </tr>
-              <tr>
-                <td className={styles.label}>Location:</td>
-                <td className={styles.value}>{artistData.location}</td>
-              </tr>
-              <tr>
-                <td className={styles.label}>Occupation:</td>
-                <td className={styles.value}>{artistData.occupation}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td className={styles.label}>Birth:</td>
+                  <td className={styles.value}>
+                    {formatDateToAustralian(artistData.birthDate)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.label}>Death:</td>
+                  <td className={styles.value}>
+                    {formatDateToAustralian(artistData.deathDate)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className={styles.label}>Location:</td>
+                  <td className={styles.value}>{artistData.location}</td>
+                </tr>
+                <tr>
+                  <td className={styles.label}>Occupation:</td>
+                  <td className={styles.value}>{artistData.occupation}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div className={styles.card}>

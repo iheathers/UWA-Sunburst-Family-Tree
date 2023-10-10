@@ -8,8 +8,8 @@ const commentSchema = new mongoose.Schema(
     },
     author: {
       id: {
-        type: String,
-        ref: "User",
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "FamilyMember",
         required: true,
       },
       name: {
@@ -21,10 +21,10 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-  },
-
+  }
 );
 
 const Comment = mongoose.model("Comment", commentSchema);
 
 export default Comment;
+

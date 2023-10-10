@@ -8,8 +8,8 @@ const suggestSchema = new mongoose.Schema(
     },
     author: {
       id: {
-        type: String,
-        ref: "User",
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "FamilyMember", 
         required: true,
       },
       name: {
@@ -21,10 +21,10 @@ const suggestSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-  },
-  
+  }
 );
 
 const Suggest = mongoose.model("Suggest", suggestSchema);
 
 export default Suggest;
+

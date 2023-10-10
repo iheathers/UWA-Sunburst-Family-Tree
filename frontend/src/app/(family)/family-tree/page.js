@@ -1,20 +1,20 @@
 "use client";
 
-// Testing
-
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import data from "@/data/familyTree/farsiSimpleFamilyTree.json";
+
+import Link from "next/link";
+
+import React, { useState, useEffect } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import SunburstChart from "@/components/SunburstChart/SunburstChart";
 import ZoomController from "@/components/ZoomController/ZoomController";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
+const familyTreeRoute = process.env.NEXT_PUBLIC_FAMILY_TREE_ROUTE;
+
 const FamilyTreePage = () => {
   const [data, setData] = useState(null);
-
-  const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
-  const familyTreeRoute = process.env.NEXT_PUBLIC_FAMILY_TREE_ROUTE;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +40,28 @@ const FamilyTreePage = () => {
       <TransformWrapper>
         <TransformComponent>
           {/* TODO: IF API CALL RERENDER EVERY COMPONENT, EXTRACT THE CHART IN SEPARATE FILE */}
-          <SunburstChart data={data} />
+          {data && data?.length === 0 ? (
+            <div
+              style={{
+                display: "grid",
+                placeItems: "center",
+                height: "100vh",
+                width: "100vw",
+              }}
+            >
+              <button>
+                <Link
+                  href={{
+                    pathname: "/family-member/root/add",
+                  }}
+                >
+                  Add Root Node
+                </Link>
+              </button>
+            </div>
+          ) : (
+            <SunburstChart data={data} />
+          )}
         </TransformComponent>
         <ZoomController />
       </TransformWrapper>

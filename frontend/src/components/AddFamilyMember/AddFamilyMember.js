@@ -6,16 +6,23 @@ import axios from "axios";
 import { useState } from "react";
 
 import styles from "./AddFamilyMember.module.css";
+import { useRouter } from "next/navigation";
 
 const CREATED_STATUS_CODE = 201;
 const Unprocessable_Content_STATUS_CODE = 422;
 const Bad_Request_STATUS_CODE = 400;
 
-const AddFamilyMember = () => {
+// EXTRACT URL IN .env.development file
+const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
+const familymemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
+
+const AddFamilyMember = ({ params }) => {
+  const { id } = params;
+
+  const router = useRouter();
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
-    parentId: "",
     birthDate: "",
     deathDate: "",
     location: "",
@@ -33,24 +40,13 @@ const AddFamilyMember = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      name,
-      parentId,
-      birthDate,
-      deathDate,
-      location,
-      occupation,
-      about,
-    } = formData;
-
-    // EXTRACT URL IN .env.development file
-    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
-    const familymemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
+    const { name, birthDate, deathDate, location, occupation, about } =
+      formData;
 
     try {
       const requestData = {
         name,
-        parentId,
+        parentId: id === "root" ? null : id,
         location,
         occupation,
         about,
@@ -102,17 +98,6 @@ const AddFamilyMember = () => {
       <div className={styles.container}>
         <form onSubmit={handleSubmit}>
           <div className={styles.formpart}>
-            {/* later the parent id should be get from family-tree */}
-            <label htmlFor="parentId" className={styles.label}>
-              ParentId
-            </label>
-            <input
-              type="text"
-              className={styles.addinput}
-              name="parentId"
-              id="parentId"
-              onChange={handleChange}
-            />
             <label htmlFor="name" className={styles.label}>
               Name
             </label>

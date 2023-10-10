@@ -30,72 +30,7 @@
                             "children": [
                               {
                                 "name": "Node 11",
-                                "children": [
-                                  {
-                                    "name": "Node 12",
-                                    "children": [
-                                      {
-                                        "name": "Node 10",
-                                        "children": [
-                                          {
-                                            "name": "Node 11",
-                                            "children": [
-                                              {
-                                                "name": "Node 12",
-                                                "children": [
-                                                  {
-                                                    "name": "Node 10",
-                                                    "children": [
-                                                      {
-                                                        "name": "Node 11",
-                                                        "children": [
-                                                          {
-                                                            "name": "Node 12",
-                                                            "children": [
-                                                              {
-                                                                "name": "Node 10",
-                                                                "children": [
-                                                                  {
-                                                                    "name": "Node 11",
-                                                                    "children": [
-                                                                      {
-                                                                        "name": "Node 12",
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "Node 10",
-                                                                            "children": [
-                                                                              {
-                                                                                "name": "Node 11",
-                                                                                "children": [
-                                                                                  {
-                                                                                    "name": "Node 12",
-                                                                                    "children": []
-                                                                                  }
-                                                                                ]
-                                                                              }
-                                                                            ]
-                                                                          }
-                                                                        ]
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
+                                "children": []
                               }
                             ]
                           }

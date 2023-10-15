@@ -171,6 +171,7 @@ function UserMaintenance() {
     patchdata.push(...unAdmin, ...updatedNonAdminUsers);
 
     try {
+      console.log("patchdata", patchdata);
       const response = await axios.patch(`${apiUrl}${userUrl}`, patchdata);
 
       if (response.status === 200) {
@@ -186,24 +187,27 @@ function UserMaintenance() {
         if (updatedLocalUser) {
           // Redirect to the /family-tree page
           router.push("/family-tree");
+        } else {
+          setData((prevData) => {
+            const updatedData = prevData.map((user) => {
+              const updatedUser = patchdata.find(
+                (patchdata) => patchdata._id === user._id
+              );
+              if (updatedUser) {
+                return updatedUser;
+              } else {
+                return user;
+              }
+            });
+
+            return updatedData;
+          });
+
+          if (showPaginationButtonsRef.current) {
+            // If pagination buttons are visible, then reset the current page to 1
+            setCurrentPage(1);
+          }
         }
-
-        window.location.reload();
-
-        // setData((prevData) => {
-        //   const updatedData = prevData.map((user) => {
-        //     const updatedUser = patchdata.find(
-        //       (patchdata) => patchdata._id === user._id
-        //     );
-        //     if (updatedUser) {
-        //       return updatedUser;
-        //     } else {
-        //       return user;
-        //     }
-        //   });
-
-        //   return updatedData;
-        // });
       } else {
         toast.error("Failed to update admin status.", {
           position: toast.POSITION.BOTTOM_RIGHT,

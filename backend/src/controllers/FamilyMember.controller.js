@@ -1,7 +1,10 @@
 import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
+import { defaultProfilePicture } from "../utils/UploadImage.util.js";
+import { validateDateRange } from "../utils/FamilyMember.util.js";
 
+// Get a family member by their ID
 export const getFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
@@ -28,7 +31,9 @@ export const getFamilyMember = async (req, res, next) => {
   }
 };
 
+// Add a new family member
 export const addFamilyMember = async (req, res, next) => {
+  // Return any input validation errors
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
@@ -65,6 +70,17 @@ export const addFamilyMember = async (req, res, next) => {
       return res.status(400).json({ error: "Only one root node is allowed." });
     }
 
+    // If no image is uploaded, then set the profile picture as a default image
+    const imageUrl = req.file ? req.file.path : defaultProfilePicture;
+
+    // Check if birthDate is greater than deathDate
+    if (birthDate && deathDate) {
+      const dateRangeError = validateDateRange(birthDate, deathDate, res);
+      if (dateRangeError) {
+        return dateRangeError;
+      }
+    }
+
     const newMember = new FamilyMember({
       name,
       parent: parentId ? parentId : null,
@@ -73,6 +89,7 @@ export const addFamilyMember = async (req, res, next) => {
       location,
       occupation,
       about,
+      imageUrl,
     });
 
     await newMember.save();
@@ -91,11 +108,21 @@ export const addFamilyMember = async (req, res, next) => {
   }
 };
 
+// Edit details of a family member
 export const editFamilyMemberDetails = async (req, res, next) => {
+  // Return any input validation errors
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    const errorsArray = validationErrors.array();
+    return res
+      .status(422)
+      .json({ message: "Validation Error", errors: errorsArray });
+  }
+
   try {
     const memberId = req.params.id;
 
-    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
@@ -113,17 +140,41 @@ export const editFamilyMemberDetails = async (req, res, next) => {
     const { name, birthDate, deathDate, location, occupation, about } =
       req.body;
 
-    // TO DO: Validate input data
-    // -- Step 1. Name must be provided
-    // -- Step 2. Dates are the correct format
-    // -- Step 3. All fields don't contain any malicious code
+    // Check if birthDate is greater than deathDate
+    if (birthDate && deathDate) {
+      const dateRangeError = validateDateRange(birthDate, deathDate, res);
+      if (dateRangeError) {
+        return dateRangeError;
+      }
+    }
 
-    familyMember.name = name;
-    familyMember.birthDate = birthDate;
-    familyMember.deathDate = deathDate;
-    familyMember.location = location;
-    familyMember.occupation = occupation;
-    familyMember.about = about;
+    // If an image is provided, update the imageUrl with its path
+    if (req.file) {
+      familyMember.imageUrl = req.file.path;
+      // If there is no image stored, set the imageUrl to the default profile picture
+    } else if (!familyMember.imageUrl) {
+      familyMember.imageUrl = defaultProfilePicture;
+    }
+
+    // Only update the fields that are provided in the request body
+    if (name) {
+      familyMember.name = name;
+    }
+    if (birthDate) {
+      familyMember.birthDate = birthDate;
+    }
+    if (deathDate) {
+      familyMember.deathDate = deathDate;
+    }
+    if (location) {
+      familyMember.location = location;
+    }
+    if (occupation) {
+      familyMember.occupation = occupation;
+    }
+    if (about) {
+      familyMember.about = about;
+    }
 
     await familyMember.save();
     res.status(200).json({ message: "Family member's details updated." });
@@ -134,11 +185,11 @@ export const editFamilyMemberDetails = async (req, res, next) => {
   }
 };
 
+// Remove a family member from the sunburst chart
 export const removeFromChart = async (req, res, next) => {
   try {
     const memberId = req.params.id;
 
-    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
@@ -153,10 +204,8 @@ export const removeFromChart = async (req, res, next) => {
       return res.status(404).json({ error: "Family member not found." });
     }
 
-    const childrenIds = familyMember.children;
-
     // If there are no children, remove from chart
-    if (childrenIds.length === 0) {
+    if (familyMember?.children?.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
       return res
@@ -165,12 +214,13 @@ export const removeFromChart = async (req, res, next) => {
     }
 
     // Get children displayed on chart
+    // FIXME: NOT SURE WHY THIS IS REQUIRED IN THE FIRST PLACE
     const childrenOnChart = await FamilyMember.find({
       _id: { $in: childrenIds }, // should this be _id or id?
       displayOnChart: true,
     });
 
-    // Remove from chart if there are no children displayed
+    // Remove from chart if there are no children displayed: FIXME: DUPLICATE CODE?
     if (childrenOnChart.length === 0) {
       familyMember.displayOnChart = false;
       await familyMember.save();
@@ -184,15 +234,15 @@ export const removeFromChart = async (req, res, next) => {
       error: "Family member not removed as children are still on chart.",
     });
   } catch (error) {
-    res.status(500).json({ error: "An error occured while changing w" });
+    res.status(500).json({ error: "An error occurred while removing child" });
   }
 };
 
+// Delete a family member from the database
 export const deleteFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
 
-    // Is there a way to use the getFamilyMember function within this function to produce familyMember?
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {
       return res
@@ -208,7 +258,7 @@ export const deleteFamilyMember = async (req, res, next) => {
     }
 
     // Check if the family member has no children
-    if (!familyMember.children.length === 0) {
+    if (familyMember.children.length > 0) {
       return res
         .status(400)
         .json({ error: "Cannot delete a family member with children." });

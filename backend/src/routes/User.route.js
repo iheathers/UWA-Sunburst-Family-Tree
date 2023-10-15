@@ -13,7 +13,24 @@ const userRouter = express.Router();
 
 userRouter.post(
   "/signup",
-  [body("email").isEmail(), body("password").not().isEmpty()],
+  [
+    body("email")
+      .trim()
+      .isEmail()
+      .withMessage("Invalid email entered")
+      .escape(),
+    body("password")
+      .not()
+      .isEmpty()
+      .withMessage("Password cannot be empty")
+      .isLength({ min: 8 })
+      .withMessage("Password must be at least 8 characters")
+      .matches("[0-9]")
+      .withMessage("Password must contain a number")
+      .matches("[A-Z]")
+      .withMessage("Password must contain an uppercase letter")
+      .escape(),
+  ],
   signUpUser
 );
 

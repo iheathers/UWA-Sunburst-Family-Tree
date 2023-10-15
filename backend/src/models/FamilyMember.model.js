@@ -35,6 +35,9 @@ const familyMemberSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    imageUrl: {
+      type: String,
+    },
   },
   {
     // Define schema options

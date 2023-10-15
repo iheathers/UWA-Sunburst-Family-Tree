@@ -9,6 +9,7 @@ import axios from "axios";
 
 import SunburstChart from "@/components/SunburstChart/SunburstChart";
 import ZoomController from "@/components/ZoomController/ZoomController";
+import ChartTitle from "@/components/ChartTitle/ChartTitle";
 
 const FamilyTreePage = () => {
   const [data, setData] = useState(null);
@@ -37,6 +38,7 @@ const FamilyTreePage = () => {
 
   return (
     <>
+      <ChartTitle />
       <TransformWrapper>
         <TransformComponent>
           {/* TODO: IF API CALL RERENDER EVERY COMPONENT, EXTRACT THE CHART IN SEPARATE FILE */}

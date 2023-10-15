@@ -1,0 +1,39 @@
+.singleline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.title {
+    flex: 1;
+    text-align: center;
+    color: #2F5D62;
+}
+
+.titlebuttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.ionbutton {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #EEEEEE;
+    border: #878370 solid 1px;
+    font-size: 32px;
+    text-align: center;
+    line-height: 48px;
+    margin-right: 10px;
+    padding-left: 4px;
+    padding-top: 2px;
+}
+
+
+
+.ionbutton:hover {
+    background-color: #ffffff;
+    cursor: pointer;
+}

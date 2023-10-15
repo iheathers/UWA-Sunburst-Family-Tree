@@ -5,6 +5,7 @@ import {
   signUpUser,
   loginUser,
   listUsers,
+  getUserPermission,
   changeUserPermissions,
   deleteUser,
 } from "../controllers/User.controller.js";
@@ -37,6 +38,8 @@ userRouter.post(
 userRouter.post("/login", loginUser);
 
 userRouter.get("/", listUsers);
+
+userRouter.get("/permission/:id", getUserPermission);
 
 userRouter.patch("/", changeUserPermissions);
 

@@ -5,6 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import SunburstChart from "@/components/SunburstChart/SunburstChart";
@@ -16,8 +17,33 @@ const familyTreeRoute = process.env.NEXT_PUBLIC_FAMILY_TREE_ROUTE;
 
 const FamilyTreePage = () => {
   const [data, setData] = useState(null);
+  const [permission, setPermission] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
+    const getPermission = async () => {
+      try {
+        // Get permissions first
+        const idToFind = localStorage.getItem("userId");
+        if (!idToFind) {
+          // Handle the case where "userId" is not set in localStorage
+          router.push("/login");
+          return;
+        }
+        const permissionResponse = await axios.get(
+          `${apiUrl}/user/permission/${idToFind}`
+        );
+        const permissionData = permissionResponse.data;
+
+        setPermission(permissionData);
+      } catch (error) {
+        console.log(error);
+        router.push("/login");
+      }
+    };
+
+    getPermission();
+
     const fetchData = async () => {
       try {
         const response = await axios.get(`${apiUrl}${familyTreeRoute}`);
@@ -34,11 +60,11 @@ const FamilyTreePage = () => {
 
     // Call the fetchData function when the component mounts
     fetchData();
-  }, [apiUrl, familyTreeRoute]);
+  }, [apiUrl, router, familyTreeRoute]);
 
   return (
     <>
-      <ChartTitle />
+      <ChartTitle permission={permission} />
       <TransformWrapper>
         <TransformComponent>
           {/* TODO: IF API CALL RERENDER EVERY COMPONENT, EXTRACT THE CHART IN SEPARATE FILE */}
@@ -62,7 +88,7 @@ const FamilyTreePage = () => {
               </button>
             </div>
           ) : (
-            <SunburstChart data={data} />
+            <SunburstChart data={data} permission={permission} />
           )}
         </TransformComponent>
         <ZoomController />

@@ -19,18 +19,13 @@ const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
 // FIXME: REFACTOR IF POSSIBLE TO USE CONFIG OBJECT
 
-const SunburstChart = ({ data }) => {
+const SunburstChart = ({ data, permission }) => {
   const treeData = anychart.data?.tree(data, "as-tree");
   const [selectedId, setSelectedId] = useState("");
   const [chart, setChart] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null); // Track selected node
 
   const router = useRouter();
-
-  // const userAccessPermissions = localStorage.getItem("accessPermissions"); //may be later we can use this to show/hide buttons
-  // const userAccessPermissions = "ADMIN";
-  // const userAccessPermissions = "VIEW_CHART_ONLY";
-  const userAccessPermissions = "VIEW_CHART_AND_BIO";
 
   useEffect(() => {
     if (data) {
@@ -66,18 +61,15 @@ const SunburstChart = ({ data }) => {
         const index = items["save-chart-as"]?.index;
 
         if (index && selectedNode) {
-          if (
-            userAccessPermissions === "VIEW_CHART_AND_BIO" ||
-            userAccessPermissions === "ADMIN"
-          ) {
+          if (permission === "VIEW_CHART_AND_BIO" || permission === "ADMIN") {
             items["view-profile"] = {
               text: "View Profile",
               action: handleViewProfile,
               index: index - 0.05,
             };
           }
-          if (userAccessPermissions === "ADMIN") {
-            // If the userAccessPermissions is "ADMIN," show all options
+          if (permission === "ADMIN") {
+            // If the permission is "ADMIN," show all options
             items["add-node"] = {
               text: "Add Child",
               action: handleAddChild,
@@ -112,7 +104,7 @@ const SunburstChart = ({ data }) => {
         chart.contextMenu().itemsProvider(null);
       }
     };
-  }, [selectedId, router, chart, selectedNode, userAccessPermissions]); // Include selectedNode as a dependency
+  }, [selectedId, router, chart, selectedNode, permission]); // Include selectedNode as a dependency
 
   // const filterData = (data, idToRemove) => {
   //   const filteredData = [];

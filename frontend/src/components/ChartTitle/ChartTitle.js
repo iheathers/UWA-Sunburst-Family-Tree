@@ -7,31 +7,26 @@ import { BiRefresh, BiLogOut } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import styles from "./ChartTitle.module.css";
 
-const ChartTitle = () => {
+const ChartTitle = ({ permission }) => {
   const router = useRouter();
   const handleRefreshClick = () => {
     window.location.reload();
   };
   const handleLogoutClick = () => {
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("userId");
     router.push("/login");
   };
-
-  //   const userAccessPermissions = "VIEW_CHART_ONLY";
-  const userAccessPermissions = "ADMIN";
-  //   const userAccessPermissions = localStorage.getItem("accessPermissions"); //may be later we can use this to show/hide buttons
-
-  const requiredPermission = "ADMIN";
 
   const [showUserlistButton, setShowUserlistButton] = useState(false);
 
   useEffect(() => {
-    if (userAccessPermissions === requiredPermission) {
+    if (permission === "ADMIN") {
       setShowUserlistButton(true);
     } else {
       setShowUserlistButton(false);
     }
-  }, [userAccessPermissions]);
+  }, [permission]);
 
   return (
     <div className={styles.singleline}>

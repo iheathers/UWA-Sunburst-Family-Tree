@@ -29,7 +29,33 @@ const BioGraphy = ({ id }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  const [showDeathRow, setShowDeathRow] = useState(true);
+  const [accessPermissions, setAccessPermissions] = useState("");
+
   useEffect(() => {
+    const checkEditPermission = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/user`);
+        const data = response.data;
+        const idToFind = localStorage.getItem("userId");
+        // const idToFind = "651a680a90ba50e65767c1bf";
+        const matchingUser = data.find((user) => user._id === idToFind);
+
+        if (matchingUser) {
+          const accessPermissions = matchingUser.accessPermissions;
+          setAccessPermissions(accessPermissions);
+        }
+      } catch (error) {
+        console.error("Error checking permissions:", error);
+      }
+    };
+
+    checkEditPermission();
+
+    const savedShowDeathRow = sessionStorage.getItem("showDeathRow");
+    if (savedShowDeathRow !== null) {
+      setShowDeathRow(savedShowDeathRow === "true");
+    }
     const fetchData = async () => {
       try {
         const response = await axios.get(`${apiUrl}${familyMemberRoute}/${id}`);
@@ -55,6 +81,11 @@ const BioGraphy = ({ id }) => {
     fetchData();
   }, [apiUrl, familyMemberRoute, id]);
 
+  const toggleDeathRow = () => {
+    setShowDeathRow(!showDeathRow);
+    sessionStorage.setItem("showDeathRow", !showDeathRow);
+  };
+
   const router = useRouter();
 
   const handleEdit = () => {
@@ -73,9 +104,17 @@ const BioGraphy = ({ id }) => {
             <h1 className={styles.title}>{artistData.name}</h1>
 
             <div className={styles.titlebuttons}>
-              <button className={styles.editbutton} onClick={handleEdit}>
-                Edit
+              <button
+                className={styles.toggleDeathRowButton}
+                onClick={toggleDeathRow}
+              >
+                {showDeathRow ? "Hide Death" : "Show Death"}
               </button>
+              {accessPermissions.includes("ADMIN") && (
+                <button className={styles.editbutton} onClick={handleEdit}>
+                  Edit
+                </button>
+              )}
 
               <Link href="/family-tree">
                 <button className={styles.returnbutton}>Go Back</button>
@@ -92,12 +131,15 @@ const BioGraphy = ({ id }) => {
                     {formatDateToAustralian(artistData.birthDate)}
                   </td>
                 </tr>
-                <tr>
-                  <td className={styles.label}>Death:</td>
-                  <td className={styles.value}>
-                    {formatDateToAustralian(artistData.deathDate)}
-                  </td>
-                </tr>
+                {showDeathRow && artistData.deathDate && (
+                  <tr>
+                    <td className={styles.label}>Death:</td>
+                    <td className={styles.value}>
+                      {formatDateToAustralian(artistData.deathDate)}
+                    </td>
+                  </tr>
+                )}
+
                 <tr>
                   <td className={styles.label}>Location:</td>
                   <td className={styles.value}>{artistData.location}</td>

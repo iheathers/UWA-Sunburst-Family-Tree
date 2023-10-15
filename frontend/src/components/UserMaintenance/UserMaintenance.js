@@ -13,27 +13,24 @@ function UserMaintenance() {
   const [data, setData] = useState([]);
 
   // get all users from the database
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}${userUrl}`);
-        const data = response.data;
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}${userUrl}`);
+      const newData = response.data;
 
-        if (!data.error) {
-          setData(data);
-        } else {
-          setError(data.error);
-        }
-      } catch (error) {
-        // Handle errors if the data fetching fails
-        console.error("Error fetching data:", error);
-        setError("Failed to fetch data.");
+      if (!newData.error) {
+        setData(newData);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  useEffect(() => {
     // Call the fetchData function when the component mounts
     fetchData();
-  }, [apiUrl]);
+    console.log("useEffect1 executed");
+  }, []);
 
   // Filter the data into two arrays: one for admin users, and one for non-admin users
   const adminUsers = data.filter((user) => user.accessPermissions === "ADMIN");
@@ -59,8 +56,10 @@ function UserMaintenance() {
   const totalPageCount = Math.ceil(totalUsers / usersPerPage);
 
   useEffect(() => {
+    const totalPageCount = Math.ceil(nonAdminUsers.length / usersPerPage);
     setShowPaginationButtons(totalPageCount > 1);
-  }, [totalPageCount]);
+    console.log("useEffect2 executed");
+  }, [nonAdminUsers]);
 
   // Create an array of page numbers
   const pageNumbers = [];
@@ -85,6 +84,7 @@ function UserMaintenance() {
         setSearchedUsers(filteredUsers);
       }
     }
+    console.log("useEffect3 executed");
   }, [searchText, nonAdminUsers, searchedUsers]);
 
   // Delete a user
@@ -172,17 +172,32 @@ function UserMaintenance() {
         toast.success("Success to change !", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
-        const updatedData = data.map((user) => {
-          const updatedUser = patchdata.find(
-            (patchdata) => patchdata._id === user._id
-          );
-          if (updatedUser) {
-            return updatedUser;
-          } else {
-            return user;
-          }
+        // const updatedData = data.map((user) => {
+        //   const updatedUser = patchdata.find(
+        //     (patchdata) => patchdata._id === user._id
+        //   );
+        //   if (updatedUser) {
+        //     return updatedUser;
+        //   } else {
+        //     return user;
+        //   }
+        // });
+        // setData(updatedData);
+        setData((prevData) => {
+          // 计算新的数据
+          const updatedData = prevData.map((user) => {
+            const updatedUser = patchdata.find(
+              (patchdata) => patchdata._id === user._id
+            );
+            if (updatedUser) {
+              return updatedUser;
+            } else {
+              return user;
+            }
+          });
+
+          return updatedData;
         });
-        setData(updatedData);
       } else {
         toast.error("Failed to update admin status.", {
           position: toast.POSITION.BOTTOM_RIGHT,

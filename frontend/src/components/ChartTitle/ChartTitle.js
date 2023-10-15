@@ -36,7 +36,7 @@ const ChartTitle = ({ permission }) => {
 
       <div className={styles.titlebuttons}>
         {showUserlistButton && (
-          <Link href="/usermaintanence">
+          <Link href="/usermaintenance">
             <button className={styles.ionbutton}>
               <AiOutlineSetting />
             </button>

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,6 +13,8 @@ function UserMaintenance() {
   const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
   const userUrl = process.env.NEXT_PUBLIC_USERLIST_ROUTE;
   const [data, setData] = useState([]);
+
+  const router = useRouter();
 
   // get all users from the database
   const fetchData = async () => {
@@ -29,7 +33,6 @@ function UserMaintenance() {
   useEffect(() => {
     // Call the fetchData function when the component mounts
     fetchData();
-    console.log("useEffect1 executed");
   }, []);
 
   // Filter the data into two arrays: one for admin users, and one for non-admin users
@@ -38,9 +41,20 @@ function UserMaintenance() {
     (user) => user.accessPermissions !== "ADMIN"
   );
 
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1); // default page number is 1
   const [usersPerPage] = useState(5); // default number of users per page is 5
-  const [showPaginationButtons, setShowPaginationButtons] = useState(false);
+  // const [showPaginationButtons, setShowPaginationButtons] = useState(false);
+
+  // Calculate total number of pages
+  const totalUsers = nonAdminUsers.length;
+  const totalPageCount = Math.ceil(totalUsers / usersPerPage);
+
+  // Determine whether to show pagination buttons
+  const showPaginationButtons = totalPageCount > 1;
+
+  const showPaginationButtonsRef = useRef(showPaginationButtons);
+  showPaginationButtonsRef.current = showPaginationButtons;
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -51,41 +65,33 @@ function UserMaintenance() {
     setCurrentPage(pageNumber);
   };
 
-  // Calculate total number of pages
-  const totalUsers = nonAdminUsers.length;
-  const totalPageCount = Math.ceil(totalUsers / usersPerPage);
-
-  useEffect(() => {
-    const totalPageCount = Math.ceil(nonAdminUsers.length / usersPerPage);
-    setShowPaginationButtons(totalPageCount > 1);
-    console.log("useEffect2 executed");
-  }, [nonAdminUsers]);
-
   // Create an array of page numbers
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPageCount; i++) {
-    pageNumbers.push(i);
-  }
+  const pageNumbers = Array.from({ length: totalPageCount }, (_, i) => i + 1);
+
+  const nonAdminUsersRef = useRef(nonAdminUsers);
+  nonAdminUsersRef.current = nonAdminUsers;
+  // useEffect(() => {
+  // }, [usersPerPage]);
 
   // Search for users
   const [searchText, setSearchText] = useState("");
   const [searchedUsers, setSearchedUsers] = useState([]);
 
+  const searchTextRef = useRef(searchText);
+  searchTextRef.current = searchText;
+
+  const nonAdminUsersFilteredRef = useRef([]);
+  nonAdminUsersFilteredRef.current = nonAdminUsers.filter((user) =>
+    user.email.toLowerCase().includes(searchTextRef.current.toLowerCase())
+  );
+
   useEffect(() => {
-    if (searchText.trim() === "") {
+    if (searchTextRef.current.trim() === "") {
       setSearchedUsers([]);
     } else {
-      const filteredUsers = nonAdminUsers.filter((user) =>
-        user.email.toLowerCase().includes(searchText.toLowerCase())
-      );
-
-      // 仅当过滤结果发生变化时才更新 searchedUsers
-      if (JSON.stringify(filteredUsers) !== JSON.stringify(searchedUsers)) {
-        setSearchedUsers(filteredUsers);
-      }
+      setSearchedUsers(nonAdminUsersFilteredRef.current);
     }
-    console.log("useEffect3 executed");
-  }, [searchText, nonAdminUsers, searchedUsers]);
+  }, [searchText]);
 
   // Delete a user
   const handleDeleteUser = async (userId, userEmail) => {
@@ -172,32 +178,32 @@ function UserMaintenance() {
         toast.success("Success to change !", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
-        // const updatedData = data.map((user) => {
-        //   const updatedUser = patchdata.find(
-        //     (patchdata) => patchdata._id === user._id
-        //   );
-        //   if (updatedUser) {
-        //     return updatedUser;
-        //   } else {
-        //     return user;
-        //   }
-        // });
-        // setData(updatedData);
-        setData((prevData) => {
-          // 计算新的数据
-          const updatedData = prevData.map((user) => {
-            const updatedUser = patchdata.find(
-              (patchdata) => patchdata._id === user._id
-            );
-            if (updatedUser) {
-              return updatedUser;
-            } else {
-              return user;
-            }
-          });
 
-          return updatedData;
-        });
+        const updatedLocalUser = patchdata.find(
+          (patchdata) => patchdata._id === localStorage.getItem("userId") // Replace `localUserId` with the actual local user's ID
+        );
+
+        if (updatedLocalUser) {
+          // Redirect to the /family-tree page
+          router.push("/family-tree");
+        }
+
+        window.location.reload();
+
+        // setData((prevData) => {
+        //   const updatedData = prevData.map((user) => {
+        //     const updatedUser = patchdata.find(
+        //       (patchdata) => patchdata._id === user._id
+        //     );
+        //     if (updatedUser) {
+        //       return updatedUser;
+        //     } else {
+        //       return user;
+        //     }
+        //   });
+
+        //   return updatedData;
+        // });
       } else {
         toast.error("Failed to update admin status.", {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -369,6 +375,7 @@ function UserMaintenance() {
               >
                 Previous
               </button>
+
               {pageNumbers.map((number) => (
                 <button
                   key={number}
@@ -378,6 +385,7 @@ function UserMaintenance() {
                   {number}
                 </button>
               ))}
+
               <button
                 onClick={() => paginate(currentPage + 1)}
                 disabled={currentPage === totalPageCount}

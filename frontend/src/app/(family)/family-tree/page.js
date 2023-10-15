@@ -37,6 +37,17 @@ const FamilyTreePage = () => {
 
   return (
     <>
+      <h1
+        style={{
+          "text-align": "center",
+          "font-size": "20px",
+          padding: "10px",
+          "font-weight": "500",
+          "background-color": "white",
+        }}
+      >
+        Family Tree
+      </h1>
       <TransformWrapper>
         <TransformComponent>
           {/* TODO: IF API CALL RERENDER EVERY COMPONENT, EXTRACT THE CHART IN SEPARATE FILE */}

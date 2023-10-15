@@ -131,6 +131,14 @@ const SunburstChart = ({ data }) => {
     const stage = anychart.graphics.create("container");
     const newChart = anychart.sunburst(chartData, "as-tree");
 
+    // TODO: ALTERNATIVE WAY TO ADD TITLE
+    // // newChart.title().useHtml(true);
+    // newChart.title(
+    //   "Family Tree"
+    //   // "<span style='font-size:12; font-style:italic'>" +
+    //   // "Corporate Structure</span>"
+    // );
+
     newChart.interactivity().selectionMode("single-select");
 
     newChart.listen("pointClick", (event) => {

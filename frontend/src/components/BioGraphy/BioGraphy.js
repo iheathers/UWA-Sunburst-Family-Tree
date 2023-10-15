@@ -14,6 +14,7 @@ import styles from "./BioGraphy.module.css";
 // EXTRACT URL IN .env.development file
 const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
 const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
+const userPermissionRoute = process.env.NEXT_PUBLIC_USER_PERMISSION_ROUTE;
 
 const BioGraphy = ({ id }) => {
   const [artistData, setArtistData] = useState({
@@ -30,63 +31,62 @@ const BioGraphy = ({ id }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [showDeathRow, setShowDeathRow] = useState(true);
-  const [accessPermissions, setAccessPermissions] = useState("");
+  const [accessEdit, setAccessEdit] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
-    const checkEditPermission = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/user`);
-        const data = response.data;
-        const idToFind = localStorage.getItem("userId");
-        // const idToFind = "651a680a90ba50e65767c1bf";
-        const matchingUser = data.find((user) => user._id === idToFind);
-
-        if (matchingUser) {
-          const accessPermissions = matchingUser.accessPermissions;
-          setAccessPermissions(accessPermissions);
-        }
-      } catch (error) {
-        console.error("Error checking permissions:", error);
-      }
-    };
-
-    checkEditPermission();
-
-    const savedShowDeathRow = sessionStorage.getItem("showDeathRow");
-    if (savedShowDeathRow !== null) {
-      setShowDeathRow(savedShowDeathRow === "true");
-    }
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${apiUrl}${familyMemberRoute}/${id}`);
-        const data = response.data;
+        // Get permissions first
+        const idToFind = localStorage.getItem("userId");
+        if (!idToFind) {
+          // Handle the case where "userId" is not set in localStorage
+          router.push("/login");
+          return;
+        }
+        const permissionResponse = await axios.get(
+          `${apiUrl}${userPermissionRoute}/${idToFind}`
+        );
+        const permissionData = permissionResponse.data;
 
-        if (!data.error) {
-          // Update the artistData state with the fetched data
-          setArtistData(data);
+        if (permissionData && !permissionData.includes("VIEW_CHART_ONLY")) {
+          // If the user has admin permission, proceed to fetch data
+          const response = await axios.get(
+            `${apiUrl}${familyMemberRoute}/${id}`
+          );
+          const data = response.data;
+
+          if (!data.error) {
+            // Update the artistData state with the fetched data
+            setArtistData(data);
+          } else {
+            setError(data.error);
+          }
+
+          if (permissionData.includes("ADMIN")) {
+            setAccessEdit(true);
+          }
         } else {
-          setError(data.error);
+          // If the user doesn't have admin permission, redirect to family-tree
+          router.push("/family-tree");
         }
 
         setIsLoading(false);
       } catch (error) {
-        // Handle errors if the data fetching fails
         console.error("Error fetching data:", error);
         setError("Failed to fetch data.");
         setIsLoading(false);
       }
     };
 
-    // Call the fetchData function when the component mounts
     fetchData();
-  }, [apiUrl, familyMemberRoute, id]);
+  }, [apiUrl, familyMemberRoute, id, router]);
 
   const toggleDeathRow = () => {
     setShowDeathRow(!showDeathRow);
     sessionStorage.setItem("showDeathRow", !showDeathRow);
   };
-
-  const router = useRouter();
 
   const handleEdit = () => {
     // Redirect to the edit page
@@ -110,7 +110,7 @@ const BioGraphy = ({ id }) => {
               >
                 {showDeathRow ? "Hide Death" : "Show Death"}
               </button>
-              {accessPermissions.includes("ADMIN") && (
+              {accessEdit && (
                 <button className={styles.editbutton} onClick={handleEdit}>
                   Edit
                 </button>

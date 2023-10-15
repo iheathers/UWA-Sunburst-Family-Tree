@@ -27,6 +27,11 @@ const SunburstChart = ({ data }) => {
 
   const router = useRouter();
 
+  // const userAccessPermissions = localStorage.getItem("accessPermissions"); //may be later we can use this to show/hide buttons
+  // const userAccessPermissions = "ADMIN";
+  // const userAccessPermissions = "VIEW_CHART_ONLY";
+  const userAccessPermissions = "VIEW_CHART_AND_BIO";
+
   useEffect(() => {
     if (data) {
       drawChart(data);
@@ -61,31 +66,37 @@ const SunburstChart = ({ data }) => {
         const index = items["save-chart-as"]?.index;
 
         if (index && selectedNode) {
-          items["view-profile"] = {
-            text: "View Profile",
-            action: handleViewProfile,
-            index: index - 0.05,
-          };
-
-          items["add-node"] = {
-            text: "Add Child",
-            action: handleAddChild,
-            index: index - 0.04,
-          };
-
-          items["edit-node"] = {
-            text: "Edit Node",
-            action: handleEditNode,
-            index: index - 0.03,
-          };
-
-          //  if selected node has children, do not allow to remove
-          if (children.length === 0) {
-            items["remove-node"] = {
-              text: "Remove Node",
-              action: handleRemoveNode,
-              index: index - 0.02,
+          if (
+            userAccessPermissions === "VIEW_CHART_AND_BIO" ||
+            userAccessPermissions === "ADMIN"
+          ) {
+            items["view-profile"] = {
+              text: "View Profile",
+              action: handleViewProfile,
+              index: index - 0.05,
             };
+          }
+          if (userAccessPermissions === "ADMIN") {
+            // If the userAccessPermissions is "ADMIN," show all options
+            items["add-node"] = {
+              text: "Add Child",
+              action: handleAddChild,
+              index: index - 0.04,
+            };
+
+            items["edit-node"] = {
+              text: "Edit Node",
+              action: handleEditNode,
+              index: index - 0.03,
+            };
+
+            if (children.length === 0) {
+              items["remove-node"] = {
+                text: "Remove Node",
+                action: handleRemoveNode,
+                index: index - 0.02,
+              };
+            }
           }
 
           items["node-action-seperator"] = {
@@ -96,13 +107,12 @@ const SunburstChart = ({ data }) => {
         return items;
       });
     }
-
     return () => {
       if (chart) {
         chart.contextMenu().itemsProvider(null);
       }
     };
-  }, [selectedId, router, chart, selectedNode]); // Include selectedNode as a dependency
+  }, [selectedId, router, chart, selectedNode, userAccessPermissions]); // Include selectedNode as a dependency
 
   // const filterData = (data, idToRemove) => {
   //   const filteredData = [];

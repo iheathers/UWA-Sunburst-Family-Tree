@@ -18,8 +18,8 @@ const ChartTitle = () => {
   };
 
   //   const userAccessPermissions = "VIEW_CHART_ONLY";
-  //   const userAccessPermissions = "ADMIN";
-  const userAccessPermissions = localStorage.getItem("accessPermissions"); //may be later we can use this to show/hide buttons
+  const userAccessPermissions = "ADMIN";
+  //   const userAccessPermissions = localStorage.getItem("accessPermissions"); //may be later we can use this to show/hide buttons
 
   const requiredPermission = "ADMIN";
 

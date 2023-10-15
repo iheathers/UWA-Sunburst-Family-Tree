@@ -104,6 +104,32 @@ export const listUsers = async (req, res, next) => {
   }
 };
 
+export const getUserPermission = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    // Check if the memberId has a valid ObjectId format
+    if (!isValidObjectId(userId)) {
+      return res.status(400).json({ error: "Invalid member ID format." });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      // If the user with the given ID is not found, return a 404 response with a custom error message
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // If the user is found, return it as JSON
+    res.json(user.accessPermissions);
+  } catch (error) {
+    // Handle other errors and respond with a 500 status code and an error message
+    res.status(500).json({
+      error: "An error occurred while fetching a user's permissions.",
+    });
+  }
+};
+
 export const changeUserPermissions = async (req, res, next) => {
   try {
     const usersToUpdate = req.body;

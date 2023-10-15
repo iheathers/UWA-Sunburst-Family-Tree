@@ -80,7 +80,7 @@ const EditFamilyMember = ({ id }) => {
 
     console.log(formData);
     const patchUrl = `${apiUrl}${familyMemberRoute}/${id}/edit`;
-    console.log("Patch URL:", patchUrl); // 打印请求的路由
+    console.log("Patch URL:", patchUrl);
 
     try {
       const response = await axios.patch(
@@ -107,6 +107,10 @@ const EditFamilyMember = ({ id }) => {
     }
   };
 
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
     <>
       <div className={styles.singleline}>
@@ -114,9 +118,9 @@ const EditFamilyMember = ({ id }) => {
           <h1>Edit the Family Member</h1>
         </div>
         <div className={styles.titlebuttons}>
-          <Link href="/family-tree">
-            <button className={styles.returnbutton}>Go Back</button>
-          </Link>
+          <button className={styles.returnbutton} onClick={handleBack}>
+            Go Back
+          </button>
         </div>
       </div>
       <div className={styles.container}>

@@ -4,6 +4,7 @@
 import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { formatDateToAustralian } from "./dateUtils"; // <-- Import the formatDateToAustralian function
 
@@ -54,6 +55,13 @@ const BioGraphy = ({ id }) => {
     fetchData();
   }, [apiUrl, familyMemberRoute, id]);
 
+  const router = useRouter();
+
+  const handleEdit = () => {
+    // Redirect to the edit page
+    router.push(`/family-member/${id}/edit`);
+  };
+
   return (
     <div className={styles.biography}>
       {isLoading ? (
@@ -65,6 +73,10 @@ const BioGraphy = ({ id }) => {
             <h1 className={styles.title}>{artistData.name}</h1>
 
             <div className={styles.titlebuttons}>
+              <button className={styles.editbutton} onClick={handleEdit}>
+                Edit
+              </button>
+
               <Link href="/family-tree">
                 <button className={styles.returnbutton}>Go Back</button>
               </Link>

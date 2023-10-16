@@ -19,7 +19,7 @@ const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
 // FIXME: REFACTOR IF POSSIBLE TO USE CONFIG OBJECT
 
-const SunburstChart = ({ data }) => {
+const SunburstChart = ({ data, permission }) => {
   const treeData = anychart.data?.tree(data, "as-tree");
   const [selectedId, setSelectedId] = useState("");
   const [chart, setChart] = useState(null);
@@ -61,31 +61,34 @@ const SunburstChart = ({ data }) => {
         const index = items["save-chart-as"]?.index;
 
         if (index && selectedNode) {
-          items["view-profile"] = {
-            text: "View Profile",
-            action: handleViewProfile,
-            index: index - 0.05,
-          };
-
-          items["add-node"] = {
-            text: "Add Child",
-            action: handleAddChild,
-            index: index - 0.04,
-          };
-
-          items["edit-node"] = {
-            text: "Edit Node",
-            action: handleEditNode,
-            index: index - 0.03,
-          };
-
-          //  if selected node has children, do not allow to remove
-          if (children.length === 0) {
-            items["remove-node"] = {
-              text: "Remove Node",
-              action: handleRemoveNode,
-              index: index - 0.02,
+          if (permission === "VIEW_CHART_AND_BIO" || permission === "ADMIN") {
+            items["view-profile"] = {
+              text: "View Profile",
+              action: handleViewProfile,
+              index: index - 0.05,
             };
+          }
+          if (permission === "ADMIN") {
+            // If the permission is "ADMIN," show all options
+            items["add-node"] = {
+              text: "Add Child",
+              action: handleAddChild,
+              index: index - 0.04,
+            };
+
+            items["edit-node"] = {
+              text: "Edit Node",
+              action: handleEditNode,
+              index: index - 0.03,
+            };
+
+            if (children.length === 0) {
+              items["remove-node"] = {
+                text: "Remove Node",
+                action: handleRemoveNode,
+                index: index - 0.02,
+              };
+            }
           }
 
           items["node-action-seperator"] = {
@@ -96,13 +99,12 @@ const SunburstChart = ({ data }) => {
         return items;
       });
     }
-
     return () => {
       if (chart) {
         chart.contextMenu().itemsProvider(null);
       }
     };
-  }, [selectedId, router, chart, selectedNode]); // Include selectedNode as a dependency
+  }, [selectedId, router, chart, selectedNode, permission]); // Include selectedNode as a dependency
 
   // const filterData = (data, idToRemove) => {
   //   const filteredData = [];

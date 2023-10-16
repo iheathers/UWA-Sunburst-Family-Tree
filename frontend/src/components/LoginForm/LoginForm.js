@@ -50,6 +50,7 @@ const LoginForm = () => {
         // If successful, set the success state to true and clear the error state
         setError("");
         // Redirect to the family tree page
+        localStorage.setItem("userId", response.data.userId);
         router.push("/family-tree");
       } else {
         // If unsuccessful, set the error state to the error message

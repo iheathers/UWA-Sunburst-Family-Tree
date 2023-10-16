@@ -14,9 +14,8 @@ import styles from "./BioGraphy.module.css";
 // EXTRACT URL IN .env.development file
 const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
 const familyMemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
-const userPermissionRoute = process.env.NEXT_PUBLIC_USER_PERMISSION_ROUTE;
 
-const BioGraphy = ({ id }) => {
+const BioGraphy = ({ id, permission }) => {
   const [artistData, setArtistData] = useState({
     name: "",
     parentId: "",
@@ -38,38 +37,18 @@ const BioGraphy = ({ id }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Get permissions first
-        const idToFind = localStorage.getItem("userId");
-        if (!idToFind) {
-          // Handle the case where "userId" is not set in localStorage
-          router.push("/login");
-          return;
-        }
-        const permissionResponse = await axios.get(
-          `${apiUrl}${userPermissionRoute}/${idToFind}`
-        );
-        const permissionData = permissionResponse.data;
+        const response = await axios.get(`${apiUrl}${familyMemberRoute}/${id}`);
+        const data = response.data;
 
-        if (permissionData && !permissionData.includes("VIEW_CHART_ONLY")) {
-          // If the user has admin permission, proceed to fetch data
-          const response = await axios.get(
-            `${apiUrl}${familyMemberRoute}/${id}`
-          );
-          const data = response.data;
-
-          if (!data.error) {
-            // Update the artistData state with the fetched data
-            setArtistData(data);
-          } else {
-            setError(data.error);
-          }
-
-          if (permissionData.includes("ADMIN")) {
-            setAccessEdit(true);
-          }
+        if (!data.error) {
+          // Update the artistData state with the fetched data
+          setArtistData(data);
         } else {
-          // If the user doesn't have admin permission, redirect to family-tree
-          router.push("/family-tree");
+          setError(data.error);
+        }
+
+        if (permission === "ADMIN") {
+          setAccessEdit(true);
         }
 
         setIsLoading(false);
@@ -90,7 +69,7 @@ const BioGraphy = ({ id }) => {
 
   const handleEdit = () => {
     // Redirect to the edit page
-    router.push(`/family-member/${id}/edit`);
+    router.push(`${familyMemberRoute}/${id}/edit`);
   };
 
   return (

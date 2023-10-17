@@ -255,31 +255,48 @@ function UserMaintenance() {
           </thead>
           {/* Table body with dynamic data */}
           <tbody>
-            {adminUsers.map((user) => (
-              <tr key={user._id}>
-                <td>{user.email}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    defaultChecked={true}
-                    onChange={() =>
-                      setAdminCheckboxes((prevState) => ({
-                        ...prevState,
-                        [user._id]: !prevState[user._id],
-                      }))
-                    }
-                  />
-                </td>
-                <td>
-                  <button
-                    className={styles.deletebutton}
-                    onClick={() => handleDeleteUser(user._id, user.email)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {adminUsers.map((user) => {
+              if (user.email === "admin@admin.com") {
+                return null; // Skip rendering this row
+              } else if (user.email === "nima519@gmail.com") {
+                return (
+                  <tr key={user._id}>
+                    <td>{user.email}</td>
+                    <td></td>
+                    <td>
+                      <button className={styles.deletebutton} disabled>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              } else
+                return (
+                  <tr key={user._id}>
+                    <td>{user.email}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        defaultChecked={true}
+                        onChange={() =>
+                          setAdminCheckboxes((prevState) => ({
+                            ...prevState,
+                            [user._id]: !prevState[user._id],
+                          }))
+                        }
+                      />
+                    </td>
+                    <td>
+                      <button
+                        className={styles.deletebutton}
+                        onClick={() => handleDeleteUser(user._id, user.email)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+            })}
           </tbody>
         </table>
 

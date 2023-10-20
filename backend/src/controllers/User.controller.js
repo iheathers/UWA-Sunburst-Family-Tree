@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { isValidObjectId } from "mongoose";
+import { checkDefaultAdmin } from "../utils/DefaultAdminUser.util.js";
 
 import User from "../models/User.model.js";
 
@@ -41,6 +42,11 @@ export const signUpUser = async (req, res, next) => {
       email: email,
       password: hashedPassword,
     });
+
+    // If the user is a default admin, set their access permission to "ADMIN" automatically
+    if (checkDefaultAdmin(email)) {
+      newUser.accessPermissions = "ADMIN";
+    }
 
     await newUser.save();
 
@@ -160,8 +166,13 @@ export const changeUserPermissions = async (req, res, next) => {
       // Check if user exists
       if (!user) {
         res.status(404).json({ error: `Cannot find user with ID ${userId}` });
-      } else {
-        user.accessPermissions = newPermissions;
+      }
+
+      user.accessPermissions = newPermissions;
+
+      // If a user is a default admin user, do not change their permissions
+      if (checkDefaultAdmin(user.email)) {
+        user.accessPermissions = "ADMIN";
       }
 
       await user.save();
@@ -193,10 +204,16 @@ export const deleteUser = async (req, res, next) => {
         .json({ error: `Cannot find user with ID ${userId}` });
     }
 
+    // Prevent default admin user(s) from being deleted
+    if (checkDefaultAdmin(user.email)) {
+      return res
+        .status(400)
+        .json({ error: "Cannot delete default an admin user." });
+    }
+
     await user.deleteOne();
     res.status(204).json({ message: "User deleted." });
   } catch (error) {
     res.status(500).json({ error: "An error occurred while deleting a user." });
-    console.log(error);
   }
 };

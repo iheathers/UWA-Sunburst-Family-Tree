@@ -79,7 +79,15 @@
     border: none;
     background-color: #EB455F;
     color: #EAEAEA;
+}
 
+.deletebutton:hover {
+    background-color: #C03A4B;
+}
+
+.deletebutton:disabled {
+    background-color: #EAEAEA;
+    color: black;
 }
 
 

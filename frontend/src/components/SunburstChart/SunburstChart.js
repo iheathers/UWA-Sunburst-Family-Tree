@@ -39,9 +39,36 @@ const SunburstChart = ({ data, permission }) => {
     }
   };
 
-  const handleEditNode = () => {
+  // const handleEditNode = () => {
+  //   if (selectedId) {
+  //     router.push(`${familyMemberRoute}/${selectedId}/edit`);
+  //   }
+  // };
+
+  const handleEditNode = async () => {
     if (selectedId) {
-      router.push(`${familyMemberRoute}/${selectedId}/edit`);
+      const dataItem = treeData.search("id", selectedId);
+
+      const currentName = dataItem.get("name");
+
+      const newName = window.prompt("Edit Name:", currentName);
+      if (newName !== null) {
+        try {
+          const response = await axios.patch(
+            `${apiUrl}/family-member/${selectedId}/edit`,
+            {
+              name: newName,
+            }
+          );
+
+          if (response.status === 200) {
+            window.location.reload();
+          }
+        } catch (error) {
+          // Handle errors if the data fetching fails
+          console.error("Error fetching data:", error);
+        }
+      }
     }
   };
 

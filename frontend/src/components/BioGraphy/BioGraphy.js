@@ -132,7 +132,13 @@ const BioGraphy = ({ id, permission }) => {
           </div>
           <div className={styles.card}>
             <h3>ABOUT {artistData.name}</h3>
-            <p>{artistData.about}</p>
+            {artistData.about.split("\n").map((paragraph, index) => (
+              <React.Fragment key={index}>
+                {index !== 0 && <br />}
+                {/* Add a <br> tag before each paragraph, except the first one */}
+                {paragraph}
+              </React.Fragment>
+            ))}
           </div>
           {/* ... Additional sections */}
         </>

@@ -66,8 +66,11 @@ export const addFamilyMember = async (req, res, next) => {
     }
 
     // If parentId is null and there is already a root node, return an error
-    if (!parentId && (await FamilyMember.findOne({ parent: null }))) {
-      return res.status(400).json({ error: "Only one root node is allowed." });
+    if (!parentId) {
+      const rootExists = await FamilyMember.findOne({ parent: null });
+      if (rootExists) {
+        return res.status(400).json({ error: "Only one root node is allowed." });
+      }
     }
 
     // If no image is uploaded, then set the profile picture as a default image

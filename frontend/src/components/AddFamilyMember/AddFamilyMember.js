@@ -17,7 +17,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT_BASE_URL;
 const familymemberRoute = process.env.NEXT_PUBLIC_FAMILY_MEMBER_ROUTE;
 
 const AddFamilyMember = ({ params }) => {
-  const { id } = params;
+  const  id  = params;
 
   const router = useRouter();
   const [error, setError] = useState("");

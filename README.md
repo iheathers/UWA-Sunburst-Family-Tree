@@ -4,6 +4,8 @@
 
 [![GitHub repo](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/iheathers/UWA-Sunburst-Family-Tree)
 
+## Live Demo: https://uwa-sunburst-family-tree.vercel.app/family-tree
+
 ## Overview
 
 The **Sunburst Family Tree** is an interactive web application designed to help users visualize and manage their family tree efficiently. It represents family connections in a sunburst chart format, providing a dynamic and intuitive interface to explore and maintain family data. The application is built with a full-stack architecture, incorporating both backend and frontend components.

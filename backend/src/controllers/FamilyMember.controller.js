@@ -1,6 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { validationResult } from "express-validator";
 import FamilyMember from "../models/FamilyMember.model.js";
+
 import { defaultProfilePicture } from "../utils/UploadImage.util.js";
 import { validateDateRange } from "../utils/FamilyMember.util.js";
 
@@ -30,6 +31,7 @@ export const getFamilyMember = async (req, res, next) => {
       .json({ error: "An error occurred while fetching the family member." });
   }
 };
+
 
 // Add a new family member
 export const addFamilyMember = async (req, res, next) => {
@@ -245,6 +247,7 @@ export const removeFromChart = async (req, res, next) => {
 export const deleteFamilyMember = async (req, res, next) => {
   try {
     const memberId = req.params.id;
+
 
     // Check if memberId has a valid ObjectId format
     if (!isValidObjectId(memberId)) {

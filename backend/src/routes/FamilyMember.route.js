@@ -1,4 +1,5 @@
 import express from "express";
+
 import { body } from "express-validator";
 
 import {
@@ -13,6 +14,7 @@ import { uploadFile } from "../utils/UploadImage.util.js";
 
 const familyMemberRouter = express.Router();
 
+// GET a family member by ID
 familyMemberRouter.get("/:id", getFamilyMember);
 
 familyMemberRouter.post(

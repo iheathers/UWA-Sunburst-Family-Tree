@@ -4,6 +4,9 @@
 
 [![GitHub repo](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/iheathers/UWA-Sunburst-Family-Tree)
 
+Admin Login: admin@admin.com
+Password: Admin@123
+
 ## Live Demo: https://uwa-sunburst-family-tree.vercel.app/family-tree
 
 ## Overview

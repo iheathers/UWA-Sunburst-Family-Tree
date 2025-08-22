@@ -4,6 +4,10 @@
 
 [![GitHub repo](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/iheathers/UWA-Sunburst-Family-Tree)
 
+- [User Manual](https://group-12s-organization.gitbook.io/user-documentation-sunburst-chart-fam)
+
+- [Developer Documentation](https://group-12s-organization.gitbook.io/sunburst-chart-family-tree/developer-documentation/code-style-and-contribution-guidelines/git-installation-and-basic-commands)
+
 Admin Login: admin@admin.com
 Password: Admin@123
 
